@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>View Booked Tickets - Movie Ticket Booking</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap"
+    rel="stylesheet"
+  />
+  <style>
+    body {
+      font-family: 'Roboto', sans-serif;
+      background-color: #fff9f8;
+      margin: 0;
+      padding: 0;
+      color: #333;
+    }
+    header {
+      background-color: #e23020;
+      padding: 15px 0;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    .container {
+      width: 90%;
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .logo {
+      color: white;
+      font-weight: 700;
+      font-size: 1.5rem;
+      letter-spacing: 1px;
+    }
+    nav ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      gap: 25px;
+    }
+    nav ul li {
+      display: inline;
+    }
+    nav ul li a {
+      color: white;
+      text-decoration: none;
+      font-weight: 700;
+      padding: 5px 8px;
+      border-radius: 4px;
+      transition: background-color 0.3s ease;
+    }
+    nav ul li a:hover,
+    nav ul li a.active {
+      background-color: #b31a17;
+    }
+
+    main {
+      padding: 40px 20px;
+      max-width: 900px;
+      margin: 40px auto;
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    h1 {
+      text-align: center;
+      color: #e23020;
+      margin-bottom: 30px;
+      font-weight: 700;
+      font-size: 2.2rem;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 20px;
+    }
+    thead {
+      background-color: #e23020;
+      color: white;
+    }
+    th, td {
+      padding: 12px 15px;
+      border: 1px solid #ddd;
+      text-align: center;
+      font-weight: 500;
+    }
+    tbody tr:nth-child(even) {
+      background-color: #f9f9f9;
+    }
+
+    .no-tickets {
+      text-align: center;
+      color: #555;
+      font-size: 1.1rem;
+      margin-top: 40px;
+    }
+
+    a.btn-back {
+      display: inline-block;
+      background-color: #e23020;
+      color: white;
+      padding: 12px 28px;
+      font-weight: 700;
+      border-radius: 6px;
+      text-decoration: none;
+      font-size: 1.1rem;
+      transition: background-color 0.3s ease;
+      margin-top: 20px;
+    }
+    a.btn-back:hover {
+      background-color: #b31a17;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container">
+      <div class="logo">
+        Movie<span style="font-weight:400;">Ticket Booking</span>
+      </div>
+      <nav>
+        <ul>
+          <li><a href="index.html">Home</a></li>
+          <li><a href="m.html">Movies</a></li>
+          <li><a href="last.html" class="active">Logout</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <h1>Your Booked Tickets</h1>
+
+    <!-- Sample tickets table -->
+    <table>
+      <thead>
+        <tr>
+          <th>Movie Title</th>
+          <th>Show Date</th>
+          <th>Show Time</th>
+          <th>Quantity</th>
+          <th>Seat Number(s)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Detective Conan The Movie: One-Eyed Flashback</td>
+          <td>06 October 2025</td>
+          <td>07:00 PM</td>
+          <td>2</td>
+          <td>A3, A4</td>
+        </tr>
+        <tr>
+          <td>100 Awit Para Kay Stella</td>
+          <td>07 October 2025</td>
+          <td>05:30 PM</td>
+          <td>1</td>
+          <td>B10</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <!-- If no tickets booked, you could display this message -->
+    <!-- <p class="no-tickets">You have not booked any tickets yet.</p> -->
+
+  </main>
+</body>
+</html>

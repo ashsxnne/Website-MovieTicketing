@@ -1,21 +1,143 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Login - Movie Ticket Booking</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap"
+    rel="stylesheet"
+  />
+  <style>
+    body {
+      font-family: 'Roboto', sans-serif;
+      background-color: #fff9f8;
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .modal {
+      background: white;
+      width: 360px;
+      padding: 30px 35px;
+      border-radius: 8px;
+      box-shadow: 0 6px 20px rgba(226, 48, 32, 0.25);
+      position: relative;
+    }
+    .modal .close-btn {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      background: none;
+      border: none;
+      font-size: 20px;
+      cursor: pointer;
+      color: #e23020;
+      font-weight: 700;
+    }
+    .modal h2 {
+      text-align: center;
+      color: #e23020;
+      margin-bottom: 20px;
+      font-weight: 700;
+    }
+    .modal form label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 6px;
+      font-size: 0.9rem;
+      color: #555;
+      letter-spacing: 0.03em;
+    }
+    .modal form input[type="email"],
+    .modal form input[type="password"] {
+      width: 100%;
+      padding: 10px 12px;
+      margin-bottom: 18px;
+      border: 1.5px solid #ddd;
+      border-radius: 5px;
+      font-size: 1rem;
+      transition: border-color 0.3s ease;
+    }
+    .modal form input[type="email"]:focus,
+    .modal form input[type="password"]:focus {
+      border-color: #e23020;
+      outline: none;
+    }
+    .checkbox-wrapper {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 18px;
+      font-size: 0.9rem;
+      color: #555;
+    }
+    .checkbox-wrapper label {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+    }
+    .modal form button[type="submit"] {
+      width: 100%;
+      padding: 12px 0;
+      background-color: #e23020;
+      border: none;
+      border-radius: 6px;
+      color: white;
+      font-weight: 700;
+      font-size: 1.1rem;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    .modal form button[type="submit"]:hover {
+      background-color: #b31a17;
+    }
+    .modal .footer-text {
+      margin-top: 15px;
+      text-align: center;
+      font-size: 0.9rem;
+      color: #777;
+    }
+    .modal .footer-text a {
+      color: #e23020;
+      font-weight: 700;
+      text-decoration: none;
+      margin-left: 5px;
+    }
+    .modal .footer-text a:hover {
+      text-decoration: underline;
+    }
+  </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Login</h1>
-        <form method="POST">
-            <label>Email</label><br>
-            <input type="email" name="email" required><br>
-            <label>Password</label><br>
-            <input type="password" name="password" required><br>
-            <button type="submit">Login</button>
-        </form>
+  <div class="modal" role="dialog" aria-labelledby="loginTitle">
+    <button class="close-btn" aria-label="Close login form" onclick="window.location.href='index.html'">&times;</button>
+    <h2 id="loginTitle">Welcome back!</h2>
+    <form action="/login" method="POST">
+      <label for="email">Email address</label>
+      <input type="email" id="email" name="email" required placeholder="name@email.com" />
+
+      <label for="password">Password</label>
+      <input type="password" id="password" name="password" required placeholder="Password" />
+
+      <div class="checkbox-wrapper">
+        <label>
+          <input type="checkbox" name="remember" />
+          Remember me
+        </label>
+        <a href="#">Forgot password?</a>
+      </div>
+
+      <button type="submit">Login</button>
+    </form>
+
+    <div class="footer-text">
+      Don't have an account?
+      <a href="register.html">Register</a>
     </div>
+  </div>
 </body>
 </html>

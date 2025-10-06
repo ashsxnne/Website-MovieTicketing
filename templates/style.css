@@ -1,0 +1,182 @@
+/* Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Base Styles */
+body {
+  font-family: 'Roboto', sans-serif;
+  background-color: #fff5f5;
+  color: #333;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+/* Header */
+header {
+  background-color: #e23020;
+  padding: 15px 0;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+header .container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.logo {
+  color: white;
+  font-weight: 700;
+  font-size: 1.8rem;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.logo .sm {
+  background-color: white;
+  color: #e23020;
+  padding: 4px 10px;
+  border-radius: 50%;
+  font-weight: 700;
+  font-size: 1.3rem;
+  font-family: Arial, sans-serif;
+}
+
+.logo .cinema {
+  font-weight: 700;
+}
+
+/* Navigation */
+nav ul {
+  list-style: none;
+  display: flex;
+  gap: 25px;
+}
+
+nav ul li a {
+  color: white;
+  font-weight: 700;
+  text-decoration: none;
+  font-size: 1.1rem;
+  padding: 6px 12px;
+  border-radius: 4px;
+  transition: background-color 0.3s ease;
+}
+
+nav ul li a:hover,
+nav ul li a.active {
+  background-color: #c11b18;
+}
+
+/* Main Section */
+.now-showing {
+  margin-top: 30px;
+}
+
+.now-showing h2 {
+  font-weight: 700;
+  font-size: 1.8rem;
+  border-bottom: 1px solid #ccc;
+  padding-bottom: 8px;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.red-text {
+  color: #e23020;
+  border-bottom: 3px solid #e23020;
+  padding-bottom: 3px;
+}
+
+.coming-soon {
+  color: #888;
+  font-weight: 700;
+  font-size: 1.2rem;
+}
+
+/* Movies grid */
+.movies-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill,minmax(180px,1fr));
+  gap: 20px;
+}
+
+/* Movie card */
+.movie-card {
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 12px rgb(0 0 0 / 0.1);
+  padding: 10px 10px 20px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  transition: transform 0.3s ease;
+}
+
+.movie-card:hover {
+  transform: translateY(-5px);
+}
+
+/* Rating badge */
+.rating {
+  position: absolute;
+  background-color: #1560bd;
+  color: white;
+  font-weight: 700;
+  padding: 3px 7px;
+  border-radius: 3px;
+  font-size: 0.8rem;
+  top: 10px;
+  left: 10px;
+  width: max-content;
+}
+
+.rating.r16 {
+  background-color: #c12c15;
+}
+
+/* Movie images */
+.movie-card img {
+  max-width: 100%;
+  border-radius: 6px;
+  margin-bottom: 12px;
+  user-select: none;
+  pointer-events: none;
+}
+
+/* Movie title */
+.movie-card h3 {
+  font-weight: 700;
+  font-size: 1rem;
+  margin-bottom: 10px;
+  color: #000;
+}
+
+/* Buy tickets button */
+.movie-card button {
+  background-color: #e23020;
+  border: none;
+  color: white;
+  font-weight: 700;
+  padding: 10px 0;
+  font-size: 1rem;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  width: 100%;
+}
+
+.movie-card button:hover {
+  background-color: #c11b18;
+}

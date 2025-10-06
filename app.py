@@ -90,7 +90,7 @@ def login():
 
 # Admin Dashboard
 @app.route('/admin')
-def admin_dashboard():
+def admin_dashboard():  
     if 'role' in session and session['role'] == 'Admin':
         conn = sqlite3.connect('database.db')
         c = conn.cursor()

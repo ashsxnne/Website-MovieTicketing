@@ -1,16 +1,246 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Movie Ticket Booking</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Movie Ticket Booking - Home</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap"
+    rel="stylesheet"
+  />
+  <style>
+    /* Reset and base */
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      font-family: 'Roboto', sans-serif;
+      margin: 0;
+      background-color: #fff9f8;
+      color: #333;
+    }
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    /* Header */
+    header {
+      background-color: #e23020;
+      color: white;
+      padding: 15px 0;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .logo {
+      font-weight: 700;
+      font-size: 1.5rem;
+      user-select: none;
+    }
+    .logo .Movie {
+      color: white;
+    }
+    .logo .Ticket\ Booking {
+      font-weight: 400;
+      margin-left: 6px;
+    }
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 25px;
+      margin: 0;
+      padding: 0;
+    }
+    nav ul li a {
+      font-weight: 700;
+      color: white;
+      padding-bottom: 4px;
+      transition: border-bottom 0.3s ease;
+    }
+    nav ul li a.active,
+    nav ul li a:hover {
+      border-bottom: 3px solid white;
+    }
+
+    /* Main Section */
+    main.container {
+      max-width: 1100px;
+      margin: 30px auto;
+      padding: 0 20px;
+    }
+
+    /* Section Heading */
+    .now-showing h2 {
+      font-weight: 700;
+      font-size: 1.8rem;
+      margin-bottom: 20px;
+      border-bottom: 3px solid #e23020;
+      padding-bottom: 5px;
+    }
+    .now-showing h2 .red-text {
+      color: #e23020;
+      margin-right: 15px;
+    }
+    .now-showing h2 .coming-soon {
+      font-weight: 600;
+      color: #555;
+    }
+
+    /* Movies grid */
+    .movies-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      justify-content: flex-start;
+    }
+
+    /* Movie card */
+    .movie-card {
+      position: relative;
+      width: 200px;
+      background-color: white;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      padding: 10px;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .movie-card img {
+      width: 100%;
+      height: 300px;
+      object-fit: cover;
+      border-radius: 8px;
+      margin-bottom: 10px;
+      display: block;
+    }
+    .movie-card h3 {
+      font-size: 1rem;
+      margin: 8px 0 12px;
+      font-weight: 700;
+      min-height: 48px; /* Keep uniform card height */
+    }
+
+    /* Rating label */
+    .rating {
+      position: absolute;
+      top: 15px;
+      left: 15px;
+      background: #e23020;
+      color: white;
+      font-weight: 700;
+      font-size: 0.8rem;
+      padding: 4px 8px;
+      border-radius: 4px;
+      user-select: none;
+    }
+    .rating.r16 {
+      background: #ff6f61;
+    }
+
+    /* Buy Tickets button */
+    .movie-card button {
+      background-color: #e23020;
+      border: none;
+      color: white;
+      padding: 10px 0;
+      font-weight: 700;
+      font-size: 1rem;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    .movie-card button:hover {
+      background-color: #b31a17;
+    }
+  </style>
 </head>
 <body>
+  <header>
     <div class="container">
-        <h1>Welcome to Movie Ticket Booking</h1>
-        <a href="{{ url_for('register') }}">Register</a>
-        <a href="{{ url_for('login') }}">Login</a>
+      <div class="logo">
+        <span class="Movie">Movie</span><span class=" Ticket Booking">Ticket Booking</span>
+      </div>
+      <nav>
+        <ul>
+          <li><a href="index.html" class="active">Home</a></li>
+          <li><a href="m.html">Movies</a></li>
+          <li><a href="last.html">Logout</a></li>
+        </ul>
+      </nav>
     </div>
+  </header>
+
+  <main class="container">
+    <section class="now-showing">
+      <h2><span class="red-text">NOW SHOWING</span> <span class="coming-soon">COMING SOON</span></h2>
+      <div class="movies-grid">
+        <!-- Example movie card -->
+        <article class="movie-card">
+          <div class="rating">PG</div>
+          <img src="1.jpg" alt="Detective Conan The Movie" />
+          <h3>Detective Conan The Movie: One-Eyed Flashback</h3>
+          <button>Buy Tickets</button>
+        </article>
+
+        <article class="movie-card">
+          <div class="rating">PG</div>
+          <img src="2.jpg" alt="100 Awit Para Kay Stella" />
+          <h3>100 Awit Para Kay Stella</h3>
+          <button>Buy Tickets</button>
+        </article>
+
+        <article class="movie-card">
+          <div class="rating">PG</div>
+          <img src="3.jpg" alt="THE CONJURING: Last Rites" />
+          <h3>THE CONJURING: Last Rites</h3>
+          <button>Buy Tickets</button>
+        </article>
+
+        <article class="movie-card">
+          <div class="rating r16">R-16</div>
+          <img src="4.jpg" alt="Play Dirty" />
+          <h3>Play Dirty</h3>
+          <button>Buy Tickets</button>
+        </article>
+
+        <article class="movie-card">
+          <div class="rating">R-16</div>
+          <img src="5.jpg" alt="Weapons" />
+          <h3>Weapons</h3>
+          <button>Buy Tickets</button>
+        </article>
+
+        <article class="movie-card">
+          <div class="rating r16">R-16</div>
+          <img src="6.jpg" alt="Chainsaw Man - The Movie: Reze Arc" />
+          <h3>Chainsaw Man - The Movie: Reze Arc</h3>
+          <button>Buy Tickets</button>
+        </article>
+      </div>
+    </section>
+  </main>
+<script>
+  // Select all Buy Tickets buttons
+  const buyButtons = document.querySelectorAll('.movie-card button');
+
+  buyButtons.forEach(button => {
+    button.addEventListener('click', () => {
+      window.location.href = 'buyticket.html';
+    });
+  });
+</script>
+
 </body>
 </html>

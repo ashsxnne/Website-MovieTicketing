@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Thank You - Movie Ticket Booking</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap"
+    rel="stylesheet"
+  />
+  <style>
+    body {
+      font-family: 'Roboto', sans-serif;
+      background-color: #fff9f8;
+      margin: 0;
+      padding: 0;
+      color: #333;
+    }
+    header {
+      background-color: #e23020;
+      padding: 15px 0;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    .container {
+      width: 90%;
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .logo {
+      color: white;
+      font-weight: 700;
+      font-size: 1.5rem;
+      letter-spacing: 1px;
+    }
+    nav ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      gap: 25px;
+    }
+    nav ul li {
+      display: inline;
+    }
+    nav ul li a {
+      color: white;
+      text-decoration: none;
+      font-weight: 700;
+      padding: 5px 8px;
+      border-radius: 4px;
+      transition: background-color 0.3s ease;
+    }
+    nav ul li a:hover,
+    nav ul li a.active {
+      background-color: #b31a17;
+    }
+
+    main {
+      padding: 60px 20px;
+      text-align: center;
+    }
+    main h1 {
+      font-size: 2.5rem;
+      color: #e23020;
+      margin-bottom: 20px;
+    }
+    main p {
+      font-size: 1.2rem;
+      color: #555;
+      max-width: 600px;
+      margin: 0 auto 30px;
+      line-height: 1.5;
+    }
+    main a.btn-home,
+    main a.btn-view {
+      display: inline-block;
+      margin: 10px 15px 0 15px;
+      padding: 12px 28px;
+      background-color: #e23020;
+      color: white;
+      font-weight: 700;
+      border-radius: 6px;
+      text-decoration: none;
+      font-size: 1.1rem;
+      transition: background-color 0.3s ease;
+    }
+    main a.btn-home:hover,
+    main a.btn-view:hover {
+      background-color: #b31a17;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container">
+      <div class="logo">
+        Movie<span style="font-weight:400;">Ticket Booking</span>
+      </div>
+      <nav>
+        <ul>
+          <li><a href="index.html" class="active">Home</a></li>
+          <li><a href="m.html">Movies</a></li>
+          <li><a href="last.html">Logout</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <h1>Thank You for Your Booking!</h1>
+    <p>Your tickets have been successfully booked. We look forward to seeing you at the cinema. Enjoy the show!</p>
+
+    <a href="viewtickets.html" class="btn-view">View Tickets Booked</a>
+  </main>
+</body>
+</html>
