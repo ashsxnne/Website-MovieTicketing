@@ -80,7 +80,7 @@
       gap: 6px;
       cursor: pointer;
     }
-    .modal form button[type="button"] {
+    .modal form button[type="submit"] {
       width: 100%;
       padding: 12px 0;
       background-color: #e23020;
@@ -92,7 +92,7 @@
       cursor: pointer;
       transition: background-color 0.3s ease;
     }
-    .modal form button[type="button"]:hover {
+    .modal form button[type="submit"]:hover {
       background-color: #b31a17;
     }
     .modal .footer-text {
@@ -114,9 +114,9 @@
 </head>
 <body>
   <div class="modal" role="dialog" aria-labelledby="loginTitle">
-    <button class="close-btn" aria-label="Close login form" onclick="window.location.href='index.html'">&times;</button>
+    <button class="close-btn" aria-label="Close login form" onclick="window.location.href='{{ url_for('home') }}'">&times;</button>
     <h2 id="loginTitle">Welcome back!</h2>
-    <form>
+    <form method="POST" action="{{ url_for('login') }}">
       <label for="email">Email address</label>
       <input type="email" id="email" name="email" required placeholder="name@email.com" />
 
@@ -131,12 +131,12 @@
         <a href="#">Forgot password?</a>
       </div>
 
-      <button type="button" onclick="window.location.href='index.html'">Login</button>
+      <button type="submit">Login</button>
     </form>
 
     <div class="footer-text">
       Don't have an account?
-      <a href="register.html">Register</a>
+      <a href="{{ url_for('register') }}">Register</a>
     </div>
   </div>
 </body>

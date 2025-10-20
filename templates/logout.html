@@ -187,12 +187,13 @@
         <span class="Movie">Movie</span><span class=" Ticket Booking">Ticket Booking</span>
       </div>
       <nav>
-        <ul>
-          <li><a href="index.html" class="active">Home</a></li>
-          <li><a href="login.html">Movies</a></li>
-          <li><a href="login.html">Sign in</a></li>
-        </ul>
-      </nav>
+  <ul>
+    <li><a href="{{ url_for('login') }}" class="active">Home</a></li>
+    <li><a href="{{ url_for('login') }}">Movies</a></li>
+    <li><a href="{{ url_for('login') }}">Sign in</a></li>
+  </ul>
+</nav>
+
     </div>
   </header>
 
@@ -203,44 +204,44 @@
         <!-- Example movie card -->
         <article class="movie-card">
           <div class="rating">R</div>
-          <img src="1.jpg" alt="Sinners (2025)" />
+          <img src="{{ url_for('static', filename='1.jpg') }}" alt="Sinners (2025)">
           <h3>Sinners (2025)</h3>
-          <button>Buy Tickets</button>
+          <button onclick="window.location.href='{{ url_for('login') }}'">Buy Tickets</button>
         </article>
 
         <article class="movie-card">
           <div class="rating">PG</div>
-          <img src="2.png" alt="Harry Potter and the Prisoner of Azkaban (2004)" />
+          <img src="{{ url_for('static', filename='2.png') }}" alt="Movie 2">
           <h3>Harry Potter and the Prisoner of Azkaban (2004)</h3>
-          <button>Buy Tickets</button>
+          <button onclick="window.location.href='{{ url_for('login') }}'">Buy Tickets</button>
         </article>
 
         <article class="movie-card">
           <div class="rating">PG</div>
-          <img src="3.jpg" alt="THE CONJURING: Last Rites" />
+          <img src="{{ url_for('static', filename='3.jpg') }}" alt="THE CONJURING: Last Rites">
           <h3>THE CONJURING: Last Rites</h3>
-          <button>Buy Tickets</button>
+          <button onclick="window.location.href='{{ url_for('login') }}'">Buy Tickets</button>
         </article>
 
         <article class="movie-card">
           <div class="rating r16">PG-13</div>
-          <img src="4.png" alt="The Lord of the Rings: The Return of the King (2003)" />
+          <img src="{{ url_for('static', filename='4.png') }}" alt="The Lord of the Rings: The Return of the King (2003)">
           <h3>The Lord of the Rings: The Return of the King (2003)</h3>
-          <button>Buy Tickets</button>
+          <button onclick="window.location.href='{{ url_for('login') }}'">Buy Tickets</button>
         </article>
 
         <article class="movie-card">
           <div class="rating">R-16</div>
-          <img src="5.jpg" alt="Weapons" />
+          <img src="{{ url_for('static', filename='5.jpg') }}" alt="Weapons">
           <h3>Weapons</h3>
-          <button>Buy Tickets</button>
+          <button onclick="window.location.href='{{ url_for('login') }}'">Buy Tickets</button>
         </article>
 
         <article class="movie-card">
           <div class="rating r16">PG</div>
-          <img src="6.jpg" alt="Alice in Wonderland" />
+          <img src="{{ url_for('static', filename='6.jpg') }}" alt="Alice in Wonderland">
           <h3>Alice in Wonderland</h3>
-          <button>Buy Tickets</button>
+          <button onclick="window.location.href='{{ url_for('login') }}'">Buy Tickets</button>
         </article>
       </div>
     </section>
@@ -251,7 +252,7 @@
 
   buyButtons.forEach(button => {
     button.addEventListener('click', () => {
-      window.location.href = 'login.html';
+      window.location.href = "{{ url_for('login') }}";
     });
   });
 </script>

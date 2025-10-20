@@ -10,20 +10,19 @@
   />
   <style>
     footer {
-  text-align: center;
-  padding: 15px 0;
-  background-color: #e23020;
-  color: white;
-  font-weight: 600;
-  font-family: 'Roboto', sans-serif;
-  width: 100%;
-  font-size: 0.95rem;
-  letter-spacing: 0.5px;
-  position: relative; /* changed from fixed */
-  bottom: 0;
-  margin-top: 40px; /* adds space before footer */
-}
-
+      text-align: center;
+      padding: 15px 0;
+      background-color: #e23020;
+      color: white;
+      font-weight: 600;
+      font-family: 'Roboto', sans-serif;
+      width: 100%;
+      font-size: 0.95rem;
+      letter-spacing: 0.5px;
+      position: relative;
+      bottom: 0;
+      margin-top: 40px;
+    }
     body {
       font-family: 'Roboto', sans-serif;
       background-color: #fff9f8;
@@ -130,7 +129,7 @@
       font-size: 0.9rem;
       color: #444;
       line-height: 1.4;
-      max-height: 4.5em; /* approx 3 lines */
+      max-height: 4.5em;
       overflow: hidden;
       text-overflow: ellipsis;
     }
@@ -158,9 +157,9 @@
       </div>
       <nav>
         <ul>
-          <li><a href="index.html">Home</a></li>
-          <li><a href="movies.html" class="active">Movies</a></li>
-          <li><a href="logout.html">Logout</a></li>
+          <li><a href="{{ url_for('customer_dashboard') }}">Home</a></li>
+          <li><a href="{{ url_for('movies') }}" class="active">Movies</a></li>
+          <li><a href="{{ url_for('logout') }}">Logout</a></li>
         </ul>
       </nav>
     </div>
@@ -174,55 +173,56 @@
   </div>
 
 <script>
-  // Updated movies based on your screenshot (Now Showing)
+  const buyTicketURL = "{{ url_for('book_ticket') }}";
+
   const movies = [
     {
       title: "Sinners (2025)",
       description: "Set in 1932 in the Mississippi Delta, twin brothers Elijah “Smoke” and Elias “Stack” Moore return home after years working for the Chicago mob. They use stolen money to buy a sawmill and convert it into a juke joint for their local Black community. But their attempt to build something positive draws the attention of a supernatural evil (vampires), forcing them to defend their home, community, and faith against terrifying forces.",
       releaseDate: "2025-04-18",
       rating: "R",
-      img: "1.jpg",
-      detailPage: "buyticket.html"
+      img: "{{ url_for('static', filename='1.jpg') }}",
+      detailPage: buyTicketURL
     },
     {
       title: "Harry Potter and the Prisoner of Azkaban (2004)",
       description: "Harry Potter discovers that a dangerous prisoner, Sirius Black, has escaped from Azkaban—and might be after him.",
       releaseDate: "2004-06-04",
       rating: "PG",
-      img: "2.png",
-      detailPage: "buyticket.html"
+      img: "{{ url_for('static', filename='2.png') }}",
+      detailPage: buyTicketURL
     },
     {
       title: "The Conjuring: Last Rites",
       description: "Paranormal investigators Ed and Lorraine Warren face one of their most terrifying cases as they uncover a deadly secret.",
       releaseDate: "2025-09-13",
       rating: "PG",
-      img: "3.jpg",
-      detailPage: "buyticket.html"
+      img: "{{ url_for('static', filename='3.jpg') }}",
+      detailPage: buyTicketURL
     },
     {
       title: "The Lord of the Rings: The Return of the King (2003)",
       description: "The final battle for Middle-earth begins as Frodo and Sam journey to destroy the One Ring once and for all.",
       releaseDate: "2003-12-17",
       rating: "PG-13",
-      img: "4.png",
-      detailPage: "buyticket.html"
+      img: "{{ url_for('static', filename='4.png') }}",
+      detailPage: buyTicketURL
     },
     {
       title: "Weapons",
       description: "An interconnected horror anthology exploring the human psyche through strange and unsettling stories.",
       releaseDate: "2025-08-09",
       rating: "R-16",
-      img: "5.jpg",
-      detailPage: "buyticket.html"
+      img: "{{ url_for('static', filename='5.jpg') }}",
+      detailPage: buyTicketURL
     },
     {
       title: "Alice in Wonderland (2010)",
       description: "Alice returns to the whimsical world of Wonderland, where she must face the Red Queen and fulfill her destiny.",
       releaseDate: "2010-03-05",
       rating: "PG",
-      img: "6.jpg",
-      detailPage: "buyticket.html"
+      img: "{{ url_for('static', filename='6.jpg') }}",
+      detailPage: buyTicketURL
     }
   ];
 
@@ -247,7 +247,7 @@
         <div class="movie-date">Rating: ${movie.rating} | Release Date: ${formatReleaseDate(movie.releaseDate)}</div>
         <div class="movie-description">${movie.description}</div>
       </div>
-      <button class="btn-view" aria-label="View details for ${movie.title}">Book now</button>
+      <button class="btn-view">Book now</button>
     `;
 
     card.querySelector('.btn-view').addEventListener('click', () => {
@@ -270,8 +270,8 @@
   }
 
   loadMovies();
-
 </script>
+
 <footer>
   <p>DKC Collection 2025 | Movie Ticket Booking ©</p>
 </footer>

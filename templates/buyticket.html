@@ -212,9 +212,10 @@
       </div>
       <nav>
         <ul>
-          <li><a href="index.html">Home</a></li>
-          <li><a href="movies.html">Movies</a></li>
-          <li><a href="logout.html">Logout</a></li>
+          <li><a href="{{ url_for('customer_dashboard') }}">Home</a></li>
+          <li><a href="{{ url_for('movies') }}">Movies</a></li>
+          <li><a href="{{ url_for('logout') }}">Logout</a></li>
+
         </ul>
       </nav>
     </div>
@@ -298,13 +299,13 @@
     };
 
     const movieDetails = {
-      "Sinners (2025)": { poster: "1.jpg", description: "Twin brothers return home from the mob and face violent conflict in 1930s Mississippi." },
-      "Harry Potter and the Prisoner of Azkaban (2004)": { poster: "2.png", description: "Harry learns that a dangerous prisoner, Sirius Black, has escaped Azkaban and is coming for him." },
-      "The Conjuring (2013)": { poster: "3.jpg", description: "Paranormal investigators help a family terrorized by a dark presence in their farmhouse." },
-      "The Lord of the Rings: The Return of the King (2003)": { poster: "4.png", description: "The epic final battle for Middle-earth begins as Frodo nears Mount Doom." },
-      "Weapons (2025)": { poster: "5.jpg", description: "A chilling anthology of interconnected stories about violence and human nature." },
-      "Alice in Wonderland (2010)": { poster: "6.jpg", description: "Alice returns to Wonderland and faces the Red Queen with her friends." }
-    };
+  "Sinners (2025)": { poster: "{{ url_for('static', filename='1.jpg') }}", description: "Twin brothers..." },
+  "Harry Potter and the Prisoner of Azkaban (2004)": { poster: "{{ url_for('static', filename='2.png') }}", description: "Harry learns..." },
+  "The Conjuring (2013)": { poster: "{{ url_for('static', filename='3.jpg') }}", description: "Paranormal investigators..." },
+  "The Lord of the Rings: The Return of the King (2003)": { poster: "{{ url_for('static', filename='4.png') }}", description: "The epic final battle..." },
+  "Weapons (2025)": { poster: "{{ url_for('static', filename='5.jpg') }}", description: "A chilling anthology..." },
+  "Alice in Wonderland (2010)": { poster: "{{ url_for('static', filename='6.jpg') }}", description: "Alice returns to Wonderland..." }
+};
 
     function populateMovies() {
       Object.keys(moviesData).forEach(movie => {
@@ -394,7 +395,7 @@ bookedTickets.push(newBooking);
 localStorage.setItem("bookedTickets", JSON.stringify(bookedTickets));
 
 alert(`Booking Confirmed!\nMovie: ${newBooking.movie}\nSeats: ${newBooking.seats.join(", ")}`);
-window.location.href = "viewtickets.html";
+window.location.href = "{{ url_for('thankyou') }}";
     });
 
     populateMovies();

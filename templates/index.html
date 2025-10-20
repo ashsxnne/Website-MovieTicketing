@@ -187,12 +187,12 @@
         <span class="Movie">Movie</span><span class=" Ticket Booking">Ticket Booking</span>
       </div>
       <nav>
-        <ul>
-          <li><a href="index.html" class="active">Home</a></li>
-          <li><a href="movies.html">Movies</a></li>
-          <li><a href="logout.html">Logout</a></li>
-        </ul>
-      </nav>
+  <ul>
+    <li><a href="{{ url_for('customer_dashboard') }}" class="active">Home</a></li>
+    <li><a href="{{ url_for('movies') }}">Movies</a></li>
+    <li><a href="{{ url_for('logout') }}">Logout</a></li>
+  </ul>
+</nav>
     </div>
   </header>
 
@@ -251,7 +251,7 @@
 
   buyButtons.forEach(button => {
     button.addEventListener('click', () => {
-      window.location.href = 'buyticket.html';
+      window.location.href = "{{ url_for('book_ticket') }}";
     });
   });
 </script>
