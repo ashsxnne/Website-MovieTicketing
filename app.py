@@ -111,7 +111,7 @@ def customer_dashboard():
         c.execute("SELECT * FROM tbl_booking WHERE u_id = ?", (session['user_id'],))
         bookings = c.fetchall()
         conn.close()
-        return render_template('customer.html', bookings=bookings)
+        return render_template('index.html', bookings=bookings)
     else:
         return redirect(url_for('login'))
 
@@ -135,9 +135,10 @@ def book_ticket():
             conn.close()
             return redirect(url_for('customer_dashboard'))
 
-        return render_template('book_ticket.html')
+        return render_template('buyticket.html')
     else:
-        return redirect(url_for('login'))
+        return redirect(url_for('login.html'))
+
 
 
 # Logout route

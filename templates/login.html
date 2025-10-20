@@ -80,7 +80,7 @@
       gap: 6px;
       cursor: pointer;
     }
-    .modal form button[type="submit"] {
+    .modal form button[type="button"] {
       width: 100%;
       padding: 12px 0;
       background-color: #e23020;
@@ -92,7 +92,7 @@
       cursor: pointer;
       transition: background-color 0.3s ease;
     }
-    .modal form button[type="submit"]:hover {
+    .modal form button[type="button"]:hover {
       background-color: #b31a17;
     }
     .modal .footer-text {
@@ -116,7 +116,7 @@
   <div class="modal" role="dialog" aria-labelledby="loginTitle">
     <button class="close-btn" aria-label="Close login form" onclick="window.location.href='index.html'">&times;</button>
     <h2 id="loginTitle">Welcome back!</h2>
-    <form action="/login" method="POST">
+    <form>
       <label for="email">Email address</label>
       <input type="email" id="email" name="email" required placeholder="name@email.com" />
 
@@ -131,7 +131,7 @@
         <a href="#">Forgot password?</a>
       </div>
 
-      <button type="submit">Login</button>
+      <button type="button" onclick="window.location.href='index.html'">Login</button>
     </form>
 
     <div class="footer-text">
