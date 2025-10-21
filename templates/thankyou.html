@@ -103,6 +103,7 @@
         <ul>
           <li><a href="index.html" class="active">Home</a></li>
           <li><a href="m.html">Movies</a></li>
+          <li><a href="{{ url_for('viewtickets') }}">Tickets Booked</a></li>
           <li><a href="last.html">Logout</a></li>
         </ul>
       </nav>
@@ -113,7 +114,7 @@
     <h1>Thank You for Your Booking!</h1>
     <p>Your tickets have been successfully booked. We look forward to seeing you at the cinema. Enjoy the show!</p>
 
-    <a href="viewtickets.html" class="btn-view">View Tickets Booked</a>
+    <a href="{{ url_for('viewtickets') }}" class="btn-view">View Tickets Booked</a>
   </main>
 </body>
 </html>

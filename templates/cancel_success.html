@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ticket Cancelled</title>
+  <style>
+    body {
+      font-family: 'Roboto', sans-serif;
+      background-color: #fff9f8;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+    }
+    .message-box {
+      background: white;
+      padding: 30px 40px;
+      border-radius: 8px;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+      text-align: center;
+      max-width: 400px;
+    }
+    h2 {
+      color: #e23020;
+      margin-bottom: 15px;
+    }
+    p {
+      margin: 5px 0;
+      color: #333;
+    }
+    button {
+      margin-top: 20px;
+      background-color: #e23020;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 1rem;
+    }
+    button:hover {
+      background-color: #b31a17;
+    }
+  </style>
+</head>
+<body>
+  <div class="message-box">
+    <h2>Ticket Cancelled</h2>
+    <p><strong>Movie:</strong> {{ movie }}</p>
+    <p><strong>Date:</strong> {{ date }}</p>
+    <p><strong>Time:</strong> {{ time }}</p>
+    <p><strong>Seat(s):</strong> {{ seats }}</p>
+    <button onclick="window.location.href='{{ url_for('viewtickets') }}'">OK</button>
+  </div>
+</body>
+</html>

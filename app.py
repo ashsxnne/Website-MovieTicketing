@@ -170,6 +170,42 @@ def viewtickets():
     else:
         return redirect(url_for('login'))
 
+# ---------------- CANCEL TICKET ----------------
+@app.route('/cancel_ticket/<int:ticket_id>', methods=['POST'])
+def cancel_ticket(ticket_id):
+    if 'role' in session and session['role'] == 'Customer':
+        conn = sqlite3.connect('database.db')
+        c = conn.cursor()
+        c.execute("SELECT movie_name, showtime, seat_no FROM tbl_booking WHERE b_id = ? AND u_id = ?",
+                  (ticket_id, session['user_id']))
+        ticket = c.fetchone()
+        if ticket:
+            movie_name, showtime, seat_no = ticket
+            c.execute("DELETE FROM tbl_booking WHERE b_id = ? AND u_id = ?",
+                      (ticket_id, session['user_id']))
+            conn.commit()
+            conn.close()
+            return redirect(url_for('cancel_success',
+                                    movie=movie_name,
+                                    date='N/A',  # you can remove this if not needed
+                                    time=showtime,
+                                    seats=seat_no))
+        else:
+            conn.close()
+            return redirect(url_for('viewtickets'))
+    else:
+        return redirect(url_for('login'))
+
+#--------------cancellation success-----------
+@app.route('/cancel_success')
+def cancel_success():
+        movie = request.args.get('movie')
+        date = request.args.get('date')
+        time = request.args.get('time')
+        seats = request.args.get('seats')
+        return render_template('cancel_success.html', movie=movie, date=date, time=time, seats=seats)
+
+
 # ---------------- LOGOUT ----------------
 @app.route('/logout')
 def logout():

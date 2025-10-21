@@ -190,6 +190,7 @@
   <ul>
     <li><a href="{{ url_for('customer_dashboard') }}" class="active">Home</a></li>
     <li><a href="{{ url_for('movies') }}">Movies</a></li>
+    <li><a href="{{ url_for('viewtickets') }}">Tickets Booked</a></li>
     <li><a href="{{ url_for('logout') }}">Logout</a></li>
   </ul>
 </nav>
@@ -217,7 +218,7 @@
 
         <article class="movie-card">
           <div class="rating">PG</div>
-          <img src="{{ url_for('static', filename='3.jpg') }}" alt="The Conjuring: Last Rites">
+          <img src="{{ url_for('static', filename='3.jpg') }}" alt="THE CONJURING: Last Rites">
           <h3>THE CONJURING: Last Rites</h3>
           <button>Buy Tickets</button>
         </article>
@@ -250,7 +251,14 @@
   const buyButtons = document.querySelectorAll('.movie-card button');
 
   buyButtons.forEach(button => {
-    button.addEventListener('click', () => {
+    button.addEventListener('click', (e) => {
+      const movieCard = e.target.closest('.movie-card');
+      const movieTitle = movieCard.querySelector('h3').textContent.trim();
+
+      // Store selected movie title
+      localStorage.setItem('selectedMovie', movieTitle);
+
+      // Redirect to booking page
       window.location.href = "{{ url_for('book_ticket') }}";
     });
   });

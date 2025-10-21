@@ -159,6 +159,7 @@
         <ul>
           <li><a href="{{ url_for('customer_dashboard') }}">Home</a></li>
           <li><a href="{{ url_for('movies') }}" class="active">Movies</a></li>
+          <li><a href="{{ url_for('viewtickets') }}">Tickets Booked</a></li>
           <li><a href="{{ url_for('logout') }}">Logout</a></li>
         </ul>
       </nav>
@@ -255,7 +256,7 @@
     });
     card.addEventListener('click', (e) => {
       if (e.target.tagName.toLowerCase() !== 'button') {
-        window.location.href = movie.detailPage;
+        window.location.href = `${movie.detailPage}?title=${encodeURIComponent(movie.title)}`;
       }
     });
 

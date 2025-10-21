@@ -128,9 +128,10 @@
       </div>
       <nav>
         <ul>
-          <li><a href="index.html">Home</a></li>
-          <li><a href="movies.html">Movies</a></li>
-          <li><a href="logout.html" class="active">Logout</a></li>
+          <li><a href="{{ url_for('customer_dashboard') }}">Home</a></li>
+<li><a href="{{ url_for('movies') }}">Movies</a></li>
+          <li><a href="{{ url_for('viewtickets') }}">Tickets Booked</a></li>
+<li><a href="{{ url_for('logout') }}" class="active">Logout</a></li>
         </ul>
       </nav>
     </div>
@@ -142,13 +143,35 @@
       <thead>
         <tr>
           <th>Movie Title</th>
-          <th>Show Date</th>
-          <th>Show Time</th>
-          <th>Quantity</th>
-          <th>Seat Number(s)</th>
+<th>Show Date</th>
+<th>Show Time</th>
+<th>Quantity</th>
+<th>Seat Number(s)</th>
+<th>Action</th>
         </tr>
       </thead>
-      <tbody id="ticketList"></tbody>
+      <tbody>
+  {% if tickets and tickets|length > 0 %}
+    {% for ticket in tickets %}
+      <tr>
+        <td>{{ ticket[2] }}</td>
+        <td>—</td> <!-- No 'show date' column in DB -->
+        <td>{{ ticket[3] }}</td>
+        <td>1</td> <!-- or adjust if you add a quantity column -->
+        <td>{{ ticket[4] }}</td>
+        <td>
+          <form action="{{ url_for('cancel_ticket', ticket_id=ticket[0]) }}" method="POST" onsubmit="return confirm('Cancel this booking?');">
+            <button type="submit" class="btn btn-danger btn-sm">Cancel</button>
+          </form>
+        </td>
+      </tr>
+    {% endfor %}
+  {% else %}
+    <tr>
+      <td colspan="6" class="no-tickets">You have not booked any tickets yet.</td>
+    </tr>
+  {% endif %}
+</tbody>
     </table>
 
     <p id="noTicketsMsg" class="no-tickets" style="display:none;">You have not booked any tickets yet.</p>
@@ -158,27 +181,5 @@
     <p>DKC Collection 2025 | Movie Ticket Booking ©</p>
   </footer>
 
-  <script>
-    const ticketList = document.getElementById("ticketList");
-    const noTicketsMsg = document.getElementById("noTicketsMsg");
-
-    const bookings = JSON.parse(localStorage.getItem("bookedTickets")) || [];
-
-    if (bookings.length === 0) {
-      noTicketsMsg.style.display = "block";
-    } else {
-      bookings.forEach(ticket => {
-        const row = document.createElement("tr");
-        row.innerHTML = `
-          <td>${ticket.movie}</td>
-          <td>${ticket.date}</td>
-          <td>${ticket.time}</td>
-          <td>${ticket.quantity}</td>
-          <td>${ticket.seats.join(", ")}</td>
-        `;
-        ticketList.appendChild(row);
-      });
-    }
-  </script>
 </body>
 </html>
