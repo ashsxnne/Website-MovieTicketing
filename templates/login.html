@@ -4,10 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Login - Movie Ticket Booking</title>
-  <link
-    href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap"
-    rel="stylesheet"
-  />
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet" />
   <style>
     body {
       font-family: 'Roboto', sans-serif;
@@ -80,19 +77,24 @@
       gap: 6px;
       cursor: pointer;
     }
-    .modal form button[type="submit"] {
-      width: 100%;
-      padding: 12px 0;
+    .role-buttons {
+      display: flex;
+      gap: 10px;
+      margin-top: 12px;
+    }
+    .role-btn {
+      flex: 1;
+      font-size: 0.95rem;
+      padding: 10px 0;
       background-color: #e23020;
       border: none;
       border-radius: 6px;
       color: white;
       font-weight: 700;
-      font-size: 1.1rem;
       cursor: pointer;
       transition: background-color 0.3s ease;
     }
-    .modal form button[type="submit"]:hover {
+    .role-btn:hover {
       background-color: #b31a17;
     }
     .modal .footer-text {
@@ -131,7 +133,13 @@
         <a href="#">Forgot password?</a>
       </div>
 
-      <button type="submit">Login</button>
+      <!-- Hidden input for role -->
+      <input type="hidden" name="role" id="roleInput" value="customer" />
+
+      <div class="role-buttons">
+        <button type="button" class="role-btn" onclick="setRole('admin')">Login as Admin</button>
+        <button type="button" class="role-btn" onclick="setRole('customer')">Login as Customer</button>
+      </div>
     </form>
 
     <div class="footer-text">
@@ -139,5 +147,12 @@
       <a href="{{ url_for('register') }}">Register</a>
     </div>
   </div>
+
+  <script>
+    function setRole(role) {
+      document.getElementById('roleInput').value = role;
+      document.querySelector('form').submit();
+    }
+  </script>
 </body>
 </html>

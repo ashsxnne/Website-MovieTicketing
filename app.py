@@ -46,7 +46,9 @@ def register():
         email = request.form['email']
         password = request.form['password']
         confirm_password = request.form['confirm_password']
+        role = request.form['role']  # get role from form
 
+        # check if passwords match
         if password != confirm_password:
             return render_template('register.html', error="Passwords do not match!")
 
@@ -55,9 +57,11 @@ def register():
         try:
             conn = sqlite3.connect('database.db')
             c = conn.cursor()
-            c.execute("""INSERT INTO user_table (u_name, u_email, u_pass, u_role, u_status)
-                         VALUES (?, ?, ?, ?, ?)""",
-                      (username, email, hashed_password, 'Customer', 'Active'))
+            # insert new user into database
+            c.execute("""
+                INSERT INTO user_table (u_name, u_email, u_pass, u_role, u_status)
+                VALUES (?, ?, ?, ?, ?)
+            """, (username, email, hashed_password, role, 'Active'))
             conn.commit()
         except sqlite3.IntegrityError:
             return render_template('register.html', error="Email already registered!")
@@ -86,8 +90,9 @@ def login():
             session['role'] = user[4]
             session['status'] = user[5]
 
+            # ✅ Redirect based on role
             if session['role'] == 'Admin':
-                return redirect(url_for('admin_dashboard'))
+                return redirect(url_for('admin_dashboard'))  # updated route name
             else:
                 return redirect(url_for('customer_dashboard'))
         else:
@@ -95,16 +100,41 @@ def login():
 
     return render_template('login.html')
 
-# ---------------- ADMIN DASHBOARD ----------------
-@app.route('/admin')
+# ---------------- ADMIN DASHBOARD (MAIN) ----------------
+@app.route('/admin_dashboard')
 def admin_dashboard():
     if 'role' in session and session['role'] == 'Admin':
         conn = sqlite3.connect('database.db')
         c = conn.cursor()
-        c.execute("SELECT * FROM user_table")
-        users = c.fetchall()
+        c.execute("""
+            SELECT b.b_id, u.u_name, b.movie_name, b.showtime, b.seat_no, b.booking_fee
+            FROM tbl_booking b
+            JOIN user_table u ON b.u_id = u.u_id
+        """)
+        bookings = c.fetchall()
         conn.close()
-        return render_template('admin.html', users=users)
+        return render_template('adminindex.html', bookings=bookings)
+    else:
+        return redirect(url_for('login'))
+
+# ---------------- UPDATE BOOKING STATUS ----------------
+@app.route('/update_booking/<int:booking_id>', methods=['POST'])
+def update_booking(booking_id):
+    if 'role' in session and session['role'] == 'Admin':
+        new_status = request.form['status']
+        conn = sqlite3.connect('database.db')
+        c = conn.cursor()
+
+        # Add status column if not yet existing
+        try:
+            c.execute("ALTER TABLE tbl_booking ADD COLUMN status TEXT DEFAULT 'On Going'")
+        except sqlite3.OperationalError:
+            pass  # column already exists
+
+        c.execute("UPDATE tbl_booking SET status = ? WHERE b_id = ?", (new_status, booking_id))
+        conn.commit()
+        conn.close()
+        return redirect(url_for('admin_dashboard'))
     else:
         return redirect(url_for('login'))
 
@@ -211,6 +241,7 @@ def cancel_success():
 def logout():
     session.clear()
     return render_template('logout.html')
+
 
 
 # ---------------- MAIN ----------------

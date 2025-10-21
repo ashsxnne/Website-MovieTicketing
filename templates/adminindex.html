@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard | Movie Ticket Booking</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f6f6f6;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background-color: #222;
+            color: white;
+            padding: 15px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin: 0 15px;
+            font-weight: bold;
+        }
+
+        nav a:hover {
+            color: #ffcc00;
+        }
+
+        main {
+            padding: 30px;
+        }
+
+        h1 {
+            color: #222;
+        }
+
+        .section {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 40px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+
+        th, td {
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+            text-align: center;
+        }
+
+        th {
+            background-color: #222;
+            color: white;
+        }
+
+        button {
+            padding: 6px 12px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .done {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        .ongoing {
+            background-color: #f39c12;
+            color: white;
+        }
+
+        .delete {
+            background-color: #e74c3c;
+            color: white;
+        }
+
+        footer {
+            background-color: #222;
+            color: white;
+            text-align: center;
+            padding: 15px 0;
+            position: relative;
+            bottom: 0;
+            width: 100%;
+        }
+
+        input, select {
+            padding: 8px;
+            margin: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .add-movie-form {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .add-movie-form input {
+            flex: 1;
+        }
+
+        .add-btn {
+            background-color: #27ae60;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h2>🎬 Movie Ticket Booking - Admin Panel</h2>
+        <nav>
+            <a href="{{ url_for('movies') }}">Movies</a>
+            <a href="{{ url_for('admin_dashboard') }}">Admin Dashboard</a>
+            <a href="{{ url_for('logout') }}">Logout</a>
+        </nav>
+    </header>
+
+    <main>
+        <!-- Dashboard Section -->
+        <section class="section">
+            <h1>📋 Admin Dashboard - Manage Bookings</h1>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Booking ID</th>
+                        <th>User</th>
+                        <th>Movie</th>
+                        <th>Seats</th>
+                        <th>Date</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for booking in bookings %}
+                    <tr>
+                        <td>{{ booking.id }}</td>
+                        <td>{{ booking.user_name }}</td>
+                        <td>{{ booking.movie_title }}</td>
+                        <td>{{ booking.seats }}</td>
+                        <td>{{ booking.date }}</td>
+                        <td>{{ booking.status }}</td>
+                        <td>
+                            <form method="POST" action="{{ url_for('update_booking', booking_id=booking.id) }}">
+                                <select name="status">
+                                    <option value="Ongoing" {% if booking.status == 'Ongoing' %}selected{% endif %}>Ongoing</option>
+                                    <option value="Done" {% if booking.status == 'Done' %}selected{% endif %}>Done</option>
+                                </select>
+                                <button type="submit" class="ongoing">Update</button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% else %}
+                    <tr><td colspan="7">No bookings found.</td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </section>
+
+        <!-- Manage Movies Section -->
+        <section class="section">
+            <h1>🎥 Manage Movies</h1>
+            <form method="POST" action="{{ url_for('movies') }}" class="add-movie-form">
+                <input type="text" name="title" placeholder="Movie Title" required>
+                <input type="text" name="genre" placeholder="Genre" required>
+                <input type="text" name="duration" placeholder="Duration (e.g. 2h 10m)" required>
+                <button type="submit" class="add-btn">Add Movie</button>
+            </form>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>Movie ID</th>
+                        <th>Title</th>
+                        <th>Genre</th>
+                        <th>Duration</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for movie in movies %}
+                    <tr>
+                        <td>{{ movie.id }}</td>
+                        <td>{{ movie.title }}</td>
+                        <td>{{ movie.genre }}</td>
+                        <td>{{ movie.duration }}</td>
+                        <td>
+                            <form method="POST" action="{{ url_for('delete_movie', movie_id=movie.id) }}">
+                                <button type="submit" class="delete">Delete</button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% else %}
+                    <tr><td colspan="5">No movies available.</td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </section>
+    </main>
+
+    <footer>
+        <p>DKC Collection 2025 | Movie Ticket Booking ©</p>
+    </footer>
+</body>
+</html>
