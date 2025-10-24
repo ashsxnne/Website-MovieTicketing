@@ -9,20 +9,6 @@
     rel="stylesheet"
   />
   <style>
-    footer {
-  text-align: center;
-  padding: 15px 0;
-  background-color: #e23020;
-  color: white;
-  font-weight: 600;
-  font-family: 'Roboto', sans-serif;
-  width: 100%;
-  font-size: 0.95rem;
-  letter-spacing: 0.5px;
-  position: relative; /* changed from fixed */
-  bottom: 0;
-  margin-top: 40px; /* adds space before footer */
-}
     /* Reset and base */
     * {
       box-sizing: border-box;
@@ -32,6 +18,9 @@
       margin: 0;
       background-color: #fff9f8;
       color: #333;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
     }
     a {
       text-decoration: none;
@@ -91,6 +80,7 @@
       max-width: 1100px;
       margin: 30px auto;
       padding: 0 20px;
+      flex: 1;
     }
 
     /* Section Heading */
@@ -144,6 +134,9 @@
       margin: 8px 0 12px;
       font-weight: 700;
       min-height: 48px; /* Keep uniform card height */
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
     /* Rating label */
@@ -178,6 +171,20 @@
     .movie-card button:hover {
       background-color: #b31a17;
     }
+
+    /* Footer */
+    footer {
+      text-align: center;
+      padding: 15px 0;
+      background-color: #e23020;
+      color: white;
+      font-weight: 600;
+      font-family: 'Roboto', sans-serif;
+      width: 100%;
+      font-size: 0.95rem;
+      letter-spacing: 0.5px;
+      margin-top: auto; /* This pushes footer to bottom */
+    }
   </style>
 </head>
 <body>
@@ -187,13 +194,13 @@
         <span class="Movie">Movie</span><span class=" Ticket Booking">Ticket Booking</span>
       </div>
       <nav>
-  <ul>
-    <li><a href="{{ url_for('customer_dashboard') }}" class="active">Home</a></li>
-    <li><a href="{{ url_for('movies') }}">Movies</a></li>
-    <li><a href="{{ url_for('viewtickets') }}">Tickets Booked</a></li>
-    <li><a href="{{ url_for('logout') }}">Logout</a></li>
-  </ul>
-</nav>
+        <ul>
+          <li><a href="{{ url_for('customer_dashboard') }}" class="active">Home</a></li>
+          <li><a href="{{ url_for('movies') }}">Movies</a></li>
+          <li><a href="{{ url_for('viewtickets') }}">Tickets Booked</a></li>
+          <li><a href="{{ url_for('logout') }}">Logout</a></li>
+        </ul>
+      </nav>
     </div>
   </header>
 
@@ -201,7 +208,7 @@
     <section class="now-showing">
       <h2><span class="red-text">NOW SHOWING</span> <span class="coming-soon">COMING SOON</span></h2>
       <div class="movies-grid">
-        <!-- Example movie card -->
+        <!-- Movie cards - NO DUPLICATES -->
         <article class="movie-card">
           <div class="rating">R</div>
           <img src="{{ url_for('static', filename='1.jpg') }}" alt="Sinners (2025)">
@@ -246,7 +253,8 @@
       </div>
     </section>
   </main>
-<script>
+
+  <script>
   // Select all Buy Tickets buttons
   const buyButtons = document.querySelectorAll('.movie-card button');
 
@@ -262,10 +270,10 @@
       window.location.href = "{{ url_for('book_ticket') }}";
     });
   });
-</script>
-<footer>
-  <p>DKC Collection 2025 | Movie Ticket Booking ©</p>
-</footer>
+  </script>
 
+  <footer>
+    <p>DKC Collection 2025 | Movie Ticket Booking ©</p>
+  </footer>
 </body>
 </html>

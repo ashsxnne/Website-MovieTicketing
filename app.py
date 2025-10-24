@@ -7,20 +7,45 @@ app = Flask(__name__)
 app.secret_key = 'your_secret_key_2025_movie_booking'
 
 
+# ---------------- DATABASE CLEANUP ----------------
+def cleanup_duplicate_movies():
+    """Remove duplicate movies from the database"""
+    conn = sqlite3.connect('database.db')
+    c = conn.cursor()
+
+    # Find and remove duplicate movies
+    c.execute('''
+        DELETE FROM movies 
+        WHERE id NOT IN (
+            SELECT MIN(id) 
+            FROM movies 
+            GROUP BY title, genre, duration
+        )
+    ''')
+
+    conn.commit()
+    conn.close()
+    print("✅ Removed duplicate movies")
+
+
 # ---------------- DATABASE SETUP ----------------
 def init_db():
     conn = sqlite3.connect('database.db')
     c = conn.cursor()
 
     # Users table
-    c.execute('''CREATE TABLE IF NOT EXISTS user_table (
-                    u_id INTEGER PRIMARY KEY AUTOINCREMENT,
-                    u_name TEXT NOT NULL,
-                    u_email TEXT UNIQUE NOT NULL,
-                    u_pass TEXT NOT NULL,
-                    u_role TEXT DEFAULT 'Customer',
-                    u_status TEXT DEFAULT 'Active',
-                    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP)''')
+    c.execute('''CREATE TABLE IF NOT EXISTS movies (
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    title TEXT NOT NULL,
+                    genre TEXT,
+                    duration TEXT,
+                    rating TEXT,
+                    description TEXT,
+                    poster_url TEXT,
+                    is_active BOOLEAN DEFAULT 1,
+                    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                    UNIQUE(title, genre, duration)
+                )''')
 
     # Bookings table
     c.execute('''CREATE TABLE IF NOT EXISTS tbl_booking (
@@ -35,7 +60,7 @@ def init_db():
                     booking_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                     FOREIGN KEY (u_id) REFERENCES user_table (u_id))''')
 
-    # Movies table
+    # Movies table with UNIQUE constraint
     c.execute('''CREATE TABLE IF NOT EXISTS movies (
                     id INTEGER PRIMARY KEY AUTOINCREMENT,
                     title TEXT NOT NULL,
@@ -45,12 +70,14 @@ def init_db():
                     description TEXT,
                     poster_url TEXT,
                     is_active BOOLEAN DEFAULT 1,
-                    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP)''')
+                    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                    UNIQUE(title, genre, duration)  -- ADD THIS LINE
+                )''')
 
     # Create admin user if not exists
     try:
         admin_password = generate_password_hash('admin123')
-        c.execute('''INSERT INTO user_table (u_name, u_email, u_pass, u_role) 
+        c.execute('''INSERT OR IGNORE INTO user_table (u_name, u_email, u_pass, u_role) 
                      VALUES (?, ?, ?, ?)''',
                   ('Administrator', 'admin@moviebooking.com', admin_password, 'Admin'))
     except:
@@ -59,13 +86,13 @@ def init_db():
     # Create sample customer user if not exists
     try:
         customer_password = generate_password_hash('customer123')
-        c.execute('''INSERT INTO user_table (u_name, u_email, u_pass, u_role) 
+        c.execute('''INSERT OR IGNORE INTO user_table (u_name, u_email, u_pass, u_role) 
                      VALUES (?, ?, ?, ?)''',
                   ('John Customer', 'customer@moviebooking.com', customer_password, 'Customer'))
     except:
         pass
 
-    # Insert sample movies if not exist
+    # Insert sample movies if not exist - USE INSERT OR IGNORE
     sample_movies = [
         ('Sinners (2025)', 'Horror/Thriller', '2h 15m', 'R',
          'Twin brothers return home and face supernatural evil in 1932 Mississippi Delta.',
@@ -88,19 +115,16 @@ def init_db():
     ]
 
     for movie in sample_movies:
-        try:
-            c.execute('''INSERT INTO movies (title, genre, duration, rating, description, poster_url) 
-                         VALUES (?, ?, ?, ?, ?, ?)''', movie)
-        except:
-            pass
+        c.execute('''INSERT OR IGNORE INTO movies (title, genre, duration, rating, description, poster_url) 
+                     VALUES (?, ?, ?, ?, ?, ?)''', movie)
 
     conn.commit()
     conn.close()
     print("✅ Database initialized successfully!")
 
-
-# Initialize database
+# Initialize database and clean duplicates
 init_db()
+cleanup_duplicate_movies()  # Clean up any existing duplicates
 
 
 # ---------------- ALL ROUTES ----------------
@@ -110,6 +134,7 @@ init_db()
 @app.route('/home')
 def home():
     return render_template('logout.html')
+
 
 # ---------------- REGISTER ----------------
 @app.route('/register', methods=['GET', 'POST'])
@@ -184,6 +209,7 @@ def admin_dashboard():
         conn = sqlite3.connect('database.db')
         c = conn.cursor()
 
+        # Get all bookings
         c.execute("""
             SELECT b.b_id, u.u_name, b.movie_name, b.seat_no, b.show_date, b.status, b.booking_fee
             FROM tbl_booking b
@@ -192,11 +218,35 @@ def admin_dashboard():
         """)
         bookings = c.fetchall()
 
-        c.execute("SELECT * FROM movies")
+        # Get all movies
+        c.execute("SELECT id, title, genre, duration FROM movies")
         movies = c.fetchall()
 
         conn.close()
-        return render_template('adminindex.html', bookings=bookings, movies=movies)
+
+        # Convert tuples to dictionaries for easier template access
+        booking_list = []
+        for booking in bookings:
+            booking_list.append({
+                'id': booking[0],
+                'user_name': booking[1],
+                'movie_title': booking[2],
+                'seats': booking[3],
+                'date': booking[4],
+                'status': booking[5],
+                'fee': booking[6]
+            })
+
+        movie_list = []
+        for movie in movies:
+            movie_list.append({
+                'id': movie[0],
+                'title': movie[1],
+                'genre': movie[2],
+                'duration': movie[3]
+            })
+
+        return render_template('adminindex.html', bookings=booking_list, movies=movie_list)
     else:
         return redirect(url_for('login'))
 
@@ -216,7 +266,7 @@ def update_booking(booking_id):
         return redirect(url_for('login'))
 
 
-# ---------------- ADD MOVIE (from adminindex.html form) ----------------
+# ---------------- ADD MOVIE ----------------
 @app.route('/add_movie', methods=['POST'])
 def add_movie():
     if 'role' in session and session['role'] == 'Admin':
@@ -226,14 +276,25 @@ def add_movie():
 
         conn = sqlite3.connect('database.db')
         c = conn.cursor()
-        c.execute("INSERT INTO movies (title, genre, duration) VALUES (?, ?, ?)",
+
+        # Check if movie already exists
+        c.execute("SELECT id FROM movies WHERE title = ? AND genre = ? AND duration = ?",
                   (title, genre, duration))
-        conn.commit()
-        conn.close()
-        return redirect(url_for('admin_dashboard'))
+        existing_movie = c.fetchone()
+
+        if existing_movie:
+            # Movie already exists, don't add duplicate
+            conn.close()
+            return redirect(url_for('admin_dashboard'))
+        else:
+            # Add new movie
+            c.execute("INSERT INTO movies (title, genre, duration) VALUES (?, ?, ?)",
+                      (title, genre, duration))
+            conn.commit()
+            conn.close()
+            return redirect(url_for('admin_dashboard'))
     else:
         return redirect(url_for('login'))
-
 
 # ---------------- DELETE MOVIE ----------------
 @app.route('/delete_movie/<int:movie_id>', methods=['POST'])
@@ -302,6 +363,7 @@ def book_ticket():
         return render_template('buyticket.html', movies=movies_data)
     else:
         return redirect(url_for('login'))
+
 
 # ---------------- THANK YOU ----------------
 @app.route('/thankyou')

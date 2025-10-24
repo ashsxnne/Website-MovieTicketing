@@ -6,12 +6,21 @@
   <title>Buy Ticket - Movie Ticket Booking</title>
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet" />
   <style>
-    /* Your existing CSS styles remain the same */
+    /* Add this for footer positioning */
+    html, body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+    }
+
     body {
       font-family: 'Roboto', sans-serif;
       background-color: #fff9f8;
       margin: 0;
       color: #333;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
     }
 
     header {
@@ -64,6 +73,7 @@
       max-width: 1100px;
       margin: 0 auto;
       padding: 0 15px;
+      flex: 1; /* This makes the content area grow and push footer down */
     }
 
     h1 {
@@ -94,6 +104,7 @@
       justify-content: space-between;
       align-items: flex-start;
       gap: 50px;
+      min-height: 400px; /* Ensure minimum height for content */
     }
 
     #bookingForm {
@@ -199,9 +210,7 @@
       width: 100%;
       font-size: 0.95rem;
       letter-spacing: 0.5px;
-      position: relative;
-      bottom: 0;
-      margin-top: 40px;
+      margin-top: auto; /* This pushes footer to bottom */
     }
 
     .hidden-input {
@@ -233,18 +242,16 @@
         <label for="movieSelect">Select Movie</label>
         <select id="movieSelect" name="movie" required>
           <option value="" disabled selected>-- Choose a movie --</option>
-          {% for movie in movies %}
-          <option value="{{ movie[1] }}">{{ movie[1] }}</option>
-          {% endfor %}
+          <!-- Movies will be populated by JavaScript -->
         </select>
 
         <label for="dateSelect">Select Date</label>
-        <select id="dateSelect" name="show_date" required>
+        <select id="dateSelect" name="show_date" required disabled>
           <option value="" disabled selected>-- Select a date --</option>
         </select>
 
         <label for="timeSelect">Select Showtime</label>
-        <select id="timeSelect" name="showtime" required>
+        <select id="timeSelect" name="showtime" required disabled>
           <option value="" disabled selected>-- Select a time --</option>
         </select>
 
@@ -285,6 +292,12 @@
   const bookingFeeDisplay = document.getElementById("bookingFeeDisplay");
   const bookingForm = document.getElementById("bookingForm");
   let selectedSeats = [];
+
+  // ✅ NEW: Get the selected movie from URL parameter or localStorage
+  const urlParams = new URLSearchParams(window.location.search);
+  const selectedMovieFromURL = urlParams.get('title');
+  const storedMovie = localStorage.getItem("selectedMovie");
+  const movieToSelect = selectedMovieFromURL || storedMovie;
 
   function generateSeats(unavailableSeats = []) {
     const rows = ["A", "B", "C", "D", "E"];
@@ -382,6 +395,30 @@
       description: "Alice returns to the whimsical world of Wonderland to face the Red Queen."
     }
   };
+
+  function populateMovies() {
+    // Clear existing options except the first one
+    while (movieSelect.options.length > 1) {
+      movieSelect.remove(1);
+    }
+
+    // Add movies from moviesData (no duplicates)
+    Object.keys(moviesData).forEach(movie => {
+      const option = document.createElement("option");
+      option.value = movie;
+      option.textContent = movie;
+      movieSelect.appendChild(option);
+    });
+
+    // ✅ Auto-select the movie if coming from index.html or movies.html
+    if (movieToSelect && moviesData[movieToSelect]) {
+      movieSelect.value = movieToSelect;
+      movieSelect.dispatchEvent(new Event("change"));
+
+      // Clear the stored movie after use
+      localStorage.removeItem("selectedMovie");
+    }
+  }
 
   function populateDates() {
     dateSelect.innerHTML = '<option value="" disabled selected>-- Select a date --</option>';
@@ -490,6 +527,9 @@
       return;
     }
   });
+
+  // Initialize the form
+  populateMovies();
   </script>
 </body>
 </html>
