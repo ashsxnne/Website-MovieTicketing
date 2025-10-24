@@ -112,12 +112,23 @@
     .modal .footer-text a:hover {
       text-decoration: underline;
     }
+    .error-message {
+      color: #e23020;
+      text-align: center;
+      margin-bottom: 15px;
+      font-weight: 600;
+    }
   </style>
 </head>
 <body>
   <div class="modal" role="dialog" aria-labelledby="loginTitle">
     <button class="close-btn" aria-label="Close login form" onclick="window.location.href='{{ url_for('home') }}'">&times;</button>
     <h2 id="loginTitle">Welcome back!</h2>
+
+    {% if error %}
+    <div class="error-message">{{ error }}</div>
+    {% endif %}
+
     <form method="POST" action="{{ url_for('login') }}">
       <label for="email">Email address</label>
       <input type="email" id="email" name="email" required placeholder="name@email.com" />
@@ -137,8 +148,8 @@
       <input type="hidden" name="role" id="roleInput" value="customer" />
 
       <div class="role-buttons">
-        <button type="button" class="role-btn" onclick="setRole('admin')">Login as Admin</button>
-        <button type="button" class="role-btn" onclick="setRole('customer')">Login as Customer</button>
+        <button type="submit" class="role-btn" onclick="setRole('admin')">Login as Admin</button>
+        <button type="submit" class="role-btn" onclick="setRole('customer')">Login as Customer</button>
       </div>
     </form>
 
@@ -151,7 +162,6 @@
   <script>
     function setRole(role) {
       document.getElementById('roleInput').value = role;
-      document.querySelector('form').submit();
     }
   </script>
 </body>

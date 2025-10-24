@@ -6,6 +6,7 @@
   <title>Buy Ticket - Movie Ticket Booking</title>
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet" />
   <style>
+    /* Your existing CSS styles remain the same */
     body {
       font-family: 'Roboto', sans-serif;
       background-color: #fff9f8;
@@ -202,6 +203,10 @@
       bottom: 0;
       margin-top: 40px;
     }
+
+    .hidden-input {
+      display: none;
+    }
   </style>
 </head>
 <body>
@@ -216,7 +221,6 @@
           <li><a href="{{ url_for('movies') }}">Movies</a></li>
           <li><a href="{{ url_for('viewtickets') }}">Tickets Booked</a></li>
           <li><a href="{{ url_for('logout') }}">Logout</a></li>
-
         </ul>
       </nav>
     </div>
@@ -225,29 +229,33 @@
   <div class="container">
     <h1>Buy Tickets</h1>
     <div class="content-wrapper">
-      <form id="bookingForm">
+      <form id="bookingForm" method="POST" action="{{ url_for('book_ticket') }}">
         <label for="movieSelect">Select Movie</label>
-        <select id="movieSelect" required>
+        <select id="movieSelect" name="movie" required>
           <option value="" disabled selected>-- Choose a movie --</option>
+          {% for movie in movies %}
+          <option value="{{ movie[1] }}">{{ movie[1] }}</option>
+          {% endfor %}
         </select>
 
         <label for="dateSelect">Select Date</label>
-        <select id="dateSelect" required disabled>
+        <select id="dateSelect" name="show_date" required>
           <option value="" disabled selected>-- Select a date --</option>
         </select>
 
         <label for="timeSelect">Select Showtime</label>
-        <select id="timeSelect" required disabled>
+        <select id="timeSelect" name="showtime" required>
           <option value="" disabled selected>-- Select a time --</option>
         </select>
 
         <label>Select Seats <span class="note">(Click to select, max 5 seats)</span></label>
         <div class="seats-container" id="seatsContainer"></div>
 
-        <label for="quantity">Number of Tickets</label>
-        <input type="number" id="quantity" name="quantity" min="1" max="5" value="1" required readonly />
+        <!-- Hidden inputs to store selected data -->
+        <input type="hidden" id="selectedSeats" name="seats" value="">
+        <input type="hidden" id="bookingFee" name="fee" value="0">
 
-        <div class="booking-fee" id="bookingFee">Booking Fee: ₱0</div>
+        <div class="booking-fee" id="bookingFeeDisplay">Booking Fee: ₱0</div>
 
         <button type="submit" class="book-btn">Book Now</button>
       </form>
@@ -272,13 +280,11 @@
   const dateSelect = document.getElementById("dateSelect");
   const timeSelect = document.getElementById("timeSelect");
   const seatsContainer = document.getElementById("seatsContainer");
-  const quantityInput = document.getElementById("quantity");
-  const bookingFeeDisplay = document.getElementById("bookingFee");
+  const selectedSeatsInput = document.getElementById("selectedSeats");
+  const bookingFeeInput = document.getElementById("bookingFee");
+  const bookingFeeDisplay = document.getElementById("bookingFeeDisplay");
   const bookingForm = document.getElementById("bookingForm");
   let selectedSeats = [];
-
-  // ✅ NEW: Auto-select movie from localStorage (from index.html)
-  const storedMovie = localStorage.getItem("selectedMovie");
 
   function generateSeats(unavailableSeats = []) {
     const rows = ["A", "B", "C", "D", "E"];
@@ -294,92 +300,159 @@
   }
 
   const moviesData = {
-    "Sinners (2025)": { dates: { "2025-10-11": { times: { "09:00-11:00 AM": { seats: generateSeats(["A1"]) } } } } },
-    "Harry Potter and the Prisoner of Azkaban (2004)": { dates: { "2025-10-12": { times: { "07:00-10:00 AM": { seats: generateSeats(["B1"]) } } } } },
+    "Sinners (2025)": {
+      dates: {
+        "2025-10-11": {
+          times: {
+            "09:00-11:00 AM": { seats: generateSeats(["A1"]) }
+          }
+        }
+      }
+    },
+    "Harry Potter and the Prisoner of Azkaban (2004)": {
+      dates: {
+        "2025-10-12": {
+          times: {
+            "07:00-10:00 AM": { seats: generateSeats(["B1"]) }
+          }
+        }
+      }
+    },
     "THE CONJURING: Last Rites": {
-  dates: {
-    "2025-10-11": {
-      times: {
-        "01:00-03:00 PM": { seats: generateSeats(["C3"]) }
+      dates: {
+        "2025-10-11": {
+          times: {
+            "01:00-03:00 PM": { seats: generateSeats(["C3"]) }
+          }
+        }
+      }
+    },
+    "The Lord of the Rings: The Return of the King (2003)": {
+      dates: {
+        "2025-10-13": {
+          times: {
+            "01:00-04:00 PM": { seats: generateSeats(["A4"]) }
+          }
+        }
+      }
+    },
+    "Weapons": {
+      dates: {
+        "2025-10-12": {
+          times: {
+            "09:00-11:40 AM": { seats: generateSeats(["D2"]) }
+          }
+        }
+      }
+    },
+    "Alice in Wonderland": {
+      dates: {
+        "2025-10-13": {
+          times: {
+            "08:00-10:00 AM": { seats: generateSeats(["E1"]) }
+          }
+        }
       }
     }
-  }
-},
-    "The Lord of the Rings: The Return of the King (2003)": { dates: { "2025-10-13": { times: { "01:00-04:00 PM": { seats: generateSeats(["A4"]) } } } } },
-    "Weapons": { dates: { "2025-10-12": { times: { "09:00-11:40 AM": { seats: generateSeats(["D2"]) } } } } },
-    "Alice in Wonderland": { dates: { "2025-10-13": { times: { "08:00-10:00 AM": { seats: generateSeats(["E1"]) } } } } }
   };
 
   const movieDetails = {
-    "Sinners (2025)": { poster: "{{ url_for('static', filename='1.jpg') }}", description: "Twin brothers..." },
-    "Harry Potter and the Prisoner of Azkaban (2004)": { poster: "{{ url_for('static', filename='2.png') }}", description: "Harry learns..." },
-   "THE CONJURING: Last Rites": {
-  poster: "{{ url_for('static', filename='3.jpg') }}",
-  description: "Paranormal investigators..."
-},
-    "The Lord of the Rings: The Return of the King (2003)": { poster: "{{ url_for('static', filename='4.png') }}", description: "The epic final battle..." },
-    "Weapons": { poster: "{{ url_for('static', filename='5.jpg') }}", description: "A chilling anthology..." },
-    "Alice in Wonderland": { poster: "{{ url_for('static', filename='6.jpg') }}", description: "Alice returns to Wonderland..." }
-  };
-
-  function populateMovies() {
-    Object.keys(moviesData).forEach(movie => {
-      const option = document.createElement("option");
-      option.value = movie;
-      option.textContent = movie;
-      movieSelect.appendChild(option);
-    });
-
-    // ✅ If a movie was stored, preselect it
-    if (storedMovie && moviesData[storedMovie]) {
-      movieSelect.value = storedMovie;
-      movieSelect.dispatchEvent(new Event("change"));
-      localStorage.removeItem("selectedMovie"); // clear after use
+    "Sinners (2025)": {
+      poster: "{{ url_for('static', filename='1.jpg') }}",
+      description: "Twin brothers return home and face supernatural evil in 1932 Mississippi Delta."
+    },
+    "Harry Potter and the Prisoner of Azkaban (2004)": {
+      poster: "{{ url_for('static', filename='2.png') }}",
+      description: "Harry Potter discovers that a dangerous prisoner has escaped from Azkaban."
+    },
+    "THE CONJURING: Last Rites": {
+      poster: "{{ url_for('static', filename='3.jpg') }}",
+      description: "Paranormal investigators Ed and Lorraine Warren face their most terrifying case."
+    },
+    "The Lord of the Rings: The Return of the King (2003)": {
+      poster: "{{ url_for('static', filename='4.png') }}",
+      description: "The final battle for Middle-earth begins as Frodo journeys to destroy the One Ring."
+    },
+    "Weapons": {
+      poster: "{{ url_for('static', filename='5.jpg') }}",
+      description: "A chilling anthology exploring the human psyche through strange stories."
+    },
+    "Alice in Wonderland": {
+      poster: "{{ url_for('static', filename='6.jpg') }}",
+      description: "Alice returns to the whimsical world of Wonderland to face the Red Queen."
     }
-  }
+  };
 
   function populateDates() {
     dateSelect.innerHTML = '<option value="" disabled selected>-- Select a date --</option>';
-    const dates = Object.keys(moviesData[movieSelect.value].dates);
-    dates.forEach(date => {
-      const option = document.createElement("option");
-      option.value = date;
-      option.textContent = new Date(date).toLocaleDateString();
-      dateSelect.appendChild(option);
-    });
-    dateSelect.disabled = false;
+    if (movieSelect.value && moviesData[movieSelect.value]) {
+      const dates = Object.keys(moviesData[movieSelect.value].dates);
+      dates.forEach(date => {
+        const option = document.createElement("option");
+        option.value = date;
+        option.textContent = new Date(date).toLocaleDateString();
+        dateSelect.appendChild(option);
+      });
+      dateSelect.disabled = false;
+    } else {
+      dateSelect.disabled = true;
+      timeSelect.disabled = true;
+    }
   }
 
   function populateTimes() {
     timeSelect.innerHTML = '<option value="" disabled selected>-- Select a time --</option>';
-    const times = Object.keys(moviesData[movieSelect.value].dates[dateSelect.value].times);
-    times.forEach(time => {
-      const option = document.createElement("option");
-      option.value = time;
-      option.textContent = time;
-      timeSelect.appendChild(option);
-    });
-    timeSelect.disabled = false;
+    if (dateSelect.value && moviesData[movieSelect.value].dates[dateSelect.value]) {
+      const times = Object.keys(moviesData[movieSelect.value].dates[dateSelect.value].times);
+      times.forEach(time => {
+        const option = document.createElement("option");
+        option.value = time;
+        option.textContent = time;
+        timeSelect.appendChild(option);
+      });
+      timeSelect.disabled = false;
+    } else {
+      timeSelect.disabled = true;
+    }
   }
 
   function displaySeats() {
     seatsContainer.innerHTML = "";
     selectedSeats = [];
-    const seats = moviesData[movieSelect.value].dates[dateSelect.value].times[timeSelect.value].seats;
-    for (const seatLabel in seats) {
-      const seatEl = document.createElement("div");
-      seatEl.classList.add("seat");
-      seatEl.textContent = seatLabel;
-      if (!seats[seatLabel]) seatEl.classList.add("unavailable");
-      seatEl.addEventListener("click", () => {
-        if (seatEl.classList.contains("unavailable")) return;
-        seatEl.classList.toggle("selected");
-        selectedSeats = [...document.querySelectorAll(".seat.selected")].map(s => s.textContent);
-        quantityInput.value = selectedSeats.length || 1;
-        bookingFeeDisplay.textContent = `Booking Fee: ₱${selectedSeats.length * BOOKING_FEE_PER_TICKET}`;
-      });
-      seatsContainer.appendChild(seatEl);
+    selectedSeatsInput.value = "";
+    updateBookingFee();
+
+    if (timeSelect.value && moviesData[movieSelect.value].dates[dateSelect.value].times[timeSelect.value]) {
+      const seats = moviesData[movieSelect.value].dates[dateSelect.value].times[timeSelect.value].seats;
+      for (const seatLabel in seats) {
+        const seatEl = document.createElement("div");
+        seatEl.classList.add("seat");
+        seatEl.textContent = seatLabel;
+        if (!seats[seatLabel]) seatEl.classList.add("unavailable");
+        seatEl.addEventListener("click", () => {
+          if (seatEl.classList.contains("unavailable")) return;
+          if (selectedSeats.length >= 5 && !seatEl.classList.contains("selected")) {
+            alert("Maximum 5 seats allowed per booking.");
+            return;
+          }
+          seatEl.classList.toggle("selected");
+          if (seatEl.classList.contains("selected")) {
+            selectedSeats.push(seatLabel);
+          } else {
+            selectedSeats = selectedSeats.filter(seat => seat !== seatLabel);
+          }
+          selectedSeatsInput.value = selectedSeats.join(", ");
+          updateBookingFee();
+        });
+        seatsContainer.appendChild(seatEl);
+      }
     }
+  }
+
+  function updateBookingFee() {
+    const totalFee = selectedSeats.length * BOOKING_FEE_PER_TICKET;
+    bookingFeeInput.value = totalFee;
+    bookingFeeDisplay.textContent = `Booking Fee: ₱${totalFee}`;
   }
 
   movieSelect.addEventListener("change", () => {
@@ -389,39 +462,34 @@
     const poster = document.getElementById("previewPoster");
     const title = document.getElementById("previewTitle");
     const description = document.getElementById("previewDescription");
-    preview.style.display = "block";
-    poster.src = movieDetails[selected].poster;
-    title.textContent = selected;
-    description.textContent = movieDetails[selected].description;
+
+    if (selected && movieDetails[selected]) {
+      preview.style.display = "block";
+      poster.src = movieDetails[selected].poster;
+      title.textContent = selected;
+      description.textContent = movieDetails[selected].description;
+    } else {
+      preview.style.display = "none";
+    }
   });
 
   dateSelect.addEventListener("change", populateTimes);
   timeSelect.addEventListener("change", displaySeats);
 
-  bookingForm.addEventListener("submit", e => {
-    e.preventDefault();
+  // Form validation before submission
+  bookingForm.addEventListener("submit", (e) => {
     if (selectedSeats.length === 0) {
+      e.preventDefault();
       alert("Please select at least one seat.");
       return;
     }
 
-    const newBooking = {
-      movie: movieSelect.value,
-      date: new Date(dateSelect.value).toLocaleDateString(),
-      time: timeSelect.value,
-      quantity: selectedSeats.length,
-      seats: selectedSeats
-    };
-
-    let bookedTickets = JSON.parse(localStorage.getItem("bookedTickets")) || [];
-    bookedTickets.push(newBooking);
-    localStorage.setItem("bookedTickets", JSON.stringify(bookedTickets));
-
-    alert(`Booking Confirmed!\nMovie: ${newBooking.movie}\nSeats: ${newBooking.seats.join(", ")}`);
-    window.location.href = "{{ url_for('thankyou') }}";
+    if (!movieSelect.value || !dateSelect.value || !timeSelect.value) {
+      e.preventDefault();
+      alert("Please fill in all required fields.");
+      return;
+    }
   });
-
-  populateMovies();
-</script>
+  </script>
 </body>
 </html>

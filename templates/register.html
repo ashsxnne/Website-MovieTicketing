@@ -53,7 +53,8 @@
     }
     input[type="text"],
     input[type="email"],
-    input[type="password"] {
+    input[type="password"],
+    select {
       width: 100%;
       padding: 10px 12px;
       margin-bottom: 18px;
@@ -64,12 +65,12 @@
     }
     input[type="text"]:focus,
     input[type="email"]:focus,
-    input[type="password"]:focus {
+    input[type="password"]:focus,
+    select:focus {
       border-color: #e23020;
       outline: none;
     }
-    button[type="submit"],
-    .role-btn {
+    button[type="submit"] {
       width: 100%;
       padding: 12px 0;
       background-color: #e23020;
@@ -82,8 +83,7 @@
       transition: background-color 0.3s ease;
       margin-bottom: 10px;
     }
-    button[type="submit"]:hover,
-    .role-btn:hover {
+    button[type="submit"]:hover {
       background-color: #b31a17;
     }
     .register-footer {
@@ -101,50 +101,50 @@
     .register-footer a:hover {
       text-decoration: underline;
     }
+    .error-message {
+      color: #e23020;
+      text-align: center;
+      margin-bottom: 15px;
+      font-weight: 600;
+    }
   </style>
 </head>
 <body>
   <div class="register-container" role="dialog" aria-labelledby="registerTitle">
-    <button class="close-btn" aria-label="Close registration form" onclick="window.location.href='index.html'">&times;</button>
+    <button class="close-btn" aria-label="Close registration form" onclick="window.location.href='{{ url_for('home') }}'">&times;</button>
     <h2 id="registerTitle">Create your account</h2>
 
-    <form method="POST" action="/register">
-    <label>Username:</label>
-    <input type="text" name="username" required><br>
+    {% if error %}
+    <div class="error-message">{{ error }}</div>
+    {% endif %}
 
-    <label>Email:</label>
-    <input type="email" name="email" required><br>
+    <form method="POST" action="{{ url_for('register') }}">
+      <label for="username">Username:</label>
+      <input type="text" id="username" name="username" required placeholder="Enter your username">
 
-    <label>Password:</label>
-    <input type="password" name="password" required><br>
+      <label for="email">Email:</label>
+      <input type="email" id="email" name="email" required placeholder="Enter your email">
 
-    <label>Confirm Password:</label>
-    <input type="password" name="confirm_password" required><br>
+      <label for="password">Password:</label>
+      <input type="password" id="password" name="password" required placeholder="Enter your password">
 
-    <label>Role:</label>
-    <select name="role" required>
+      <label for="confirm_password">Confirm Password:</label>
+      <input type="password" id="confirm_password" name="confirm_password" required placeholder="Confirm your password">
+
+      <label for="role">Role:</label>
+      <select id="role" name="role" required>
+        <option value="">Select Role</option>
         <option value="Customer">Customer</option>
         <option value="Admin">Admin</option>
-    </select><br>
+      </select>
 
-    <button type="submit">Register</button>
-
-    {% if error %}
-        <p style="color:red;">{{ error }}</p>
-    {% endif %}
-</form>
+      <button type="submit">Register</button>
+    </form>
 
     <div class="register-footer">
       Already have an account?
-      <a href="login.html">Login</a>
+      <a href="{{ url_for('login') }}">Login</a>
     </div>
   </div>
-
-  <script>
-  function registerAs(role) {
-    document.getElementById('roleInput').value = role;
-    document.getElementById('registerForm').submit();
-  }
-</script>
 </body>
 </html>
