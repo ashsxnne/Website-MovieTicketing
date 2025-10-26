@@ -144,6 +144,30 @@
       background-color: #b31a17;
     }
 
+    .btn-print {
+      background-color: #2e7d32;
+      color: white;
+      border: none;
+      padding: 8px 15px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-weight: 600;
+      text-decoration: none;
+      display: inline-block;
+      transition: background-color 0.3s ease;
+    }
+
+    .btn-print:hover {
+      background-color: #1b5e20;
+    }
+
+    .action-buttons {
+      display: flex;
+      gap: 5px;
+      justify-content: center;
+      align-items: center;
+    }
+
     footer {
       text-align: center;
       padding: 15px 0;
@@ -233,9 +257,12 @@
           </td>
           <td>{{ ticket[4] }}</td>
           <td>
-            <form action="{{ url_for('cancel_ticket', ticket_id=ticket[0]) }}" method="POST" onsubmit="return confirm('Are you sure you want to cancel this booking?');">
-              <button type="submit" class="btn-danger">Cancel</button>
-            </form>
+            <div class="action-buttons">
+              <form action="{{ url_for('cancel_ticket', ticket_id=ticket[0]) }}" method="POST" onsubmit="return confirm('Are you sure you want to cancel this booking?');" style="display: inline;">
+                <button type="submit" class="btn-danger">Cancel</button>
+              </form>
+              <a href="{{ url_for('print_ticket', booking_id=ticket[0]) }}" class="btn-print">Print</a>
+            </div>
           </td>
         </tr>
         {% endfor %}

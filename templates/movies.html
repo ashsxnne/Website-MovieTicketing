@@ -9,32 +9,30 @@
     rel="stylesheet"
   />
   <style>
-    footer {
-      text-align: center;
-      padding: 15px 0;
-      background-color: #e23020;
-      color: white;
-      font-weight: 600;
-      font-family: 'Roboto', sans-serif;
-      width: 100%;
-      font-size: 0.95rem;
-      letter-spacing: 0.5px;
-      position: relative;
-      bottom: 0;
-      margin-top: 40px;
+    /* Add this for footer positioning */
+    html, body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
     }
+
     body {
       font-family: 'Roboto', sans-serif;
       background-color: #fff9f8;
       margin: 0;
       color: #333;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
     }
+
     header {
       background-color: #e23020;
       padding: 15px 0;
       box-shadow: 0 2px 4px rgba(0,0,0,0.1);
       margin-bottom: 20px;
     }
+
     .nav-container {
       max-width: 1200px;
       margin: 0 auto;
@@ -43,6 +41,7 @@
       align-items: center;
       padding: 0 20px;
     }
+
     .logo {
       color: white;
       font-weight: 700;
@@ -50,6 +49,7 @@
       letter-spacing: 1px;
       user-select: none;
     }
+
     nav ul {
       list-style: none;
       padding: 0;
@@ -57,9 +57,11 @@
       display: flex;
       gap: 25px;
     }
+
     nav ul li {
       display: inline;
     }
+
     nav ul li a {
       color: white;
       text-decoration: none;
@@ -68,26 +70,32 @@
       border-radius: 4px;
       transition: background-color 0.3s ease;
     }
+
     nav ul li a:hover,
     nav ul li a.active {
       background-color: #b31a17;
     }
+
     .container {
       max-width: 900px;
       margin: 0 auto;
       padding: 0 15px 40px;
+      flex: 1; /* This makes content grow and push footer down */
     }
+
     h1 {
       color: #e23020;
       font-weight: 700;
       margin-bottom: 25px;
       text-align: center;
     }
+
     .movie-list {
       display: flex;
       flex-direction: column;
       gap: 25px;
     }
+
     .movie-card {
       display: flex;
       gap: 20px;
@@ -100,9 +108,11 @@
       transition: box-shadow 0.3s ease;
       align-items: center;
     }
+
     .movie-card:hover {
       box-shadow: 0 5px 15px rgba(226,48,32,0.5);
     }
+
     .movie-card img {
       width: 120px;
       height: 170px;
@@ -110,21 +120,25 @@
       object-fit: cover;
       flex-shrink: 0;
     }
+
     .movie-info {
       flex-grow: 1;
     }
+
     .movie-title {
       font-size: 1.3rem;
       font-weight: 700;
       color: #e23020;
       margin-bottom: 6px;
     }
+
     .movie-date {
       font-size: 0.95rem;
       font-weight: 600;
       color: #555;
       margin-bottom: 10px;
     }
+
     .movie-description {
       font-size: 0.9rem;
       color: #444;
@@ -133,6 +147,7 @@
       overflow: hidden;
       text-overflow: ellipsis;
     }
+
     .btn-view {
       background-color: #e23020;
       border: none;
@@ -144,8 +159,22 @@
       transition: background-color 0.3s ease;
       flex-shrink: 0;
     }
+
     .btn-view:hover {
       background-color: #b31a17;
+    }
+
+    footer {
+      text-align: center;
+      padding: 15px 0;
+      background-color: #e23020;
+      color: white;
+      font-weight: 600;
+      font-family: 'Roboto', sans-serif;
+      width: 100%;
+      font-size: 0.95rem;
+      letter-spacing: 0.5px;
+      margin-top: auto; /* This pushes footer to bottom */
     }
   </style>
 </head>
@@ -173,13 +202,17 @@
     </div>
   </div>
 
+  <footer>
+    <p>DKC Collection 2025 | Movie Ticket Booking ©</p>
+  </footer>
+
 <script>
   const buyTicketURL = "{{ url_for('book_ticket') }}";
 
   const movies = [
     {
       title: "Sinners (2025)",
-      description: "Set in 1932 in the Mississippi Delta, twin brothers Elijah “Smoke” and Elias “Stack” Moore return home after years working for the Chicago mob. They use stolen money to buy a sawmill and convert it into a juke joint for their local Black community. But their attempt to build something positive draws the attention of a supernatural evil (vampires), forcing them to defend their home, community, and faith against terrifying forces.",
+      description: "Set in 1932 in the Mississippi Delta, twin brothers Elijah 'Smoke' and Elias 'Stack' Moore return home after years working for the Chicago mob. They use stolen money to buy a sawmill and convert it into a juke joint for their local Black community. But their attempt to build something positive draws the attention of a supernatural evil (vampires), forcing them to defend their home, community, and faith against terrifying forces.",
       releaseDate: "2025-04-18",
       rating: "R",
       img: "{{ url_for('static', filename='1.jpg') }}",
@@ -194,7 +227,7 @@
       detailPage: buyTicketURL
     },
     {
-      title: "The Conjuring: Last Rites",
+      title: "THE CONJURING: Last Rites",
       description: "Paranormal investigators Ed and Lorraine Warren face one of their most terrifying cases as they uncover a deadly secret.",
       releaseDate: "2025-09-13",
       rating: "PG",
@@ -217,15 +250,18 @@
       img: "{{ url_for('static', filename='5.jpg') }}",
       detailPage: buyTicketURL
     },
+    // In movies.html - Update the movies array
+
     {
-      title: "Alice in Wonderland (2010)",
-      description: "Alice returns to the whimsical world of Wonderland, where she must face the Red Queen and fulfill her destiny.",
-      releaseDate: "2010-03-05",
-      rating: "PG",
-      img: "{{ url_for('static', filename='6.jpg') }}",
-      detailPage: buyTicketURL
-    }
-  ];
+        title: "Alice in Wonderland",  // Must match moviesData key
+        description: "Alice returns to the whimsical world of Wonderland, where she must face the Red Queen and fulfill her destiny.",
+        releaseDate: "2010-03-05",
+        rating: "PG",
+        img: "{{ url_for('static', filename='6.jpg') }}",
+        detailPage: buyTicketURL
+    },
+    // ... other movies with exact titles matching moviesData keys
+];
 
   const movieList = document.getElementById('movieList');
 
@@ -252,10 +288,15 @@
     `;
 
     card.querySelector('.btn-view').addEventListener('click', () => {
+      // Store selected movie in localStorage
+      localStorage.setItem('selectedMovie', movie.title);
       window.location.href = movie.detailPage;
     });
+
     card.addEventListener('click', (e) => {
       if (e.target.tagName.toLowerCase() !== 'button') {
+        // Store selected movie in localStorage
+        localStorage.setItem('selectedMovie', movie.title);
         window.location.href = `${movie.detailPage}?title=${encodeURIComponent(movie.title)}`;
       }
     });
@@ -272,10 +313,5 @@
 
   loadMovies();
 </script>
-
-<footer>
-  <p>DKC Collection 2025 | Movie Ticket Booking ©</p>
-</footer>
-
 </body>
 </html>

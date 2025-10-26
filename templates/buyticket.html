@@ -282,217 +282,280 @@
   </footer>
 
   <script>
-  const BOOKING_FEE_PER_TICKET = 125;
-  const movieSelect = document.getElementById("movieSelect");
-  const dateSelect = document.getElementById("dateSelect");
-  const timeSelect = document.getElementById("timeSelect");
-  const seatsContainer = document.getElementById("seatsContainer");
-  const selectedSeatsInput = document.getElementById("selectedSeats");
-  const bookingFeeInput = document.getElementById("bookingFee");
-  const bookingFeeDisplay = document.getElementById("bookingFeeDisplay");
-  const bookingForm = document.getElementById("bookingForm");
-  let selectedSeats = [];
+const BOOKING_FEE_PER_TICKET = 125;
+const movieSelect = document.getElementById("movieSelect");
+const dateSelect = document.getElementById("dateSelect");
+const timeSelect = document.getElementById("timeSelect");
+const seatsContainer = document.getElementById("seatsContainer");
+const selectedSeatsInput = document.getElementById("selectedSeats");
+const bookingFeeInput = document.getElementById("bookingFee");
+const bookingFeeDisplay = document.getElementById("bookingFeeDisplay");
+const bookingForm = document.getElementById("bookingForm");
+let selectedSeats = [];
 
-  // ✅ NEW: Get the selected movie from URL parameter or localStorage
-  const urlParams = new URLSearchParams(window.location.search);
-  const selectedMovieFromURL = urlParams.get('title');
-  const storedMovie = localStorage.getItem("selectedMovie");
-  const movieToSelect = selectedMovieFromURL || storedMovie;
+// 🔍 DEBUG: Check localStorage and URL parameters
+console.log("=== 🎬 BOOK TICKET DEBUG ===");
+console.log("🔍 Checking localStorage and URL...");
 
-  function generateSeats(unavailableSeats = []) {
+// ✅ NEW: Get the selected movie from URL parameter or localStorage
+const urlParams = new URLSearchParams(window.location.search);
+const selectedMovieFromURL = urlParams.get('title');
+const storedMovie = localStorage.getItem("selectedMovie");
+const movieToSelect = selectedMovieFromURL || storedMovie;
+
+console.log("URL Parameter (title):", selectedMovieFromURL);
+console.log("LocalStorage (selectedMovie):", storedMovie);
+console.log("Movie to auto-select:", movieToSelect);
+
+function generateSeats(unavailableSeats = []) {
     const rows = ["A", "B", "C", "D", "E"];
     const seatsPerRow = 8;
     const seats = {};
     for (let r of rows) {
-      for (let i = 1; i <= seatsPerRow; i++) {
-        const seatLabel = r + i;
-        seats[seatLabel] = !unavailableSeats.includes(seatLabel);
-      }
+        for (let i = 1; i <= seatsPerRow; i++) {
+            const seatLabel = r + i;
+            seats[seatLabel] = !unavailableSeats.includes(seatLabel);
+        }
     }
     return seats;
-  }
+}
 
-  const moviesData = {
+const moviesData = {
     "Sinners (2025)": {
-      dates: {
-        "2025-10-11": {
-          times: {
-            "09:00-11:00 AM": { seats: generateSeats(["A1"]) }
-          }
+        dates: {
+            "2025-10-11": {
+                times: {
+                    "09:00-11:00 AM": { seats: generateSeats(["A1"]) }
+                }
+            }
         }
-      }
     },
     "Harry Potter and the Prisoner of Azkaban (2004)": {
-      dates: {
-        "2025-10-12": {
-          times: {
-            "07:00-10:00 AM": { seats: generateSeats(["B1"]) }
-          }
+        dates: {
+            "2025-10-12": {
+                times: {
+                    "07:00-10:00 AM": { seats: generateSeats(["B1"]) }
+                }
+            }
         }
-      }
     },
     "THE CONJURING: Last Rites": {
-      dates: {
-        "2025-10-11": {
-          times: {
-            "01:00-03:00 PM": { seats: generateSeats(["C3"]) }
-          }
+        dates: {
+            "2025-10-11": {
+                times: {
+                    "01:00-03:00 PM": { seats: generateSeats(["C3"]) }
+                }
+            }
         }
-      }
     },
     "The Lord of the Rings: The Return of the King (2003)": {
-      dates: {
-        "2025-10-13": {
-          times: {
-            "01:00-04:00 PM": { seats: generateSeats(["A4"]) }
-          }
+        dates: {
+            "2025-10-13": {
+                times: {
+                    "01:00-04:00 PM": { seats: generateSeats(["A4"]) }
+                }
+            }
         }
-      }
     },
     "Weapons": {
-      dates: {
-        "2025-10-12": {
-          times: {
-            "09:00-11:40 AM": { seats: generateSeats(["D2"]) }
-          }
+        dates: {
+            "2025-10-12": {
+                times: {
+                    "09:00-11:40 AM": { seats: generateSeats(["D2"]) }
+                }
+            }
         }
-      }
     },
     "Alice in Wonderland": {
-      dates: {
-        "2025-10-13": {
-          times: {
-            "08:00-10:00 AM": { seats: generateSeats(["E1"]) }
-          }
+        dates: {
+            "2025-10-13": {
+                times: {
+                    "08:00-10:00 AM": { seats: generateSeats(["E1"]) }
+                }
+            }
         }
-      }
     }
-  };
+};
 
-  const movieDetails = {
+const movieDetails = {
     "Sinners (2025)": {
-      poster: "{{ url_for('static', filename='1.jpg') }}",
-      description: "Twin brothers return home and face supernatural evil in 1932 Mississippi Delta."
+        poster: "{{ url_for('static', filename='1.jpg') }}",
+        description: "Twin brothers return home and face supernatural evil in 1932 Mississippi Delta."
     },
     "Harry Potter and the Prisoner of Azkaban (2004)": {
-      poster: "{{ url_for('static', filename='2.png') }}",
-      description: "Harry Potter discovers that a dangerous prisoner has escaped from Azkaban."
+        poster: "{{ url_for('static', filename='2.png') }}",
+        description: "Harry Potter discovers that a dangerous prisoner has escaped from Azkaban."
     },
     "THE CONJURING: Last Rites": {
-      poster: "{{ url_for('static', filename='3.jpg') }}",
-      description: "Paranormal investigators Ed and Lorraine Warren face their most terrifying case."
+        poster: "{{ url_for('static', filename='3.jpg') }}",
+        description: "Paranormal investigators Ed and Lorraine Warren face their most terrifying case."
     },
     "The Lord of the Rings: The Return of the King (2003)": {
-      poster: "{{ url_for('static', filename='4.png') }}",
-      description: "The final battle for Middle-earth begins as Frodo journeys to destroy the One Ring."
+        poster: "{{ url_for('static', filename='4.png') }}",
+        description: "The final battle for Middle-earth begins as Frodo journeys to destroy the One Ring."
     },
     "Weapons": {
-      poster: "{{ url_for('static', filename='5.jpg') }}",
-      description: "A chilling anthology exploring the human psyche through strange stories."
+        poster: "{{ url_for('static', filename='5.jpg') }}",
+        description: "A chilling anthology exploring the human psyche through strange stories."
     },
     "Alice in Wonderland": {
-      poster: "{{ url_for('static', filename='6.jpg') }}",
-      description: "Alice returns to the whimsical world of Wonderland to face the Red Queen."
+        poster: "{{ url_for('static', filename='6.jpg') }}",
+        description: "Alice returns to the whimsical world of Wonderland to face the Red Queen."
     }
-  };
+};
 
-  function populateMovies() {
+console.log("📋 Available movies in moviesData:", Object.keys(moviesData));
+
+function populateMovies() {
+    console.log("🔄 populateMovies() called");
+
     // Clear existing options except the first one
     while (movieSelect.options.length > 1) {
-      movieSelect.remove(1);
+        movieSelect.remove(1);
     }
+
+    console.log("🎯 Adding movies to dropdown...");
 
     // Add movies from moviesData (no duplicates)
     Object.keys(moviesData).forEach(movie => {
-      const option = document.createElement("option");
-      option.value = movie;
-      option.textContent = movie;
-      movieSelect.appendChild(option);
+        const option = document.createElement("option");
+        option.value = movie;
+        option.textContent = movie;
+        movieSelect.appendChild(option);
+        console.log("   + Added:", movie);
     });
+
+    console.log("🎯 Total options in dropdown:", movieSelect.options.length);
 
     // ✅ Auto-select the movie if coming from index.html or movies.html
     if (movieToSelect && moviesData[movieToSelect]) {
-      movieSelect.value = movieToSelect;
-      movieSelect.dispatchEvent(new Event("change"));
+        console.log("✅ AUTO-SELECTING MOVIE:", movieToSelect);
+        movieSelect.value = movieToSelect;
 
-      // Clear the stored movie after use
-      localStorage.removeItem("selectedMovie");
+        // Trigger the change event to populate dates and times
+        const changeEvent = new Event("change");
+        movieSelect.dispatchEvent(changeEvent);
+
+        // Clear the stored movie after use
+        localStorage.removeItem("selectedMovie");
+        console.log("🧹 Cleared selectedMovie from localStorage");
+    } else {
+        console.log("❌ CANNOT AUTO-SELECT. Reasons:");
+        console.log("   - movieToSelect exists:", !!movieToSelect);
+        console.log("   - movie exists in moviesData:", !!(movieToSelect && moviesData[movieToSelect]));
+        if (movieToSelect) {
+            console.log("   - Looking for:", movieToSelect);
+            console.log("   - Available movies:", Object.keys(moviesData));
+            console.log("   - Exact match?", Object.keys(moviesData).includes(movieToSelect));
+        }
     }
-  }
+}
 
-  function populateDates() {
+function populateDates() {
+    console.log("📅 populateDates() called for movie:", movieSelect.value);
     dateSelect.innerHTML = '<option value="" disabled selected>-- Select a date --</option>';
+
     if (movieSelect.value && moviesData[movieSelect.value]) {
-      const dates = Object.keys(moviesData[movieSelect.value].dates);
-      dates.forEach(date => {
-        const option = document.createElement("option");
-        option.value = date;
-        option.textContent = new Date(date).toLocaleDateString();
-        dateSelect.appendChild(option);
-      });
-      dateSelect.disabled = false;
-    } else {
-      dateSelect.disabled = true;
-      timeSelect.disabled = true;
-    }
-  }
+        const dates = Object.keys(moviesData[movieSelect.value].dates);
+        console.log("   Available dates:", dates);
 
-  function populateTimes() {
+        dates.forEach(date => {
+            const option = document.createElement("option");
+            option.value = date;
+            option.textContent = new Date(date).toLocaleDateString();
+            dateSelect.appendChild(option);
+        });
+        dateSelect.disabled = false;
+
+        // Auto-select the first date
+        if (dates.length > 0) {
+            dateSelect.value = dates[0];
+            console.log("   Auto-selected date:", dates[0]);
+            const changeEvent = new Event("change");
+            dateSelect.dispatchEvent(changeEvent);
+        }
+    } else {
+        console.log("   No dates available or movie not selected");
+        dateSelect.disabled = true;
+        timeSelect.disabled = true;
+    }
+}
+
+function populateTimes() {
+    console.log("⏰ populateTimes() called for date:", dateSelect.value);
     timeSelect.innerHTML = '<option value="" disabled selected>-- Select a time --</option>';
-    if (dateSelect.value && moviesData[movieSelect.value].dates[dateSelect.value]) {
-      const times = Object.keys(moviesData[movieSelect.value].dates[dateSelect.value].times);
-      times.forEach(time => {
-        const option = document.createElement("option");
-        option.value = time;
-        option.textContent = time;
-        timeSelect.appendChild(option);
-      });
-      timeSelect.disabled = false;
-    } else {
-      timeSelect.disabled = true;
-    }
-  }
 
-  function displaySeats() {
+    if (dateSelect.value && moviesData[movieSelect.value].dates[dateSelect.value]) {
+        const times = Object.keys(moviesData[movieSelect.value].dates[dateSelect.value].times);
+        console.log("   Available times:", times);
+
+        times.forEach(time => {
+            const option = document.createElement("option");
+            option.value = time;
+            option.textContent = time;
+            timeSelect.appendChild(option);
+        });
+        timeSelect.disabled = false;
+
+        // Auto-select the first time
+        if (times.length > 0) {
+            timeSelect.value = times[0];
+            console.log("   Auto-selected time:", times[0]);
+            const changeEvent = new Event("change");
+            timeSelect.dispatchEvent(changeEvent);
+        }
+    } else {
+        console.log("   No times available or date not selected");
+        timeSelect.disabled = true;
+    }
+}
+
+function displaySeats() {
+    console.log("💺 displaySeats() called");
     seatsContainer.innerHTML = "";
     selectedSeats = [];
     selectedSeatsInput.value = "";
     updateBookingFee();
 
     if (timeSelect.value && moviesData[movieSelect.value].dates[dateSelect.value].times[timeSelect.value]) {
-      const seats = moviesData[movieSelect.value].dates[dateSelect.value].times[timeSelect.value].seats;
-      for (const seatLabel in seats) {
-        const seatEl = document.createElement("div");
-        seatEl.classList.add("seat");
-        seatEl.textContent = seatLabel;
-        if (!seats[seatLabel]) seatEl.classList.add("unavailable");
-        seatEl.addEventListener("click", () => {
-          if (seatEl.classList.contains("unavailable")) return;
-          if (selectedSeats.length >= 5 && !seatEl.classList.contains("selected")) {
-            alert("Maximum 5 seats allowed per booking.");
-            return;
-          }
-          seatEl.classList.toggle("selected");
-          if (seatEl.classList.contains("selected")) {
-            selectedSeats.push(seatLabel);
-          } else {
-            selectedSeats = selectedSeats.filter(seat => seat !== seatLabel);
-          }
-          selectedSeatsInput.value = selectedSeats.join(", ");
-          updateBookingFee();
-        });
-        seatsContainer.appendChild(seatEl);
-      }
-    }
-  }
+        const seats = moviesData[movieSelect.value].dates[dateSelect.value].times[timeSelect.value].seats;
+        console.log("   Displaying seats:", Object.keys(seats));
 
-  function updateBookingFee() {
+        for (const seatLabel in seats) {
+            const seatEl = document.createElement("div");
+            seatEl.classList.add("seat");
+            seatEl.textContent = seatLabel;
+            if (!seats[seatLabel]) seatEl.classList.add("unavailable");
+            seatEl.addEventListener("click", () => {
+                if (seatEl.classList.contains("unavailable")) return;
+                if (selectedSeats.length >= 5 && !seatEl.classList.contains("selected")) {
+                    alert("Maximum 5 seats allowed per booking.");
+                    return;
+                }
+                seatEl.classList.toggle("selected");
+                if (seatEl.classList.contains("selected")) {
+                    selectedSeats.push(seatLabel);
+                } else {
+                    selectedSeats = selectedSeats.filter(seat => seat !== seatLabel);
+                }
+                selectedSeatsInput.value = selectedSeats.join(", ");
+                updateBookingFee();
+            });
+            seatsContainer.appendChild(seatEl);
+        }
+    } else {
+        console.log("   No seats to display");
+    }
+}
+
+function updateBookingFee() {
     const totalFee = selectedSeats.length * BOOKING_FEE_PER_TICKET;
     bookingFeeInput.value = totalFee;
     bookingFeeDisplay.textContent = `Booking Fee: ₱${totalFee}`;
-  }
+}
 
-  movieSelect.addEventListener("change", () => {
+movieSelect.addEventListener("change", () => {
+    console.log("🎬 Movie changed to:", movieSelect.value);
     populateDates();
     const selected = movieSelect.value;
     const preview = document.getElementById("moviePreview");
@@ -501,35 +564,36 @@
     const description = document.getElementById("previewDescription");
 
     if (selected && movieDetails[selected]) {
-      preview.style.display = "block";
-      poster.src = movieDetails[selected].poster;
-      title.textContent = selected;
-      description.textContent = movieDetails[selected].description;
+        preview.style.display = "block";
+        poster.src = movieDetails[selected].poster;
+        title.textContent = selected;
+        description.textContent = movieDetails[selected].description;
     } else {
-      preview.style.display = "none";
+        preview.style.display = "none";
     }
-  });
+});
 
-  dateSelect.addEventListener("change", populateTimes);
-  timeSelect.addEventListener("change", displaySeats);
+dateSelect.addEventListener("change", populateTimes);
+timeSelect.addEventListener("change", displaySeats);
 
-  // Form validation before submission
-  bookingForm.addEventListener("submit", (e) => {
+// Form validation before submission
+bookingForm.addEventListener("submit", (e) => {
     if (selectedSeats.length === 0) {
-      e.preventDefault();
-      alert("Please select at least one seat.");
-      return;
+        e.preventDefault();
+        alert("Please select at least one seat.");
+        return;
     }
 
     if (!movieSelect.value || !dateSelect.value || !timeSelect.value) {
-      e.preventDefault();
-      alert("Please fill in all required fields.");
-      return;
+        e.preventDefault();
+        alert("Please fill in all required fields.");
+        return;
     }
-  });
+});
 
-  // Initialize the form
-  populateMovies();
-  </script>
-</body>
-</html>
+// Initialize the form
+console.log("🚀 Initializing booking form...");
+populateMovies();
+console.log("✅ Booking form initialization complete");
+console.log("=== 🎬 END DEBUG ===");
+</script>

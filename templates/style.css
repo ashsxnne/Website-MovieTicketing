@@ -180,3 +180,22 @@ nav ul li a.active {
 .movie-card button:hover {
   background-color: #c11b18;
 }
+
+.btn-print {
+    background-color: #17a2b8;
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: 600;
+    text-decoration: none;
+    font-size: 0.8rem;
+    transition: background-color 0.3s ease;
+}
+
+.btn-print:hover {
+    background-color: #138496;
+    color: white;
+    text-decoration: none;
+}

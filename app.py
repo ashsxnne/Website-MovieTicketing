@@ -1,7 +1,11 @@
 from flask import Flask, render_template, request, redirect, url_for, session
 from werkzeug.security import generate_password_hash, check_password_hash
 import sqlite3
+import random
+import string
+
 import os
+
 
 app = Flask(__name__)
 app.secret_key = 'your_secret_key_2025_movie_booking'
@@ -58,7 +62,10 @@ def init_db():
                     booking_fee REAL DEFAULT 0,
                     status TEXT DEFAULT 'Ongoing',
                     booking_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-                    FOREIGN KEY (u_id) REFERENCES user_table (u_id))''')
+                    payment_status TEXT DEFAULT 'Pending',
+                    booking_reference TEXT,
+                    FOREIGN KEY (u_id) REFERENCES user_table (u_id)
+                )''')
 
     # Movies table with UNIQUE constraint
     c.execute('''CREATE TABLE IF NOT EXISTS movies (
@@ -344,26 +351,62 @@ def book_ticket():
             fee = request.form.get('fee', 0)
             show_date = request.form.get('show_date', 'N/A')
 
+            # Generate booking reference
+            booking_ref = ''.join(random.choices(string.ascii_uppercase + string.digits, k=8))
+
             conn = sqlite3.connect('database.db')
             c = conn.cursor()
             c.execute(
-                "INSERT INTO tbl_booking (u_id, movie_name, show_date, showtime, seat_no, booking_fee) VALUES (?, ?, ?, ?, ?, ?)",
-                (session['user_id'], movie, show_date, showtime, seats, fee))
+                "INSERT INTO tbl_booking (u_id, movie_name, show_date, showtime, seat_no, booking_fee, payment_status, booking_reference) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+                (session['user_id'], movie, show_date, showtime, seats, fee, 'Paid', booking_ref))
             conn.commit()
+
+            # Get the booking ID
+            booking_id = c.lastrowid
             conn.close()
 
-            return redirect(url_for('thankyou'))
+            # Redirect to ticket page instead of thankyou
+            return redirect(url_for('print_ticket', booking_id=booking_id))
 
         # GET request - show booking form
-        conn = sqlite3.connect('database.db')
-        c = conn.cursor()
-        c.execute("SELECT * FROM movies WHERE is_active = 1")
-        movies_data = c.fetchall()
-        conn.close()
-        return render_template('buyticket.html', movies=movies_data)
+        return render_template('buyticket.html')
     else:
         return redirect(url_for('login'))
 
+
+# ---------------- PRINT TICKET ----------------
+@app.route('/print_ticket/<int:booking_id>')
+def print_ticket(booking_id):
+    if 'user_id' in session:
+        conn = sqlite3.connect('database.db')
+        c = conn.cursor()
+        c.execute("""
+            SELECT b.*, u.u_name, u.u_email 
+            FROM tbl_booking b 
+            JOIN user_table u ON b.u_id = u.u_id 
+            WHERE b.b_id = ? AND b.u_id = ?
+        """, (booking_id, session['user_id']))
+        booking = c.fetchone()
+        conn.close()
+
+        if booking:
+            booking_data = {
+                'id': booking[0],
+                'movie': booking[2],
+                'date': booking[3],
+                'time': booking[4],
+                'seats': booking[5],
+                'fee': booking[6],
+                'status': booking[7],
+                'booking_date': booking[8],
+                'payment_status': booking[9],
+                'reference': booking[10],
+                'user_name': booking[11],
+                'user_email': booking[12]
+            }
+            return render_template('print_ticket.html', booking=booking_data)
+
+    return redirect(url_for('viewtickets'))
 
 # ---------------- THANK YOU ----------------
 @app.route('/thankyou')

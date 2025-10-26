@@ -9,6 +9,7 @@
     rel="stylesheet"
   />
   <style>
+    /* Your existing CSS styles */
     /* Reset and base */
     * {
       box-sizing: border-box;
@@ -133,7 +134,7 @@
       font-size: 1rem;
       margin: 8px 0 12px;
       font-weight: 700;
-      min-height: 48px; /* Keep uniform card height */
+      min-height: 48px;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -183,7 +184,7 @@
       width: 100%;
       font-size: 0.95rem;
       letter-spacing: 0.5px;
-      margin-top: auto; /* This pushes footer to bottom */
+      margin-top: auto;
     }
   </style>
 </head>
@@ -208,7 +209,7 @@
     <section class="now-showing">
       <h2><span class="red-text">NOW SHOWING</span> <span class="coming-soon">COMING SOON</span></h2>
       <div class="movies-grid">
-        <!-- Movie cards - NO DUPLICATES -->
+        <!-- Movie cards -->
         <article class="movie-card">
           <div class="rating">R</div>
           <img src="{{ url_for('static', filename='1.jpg') }}" alt="Sinners (2025)">
@@ -263,8 +264,9 @@
       const movieCard = e.target.closest('.movie-card');
       const movieTitle = movieCard.querySelector('h3').textContent.trim();
 
-      // Store selected movie title
+      // Store selected movie title in localStorage
       localStorage.setItem('selectedMovie', movieTitle);
+      console.log("🎬 Stored movie in localStorage:", movieTitle);
 
       // Redirect to booking page
       window.location.href = "{{ url_for('book_ticket') }}";
