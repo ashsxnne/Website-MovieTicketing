@@ -4,56 +4,56 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Movie Ticket Booking - Home</title>
-  <link
-    href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap"
-    rel="stylesheet"
-  />
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
   <style>
-    /* Reset and base */
     * {
+      margin: 0;
+      padding: 0;
       box-sizing: border-box;
     }
-    body {
-      font-family: 'Roboto', sans-serif;
+
+    html, body {
+      height: 100%;
       margin: 0;
-      background-color: #fff9f8;
-      color: #333;
-    }
-    a {
-      text-decoration: none;
-      color: inherit;
+      padding: 0;
     }
 
-    /* Header */
+    body {
+      font-family: 'Roboto', sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      margin: 0;
+      color: #333;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
     header {
       background-color: #e23020;
-      color: white;
       padding: 15px 0;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      box-shadow: 0 2px 20px rgba(0,0,0,0.2);
+      margin-bottom: 30px;
       position: sticky;
       top: 0;
-      z-index: 100;
+      z-index: 1000;
     }
+
     .container {
-      max-width: 1100px;
+      max-width: 1200px;
       margin: 0 auto;
       padding: 0 20px;
       display: flex;
       align-items: center;
       justify-content: space-between;
     }
+
     .logo {
+      color: white;
       font-weight: 700;
       font-size: 1.5rem;
       user-select: none;
     }
-    .logo .Movie {
-      color: white;
-    }
-    .logo .Ticket\ Booking {
-      font-weight: 400;
-      margin-left: 6px;
-    }
+
     nav ul {
       list-style: none;
       display: flex;
@@ -61,204 +61,264 @@
       margin: 0;
       padding: 0;
     }
+
     nav ul li a {
-      font-weight: 700;
       color: white;
-      padding-bottom: 4px;
-      transition: border-bottom 0.3s ease;
-    }
-    nav ul li a.active,
-    nav ul li a:hover {
-      border-bottom: 3px solid white;
+      text-decoration: none;
+      font-weight: 600;
+      padding: 8px 16px;
+      border-radius: 25px;
+      transition: all 0.3s ease;
+      font-size: 0.95rem;
     }
 
-    /* Main Section */
+    nav ul li a:hover,
+    nav ul li a.active {
+      background: rgba(255, 255, 255, 0.2);
+      color: white;
+    }
+
     main.container {
-      max-width: 1100px;
+      max-width: 1200px;
       margin: 30px auto;
       padding: 0 20px;
+      flex: 1;
     }
 
-    /* Section Heading */
-    .now-showing h2 {
-      font-weight: 700;
-      font-size: 1.8rem;
-      margin-bottom: 20px;
-      border-bottom: 3px solid #e23020;
-      padding-bottom: 5px;
-    }
-    .now-showing h2 .red-text {
-      color: #e23020;
-      margin-right: 15px;
-    }
-    .now-showing h2 .coming-soon {
-      font-weight: 600;
-      color: #555;
-    }
-
-    /* Movies grid */
-    .movies-grid {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 20px;
-      justify-content: flex-start;
-    }
-
-    /* Movie card */
-    .movie-card {
-      position: relative;
-      width: 200px;
-      background-color: white;
-      border-radius: 8px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-      padding: 10px;
+    .section-header {
       text-align: center;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-    }
-    .movie-card img {
-      width: 100%;
-      height: 300px;
-      object-fit: cover;
-      border-radius: 8px;
-      margin-bottom: 10px;
-      display: block;
-    }
-    .movie-card h3 {
-      font-size: 1rem;
-      margin: 8px 0 12px;
-      font-weight: 700;
-      min-height: 48px; /* Keep uniform card height */
+      margin-bottom: 40px;
     }
 
-    /* Rating label */
+    .section-title {
+      color: white;
+      font-weight: 700;
+      font-size: 2.5rem;
+      margin-bottom: 10px;
+      text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+    }
+
+    .section-subtitle {
+      color: rgba(255, 255, 255, 0.8);
+      font-size: 1.1rem;
+      font-weight: 400;
+    }
+
+    .movies-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 30px;
+      margin-top: 30px;
+    }
+
+    .movie-card {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      border-radius: 20px;
+      padding: 25px;
+      text-align: center;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+      transition: all 0.3s ease;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .movie-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 20px 50px rgba(0,0,0,0.2);
+    }
+
+    .movie-poster {
+      width: 100%;
+      height: 350px;
+      object-fit: cover;
+      border-radius: 15px;
+      margin-bottom: 20px;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+    }
+
+    .no-poster {
+      width: 100%;
+      height: 350px;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      border-radius: 15px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: 600;
+      font-size: 1.1rem;
+      margin-bottom: 20px;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+    }
+
+    .movie-title {
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: #e23020;
+      margin-bottom: 15px;
+      line-height: 1.4;
+    }
+
     .rating {
-      position: absolute;
-      top: 15px;
-      left: 15px;
+      display: inline-block;
       background: #e23020;
       color: white;
       font-weight: 700;
       font-size: 0.8rem;
-      padding: 4px 8px;
-      border-radius: 4px;
-      user-select: none;
-    }
-    .rating.r16 {
-      background: #ff6f61;
+      padding: 6px 12px;
+      border-radius: 20px;
+      margin-bottom: 15px;
     }
 
-    /* Buy Tickets button */
-    .movie-card button {
-      background-color: #e23020;
+    .buy-btn {
+      background: linear-gradient(135deg, #e23020, #ff6b6b);
       border: none;
       color: white;
-      padding: 10px 0;
+      padding: 12px 30px;
       font-weight: 700;
       font-size: 1rem;
-      border-radius: 6px;
+      border-radius: 12px;
       cursor: pointer;
-      transition: background-color 0.3s ease;
+      transition: all 0.3s ease;
+      width: 100%;
+      box-shadow: 0 6px 20px rgba(226, 48, 32, 0.3);
     }
-    .movie-card button:hover {
-      background-color: #b31a17;
+
+    .buy-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 30px rgba(226, 48, 32, 0.4);
     }
+
+    .empty-state {
+      text-align: center;
+      padding: 80px 20px;
+      color: white;
+    }
+
+    .empty-icon {
+      font-size: 5rem;
+      margin-bottom: 20px;
+      opacity: 0.8;
+    }
+
+    .empty-title {
+      font-size: 2rem;
+      font-weight: 700;
+      margin-bottom: 15px;
+      text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+    }
+
+    .empty-subtitle {
+      font-size: 1.1rem;
+      opacity: 0.9;
+      margin-bottom: 10px;
+    }
+
+    .empty-note {
+      font-size: 0.9rem;
+      opacity: 0.7;
+    }
+
     footer {
-  text-align: center;
-  padding: 15px 0;
-  background-color: #e23020;
-  color: white;
-  font-weight: 600;
-  font-family: 'Roboto', sans-serif;
-  width: 100%;
-  font-size: 0.95rem;
-  letter-spacing: 0.5px;
-  position: relative; /* changed from fixed */
-  bottom: 0;
-  margin-top: 40px; /* adds space before footer */
-}
+      text-align: center;
+      padding: 20px 0;
+      background-color: #e23020;
+      color: white;
+      font-weight: 600;
+      width: 100%;
+      margin-top: auto;
+      box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+    }
+
+    @media (max-width: 768px) {
+      .container {
+        flex-direction: column;
+        gap: 15px;
+      }
+
+      nav ul {
+        gap: 15px;
+      }
+
+      .section-title {
+        font-size: 2rem;
+      }
+
+      .movies-grid {
+        grid-template-columns: 1fr;
+        gap: 20px;
+      }
+    }
   </style>
 </head>
 <body>
   <header>
     <div class="container">
       <div class="logo">
-        <span class="Movie">Movie</span><span class=" Ticket Booking">Ticket Booking</span>
+        Movie<span style="font-weight:400;">Ticket Booking</span>
       </div>
       <nav>
-  <ul>
-    <li><a href="{{ url_for('login') }}" class="active">Home</a></li>
-    <li><a href="{{ url_for('login') }}">Movies</a></li>
-    <li><a href="{{ url_for('login') }}">Sign in</a></li>
-  </ul>
-</nav>
-
+        <ul>
+          <li><a href="{{ url_for('home') }}" class="active">Home</a></li>
+          <li><a href="{{ url_for('login') }}">Movies</a></li>
+          <li><a href="{{ url_for('login') }}">Sign in</a></li>
+        </ul>
+      </nav>
     </div>
   </header>
 
   <main class="container">
-    <section class="now-showing">
-      <h2><span class="red-text">NOW SHOWING</span> <span class="coming-soon">COMING SOON</span></h2>
-      <div class="movies-grid">
-        <!-- Example movie card -->
-        <article class="movie-card">
-          <div class="rating">R</div>
-          <img src="{{ url_for('static', filename='1.jpg') }}" alt="Sinners (2025)">
-          <h3>Sinners (2025)</h3>
-          <button onclick="window.location.href='{{ url_for('login') }}'">Buy Tickets</button>
-        </article>
+    <div class="section-header">
+      <h1 class="section-title">Now Showing</h1>
+      <p class="section-subtitle">Discover the latest blockbusters and upcoming releases</p>
+    </div>
 
-        <article class="movie-card">
-          <div class="rating">PG</div>
-          <img src="{{ url_for('static', filename='2.png') }}" alt="Movie 2">
-          <h3>Harry Potter and the Prisoner of Azkaban (2004)</h3>
-          <button onclick="window.location.href='{{ url_for('login') }}'">Buy Tickets</button>
-        </article>
+    {% if movies %}
+    <div class="movies-grid">
+      {% for movie in movies %}
+      <article class="movie-card">
+        {% if movie.poster_url %}
+        <img src="{{ movie.poster_url }}" alt="{{ movie.title }}" class="movie-poster" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+        <div class="no-poster" style="display: none;">No Image</div>
+        {% else %}
+        <div class="no-poster">🎬 No Poster</div>
+        {% endif %}
 
-        <article class="movie-card">
-          <div class="rating">PG</div>
-          <img src="{{ url_for('static', filename='3.jpg') }}" alt="THE CONJURING: Last Rites">
-          <h3>THE CONJURING: Last Rites</h3>
-          <button onclick="window.location.href='{{ url_for('login') }}'">Buy Tickets</button>
-        </article>
-
-        <article class="movie-card">
-          <div class="rating r16">PG-13</div>
-          <img src="{{ url_for('static', filename='4.png') }}" alt="The Lord of the Rings: The Return of the King (2003)">
-          <h3>The Lord of the Rings: The Return of the King (2003)</h3>
-          <button onclick="window.location.href='{{ url_for('login') }}'">Buy Tickets</button>
-        </article>
-
-        <article class="movie-card">
-          <div class="rating">R-16</div>
-          <img src="{{ url_for('static', filename='5.jpg') }}" alt="Weapons">
-          <h3>Weapons</h3>
-          <button onclick="window.location.href='{{ url_for('login') }}'">Buy Tickets</button>
-        </article>
-
-        <article class="movie-card">
-          <div class="rating r16">PG</div>
-          <img src="{{ url_for('static', filename='6.jpg') }}" alt="Alice in Wonderland">
-          <h3>Alice in Wonderland</h3>
-          <button onclick="window.location.href='{{ url_for('login') }}'">Buy Tickets</button>
-        </article>
-      </div>
-    </section>
+        <div class="rating">{{ movie.rating if movie.rating else 'PG' }}</div>
+        <h3 class="movie-title">{{ movie.title }}</h3>
+        <button class="buy-btn" onclick="window.location.href='{{ url_for('login') }}'">Buy Tickets</button>
+      </article>
+      {% endfor %}
+    </div>
+    {% else %}
+    <div class="empty-state">
+      <div class="empty-icon">🎬</div>
+      <h3 class="empty-title">No Movies Available</h3>
+      <p class="empty-subtitle">Check back later for new movie releases!</p>
+      <p class="empty-note">Admin can add movies through the admin panel</p>
+    </div>
+    {% endif %}
   </main>
-<script>
-  // Select all Buy Tickets buttons
-  const buyButtons = document.querySelectorAll('.movie-card button');
 
-  buyButtons.forEach(button => {
-    button.addEventListener('click', () => {
-      window.location.href = "{{ url_for('login') }}";
+  <footer>
+    <p>DKC Collection 2025 | Movie Ticket Booking ©</p>
+  </footer>
+
+  <script>
+  // Add animation to movie cards
+  document.addEventListener('DOMContentLoaded', function() {
+    const movieCards = document.querySelectorAll('.movie-card');
+    movieCards.forEach((card, index) => {
+      card.style.opacity = '0';
+      card.style.transform = 'translateY(30px)';
+
+      setTimeout(() => {
+        card.style.transition = 'all 0.6s ease';
+        card.style.opacity = '1';
+        card.style.transform = 'translateY(0)';
+      }, index * 100);
     });
   });
-</script>
-<footer>
-  <p>DKC Collection 2025 | Movie Ticket Booking ©</p>
-</footer>
-
+  </script>
 </body>
 </html>

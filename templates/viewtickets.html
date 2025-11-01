@@ -4,32 +4,46 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>View Booked Tickets - Movie Ticket Booking</title>
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
   <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
     html, body {
       height: 100%;
       margin: 0;
       padding: 0;
+    }
+
+    body {
+      font-family: 'Roboto', sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: #333;
+      min-height: 100vh;
       display: flex;
       flex-direction: column;
-      font-family: 'Roboto', sans-serif;
-      background-color: #fff9f8;
-      color: #333;
     }
 
     header {
       background-color: #e23020;
       padding: 15px 0;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      box-shadow: 0 2px 20px rgba(0,0,0,0.2);
+      margin-bottom: 30px;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
     }
 
-    .container {
-      width: 90%;
+    .nav-container {
       max-width: 1200px;
       margin: 0 auto;
       display: flex;
       justify-content: space-between;
       align-items: center;
+      padding: 0 20px;
     }
 
     .logo {
@@ -37,6 +51,7 @@
       font-weight: 700;
       font-size: 1.5rem;
       letter-spacing: 1px;
+      user-select: none;
     }
 
     nav ul {
@@ -50,71 +65,117 @@
     nav ul li a {
       color: white;
       text-decoration: none;
-      font-weight: 700;
-      padding: 5px 8px;
-      border-radius: 4px;
-      transition: background-color 0.3s ease;
+      font-weight: 600;
+      padding: 8px 16px;
+      border-radius: 25px;
+      transition: all 0.3s ease;
+      font-size: 0.95rem;
     }
 
     nav ul li a:hover,
     nav ul li a.active {
-      background-color: #b31a17;
+      background: rgba(255, 255, 255, 0.2);
+      color: white;
     }
 
     main {
       flex: 1;
-      padding: 40px 20px;
       max-width: 1200px;
-      margin: 40px auto;
-      background: white;
-      border-radius: 8px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      margin: 0 auto;
+      padding: 0 20px 40px;
+      width: 100%;
     }
 
-    h1 {
+    .page-header {
       text-align: center;
-      color: #e23020;
-      margin-bottom: 30px;
-      font-weight: 700;
-      font-size: 2.2rem;
+      margin-bottom: 40px;
     }
 
-    table {
+    .page-title {
+      color: white;
+      font-weight: 700;
+      font-size: 2.5rem;
+      margin-bottom: 10px;
+      text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+    }
+
+    .page-subtitle {
+      color: rgba(255, 255, 255, 0.8);
+      font-size: 1.1rem;
+      font-weight: 400;
+    }
+
+    .tickets-container {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      border-radius: 20px;
+      padding: 40px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .tickets-table {
       width: 100%;
       border-collapse: collapse;
-      margin-bottom: 20px;
     }
 
-    thead {
-      background-color: #e23020;
+    .tickets-table th {
+      background: linear-gradient(135deg, #e23020, #ff6b6b);
       color: white;
+      padding: 15px;
+      text-align: left;
+      font-weight: 600;
+      font-size: 0.95rem;
     }
 
-    th, td {
-      padding: 12px 15px;
-      border: 1px solid #ddd;
-      text-align: center;
-      font-weight: 500;
+    .tickets-table th:first-child {
+      border-radius: 10px 0 0 0;
+    }
+
+    .tickets-table th:last-child {
+      border-radius: 0 10px 0 0;
+    }
+
+    .tickets-table td {
+      padding: 20px 15px;
+      border-bottom: 1px solid #e9ecef;
       vertical-align: middle;
     }
 
-    tbody tr:nth-child(even) {
-      background-color: #f9f9f9;
+    .tickets-table tr:hover {
+      background: rgba(226, 48, 32, 0.05);
+    }
+
+    .tickets-table tr:last-child td {
+      border-bottom: none;
     }
 
     .movie-cell {
       display: flex;
       align-items: center;
       gap: 15px;
-      text-align: left;
     }
 
     .movie-poster {
       width: 60px;
       height: 80px;
       object-fit: cover;
-      border-radius: 6px;
-      border: 2px solid #e23020;
+      border-radius: 8px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    }
+
+    .no-poster {
+      width: 60px;
+      height: 80px;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 0.7rem;
+      font-weight: 600;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
     }
 
     .movie-title {
@@ -122,76 +183,401 @@
       color: #e23020;
     }
 
-    .no-tickets {
-      text-align: center;
-      color: #555;
-      font-size: 1.1rem;
-      margin-top: 40px;
-    }
-
-    .btn-danger {
-      background-color: #e23020;
+    .quantity-badge {
+      background: linear-gradient(135deg, #e23020, #ff6b6b);
       color: white;
-      border: none;
-      padding: 8px 15px;
-      border-radius: 4px;
-      cursor: pointer;
+      padding: 6px 12px;
+      border-radius: 20px;
       font-weight: 600;
-      transition: background-color 0.3s ease;
-    }
-
-    .btn-danger:hover {
-      background-color: #b31a17;
-    }
-
-    .btn-print {
-      background-color: #2e7d32;
-      color: white;
-      border: none;
-      padding: 8px 15px;
-      border-radius: 4px;
-      cursor: pointer;
-      font-weight: 600;
-      text-decoration: none;
+      font-size: 0.8rem;
       display: inline-block;
-      transition: background-color 0.3s ease;
-    }
-
-    .btn-print:hover {
-      background-color: #1b5e20;
     }
 
     .action-buttons {
       display: flex;
-      gap: 5px;
+      gap: 8px;
       justify-content: center;
+    }
+
+    .btn-danger {
+      background: linear-gradient(135deg, #e23020, #ff6b6b);
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      font-size: 0.85rem;
+      box-shadow: 0 4px 15px rgba(226, 48, 32, 0.3);
+    }
+
+    .btn-danger:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(226, 48, 32, 0.4);
+    }
+
+    .btn-print {
+      background: linear-gradient(135deg, #28a745, #20c997);
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+      text-decoration: none;
+      display: inline-block;
+      transition: all 0.3s ease;
+      font-size: 0.85rem;
+      box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3);
+    }
+
+    .btn-print:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(40, 167, 69, 0.4);
+      color: white;
+      text-decoration: none;
+    }
+
+        /* Updated Empty State Styles */
+    .empty-state {
+      text-align: center;
+      padding: 80px 40px;
+      color: white;
+      animation: fadeInUp 0.8s ease-out;
+    }
+
+    .empty-icon {
+      font-size: 6rem;
+      margin-bottom: 30px;
+      opacity: 1;
+      animation: float 3s ease-in-out infinite;
+      color: white;
+      text-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    }
+
+    @keyframes float {
+      0%, 100% {
+        transform: translateY(0);
+      }
+      50% {
+        transform: translateY(-10px);
+      }
+    }
+
+    .empty-title {
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin-bottom: 20px;
+      text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+      color: red;
+    }
+
+    .empty-subtitle {
+      font-size: 1.3rem;
+      margin-bottom: 30px;
+      line-height: 1.6;
+      max-width: 500px;
+      margin-left: auto;
+      margin-right: auto;
+      color: red;
+      font-weight: 400;
+    }
+
+    .browse-link {
+      display: inline-block;
+      background: linear-gradient(135deg, #e23020, #ff6b6b);
+      color: white;
+      font-weight: 700;
+      text-decoration: none;
+      padding: 15px 35px;
+      border-radius: 12px;
+      transition: all 0.3s ease;
+      font-size: 1.1rem;
+      box-shadow: 0 6px 20px rgba(226, 48, 32, 0.3);
+      margin-top: 20px;
+      border: 2px solid rgba(255, 255, 255, 0.3);
+    }
+
+    .browse-link:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 30px rgba(226, 48, 32, 0.4);
+      color: white;
+      text-decoration: none;
+      border-color: rgba(255, 255, 255, 0.5);
+    }
+
+    .empty-features {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 25px;
+      margin-top: 50px;
+      max-width: 800px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .feature-item {
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(10px);
+      border-radius: 15px;
+      padding: 25px;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      transition: all 0.3s ease;
+    }
+
+    .feature-item:hover {
+      transform: translateY(-5px);
+      background: rgba(255, 255, 255, 0.2);
+      border-color: rgba(255, 255, 255, 0.4);
+    }
+
+    .feature-icon {
+      font-size: 2.5rem;
+      margin-bottom: 15px;
+      display: block;
+      color: white;
+      text-shadow: 0 2px 8px rgba(0,0,0,0.3);
+    }
+
+    .feature-title {
+      font-weight: 600;
+      font-size: 1.1rem;
+      margin-bottom: 10px;
+      color: red;
+      text-shadow: 0 1px 3px rgba(0,0,0,0.3);
+    }
+
+    .feature-description {
+      font-size: 0.9rem;
+      line-height: 1.5;
+      color: red;
+      font-weight: 400;
+    }
+
+    /* Cancel Modal Styles */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 2000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0,0,0,0.7);
+      backdrop-filter: blur(5px);
+    }
+
+    .modal-content {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      margin: 5% auto;
+      padding: 0;
+      border-radius: 20px;
+      width: 90%;
+      max-width: 600px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .modal-header {
+      background: linear-gradient(135deg, #e23020, #ff6b6b);
+      color: white;
+      padding: 25px;
+      border-radius: 20px 20px 0 0;
+    }
+
+    .modal-header h3 {
+      margin: 0;
+      font-size: 1.5rem;
+      font-weight: 700;
+    }
+
+    .modal-body {
+      padding: 30px;
+    }
+
+    .seat-selection-container {
+      background: #f8f9fa;
+      border-radius: 15px;
+      padding: 25px;
+      margin: 20px 0;
+      border: 2px dashed #dee2e6;
+    }
+
+    .seats-grid {
+      display: grid;
+      grid-template-columns: repeat(8, 1fr);
+      gap: 8px;
+      margin-bottom: 20px;
+    }
+
+    .seat {
+      width: 40px;
+      height: 40px;
+      background: #28a745;
+      border-radius: 8px;
+      display: flex;
       align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: 600;
+      font-size: 0.8rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      user-select: none;
+    }
+
+    .seat:hover {
+      transform: scale(1.05);
+      box-shadow: 0 4px 12px rgba(40, 167, 69, 0.3);
+    }
+
+    .seat.selected {
+      background: #e23020;
+      transform: scale(1.1);
+      box-shadow: 0 4px 12px rgba(226, 48, 32, 0.4);
+    }
+
+    .screen-info {
+      text-align: center;
+      padding: 15px;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      color: white;
+      border-radius: 10px;
+      font-weight: 600;
+      margin-top: 20px;
+    }
+
+    .selected-seats-info {
+      background: linear-gradient(135deg, #e23020, #ff6b6b);
+      color: white;
+      padding: 15px;
+      border-radius: 10px;
+      text-align: center;
+      margin: 15px 0;
+      font-weight: 600;
+    }
+
+    .modal-footer {
+      padding: 20px 30px;
+      background: #f8f9fa;
+      border-radius: 0 0 20px 20px;
+      text-align: right;
+    }
+
+    .btn-cancel {
+      background: #6c757d;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+      margin-right: 10px;
+    }
+
+    .btn-confirm {
+      background: linear-gradient(135deg, #e23020, #ff6b6b);
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+    }
+
+    .close {
+      float: right;
+      font-size: 1.5rem;
+      font-weight: bold;
+      cursor: pointer;
+      color: white;
+    }
+
+    /* Animations */
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
 
     footer {
       text-align: center;
-      padding: 15px 0;
+      padding: 20px 0;
       background-color: #e23020;
       color: white;
       font-weight: 600;
-      font-size: 0.95rem;
-      letter-spacing: 0.5px;
       width: 100%;
+      margin-top: auto;
+      box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
     }
 
-    .quantity-badge {
-      background-color: #e23020;
-      color: white;
-      padding: 4px 8px;
-      border-radius: 12px;
-      font-weight: 600;
-      font-size: 0.8rem;
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .nav-container {
+        flex-direction: column;
+        gap: 15px;
+      }
+
+      nav ul {
+        gap: 15px;
+      }
+
+      .tickets-container {
+        padding: 20px;
+        overflow-x: auto;
+      }
+
+      .page-title {
+        font-size: 2rem;
+      }
+
+      .action-buttons {
+        flex-direction: column;
+        gap: 5px;
+      }
+
+      .seats-grid {
+        grid-template-columns: repeat(4, 1fr);
+      }
+
+      .empty-state {
+        padding: 60px 20px;
+      }
+
+      .empty-icon {
+        font-size: 4rem;
+      }
+
+      .empty-title {
+        font-size: 2rem;
+      }
+
+      .empty-subtitle {
+        font-size: 1.1rem;
+      }
+
+      .empty-features {
+        grid-template-columns: 1fr;
+        gap: 20px;
+        margin-top: 30px;
+      }
+
+      .feature-item {
+        padding: 20px;
+      }
     }
   </style>
 </head>
 <body>
   <header>
-    <div class="container">
+    <div class="nav-container">
       <div class="logo">
         Movie<span style="font-weight:400;">Ticket Booking</span>
       </div>
@@ -207,77 +593,268 @@
   </header>
 
   <main>
-    <h1>Your Booked Tickets</h1>
-
-    {% if tickets and tickets|length > 0 %}
-    <table id="ticketsTable">
-      <thead>
-        <tr>
-          <th>Movie Title</th>
-          <th>Show Date</th>
-          <th>Show Time</th>
-          <th>Quantity</th>
-          <th>Seat Number(s)</th>
-          <th>Action</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for ticket in tickets %}
-        <tr>
-          <td>
-            <div class="movie-cell">
-              {% if ticket[1] == "Sinners (2025)" %}
-                <img src="{{ url_for('static', filename='1.jpg') }}" alt="Sinners" class="movie-poster">
-              {% elif ticket[1] == "Harry Potter and the Prisoner of Azkaban (2004)" %}
-                <img src="{{ url_for('static', filename='2.png') }}" alt="Harry Potter" class="movie-poster">
-              {% elif ticket[1] == "THE CONJURING: Last Rites" %}
-                <img src="{{ url_for('static', filename='3.jpg') }}" alt="The Conjuring" class="movie-poster">
-              {% elif ticket[1] == "The Lord of the Rings: The Return of the King (2003)" %}
-                <img src="{{ url_for('static', filename='4.png') }}" alt="Lord of the Rings" class="movie-poster">
-              {% elif ticket[1] == "Weapons" %}
-                <img src="{{ url_for('static', filename='5.jpg') }}" alt="Weapons" class="movie-poster">
-              {% elif ticket[1] == "Alice in Wonderland" %}
-                <img src="{{ url_for('static', filename='6.jpg') }}" alt="Alice in Wonderland" class="movie-poster">
-              {% else %}
-                <img src="{{ url_for('static', filename='1.jpg') }}" alt="Movie" class="movie-poster">
-              {% endif %}
-              <span class="movie-title">{{ ticket[1] }}</span>
-            </div>
-          </td>
-          <td>{{ ticket[2] if ticket[2] else 'N/A' }}</td>
-          <td>{{ ticket[3] }}</td>
-          <td>
-            <span class="quantity-badge">
-              {% if ticket[4] %}
-                {{ ticket[4].split(',')|length }}
-              {% else %}
-                1
-              {% endif %}
-            </span>
-          </td>
-          <td>{{ ticket[4] }}</td>
-          <td>
-            <div class="action-buttons">
-              <form action="{{ url_for('cancel_ticket', ticket_id=ticket[0]) }}" method="POST" onsubmit="return confirm('Are you sure you want to cancel this booking?');" style="display: inline;">
-                <button type="submit" class="btn-danger">Cancel</button>
-              </form>
-              <a href="{{ url_for('print_ticket', booking_id=ticket[0]) }}" class="btn-print">Print</a>
-            </div>
-          </td>
-        </tr>
-        {% endfor %}
-      </tbody>
-    </table>
-    {% else %}
-    <div class="no-tickets">
-      <p>You have not booked any tickets yet.</p>
-      <p><a href="{{ url_for('movies') }}" style="color: #e23020; font-weight: 600;">Browse Movies</a></p>
+    <div class="page-header">
+      <h1 class="page-title">Your Booked Tickets</h1>
+      <p class="page-subtitle">Manage and view your upcoming movie experiences</p>
     </div>
-    {% endif %}
+
+    <div class="tickets-container">
+      {% if tickets and tickets|length > 0 %}
+      <table class="tickets-table">
+        <thead>
+          <tr>
+            <th>Movie Title</th>
+            <th>Show Date</th>
+            <th>Show Time</th>
+            <th>Quantity</th>
+            <th>Seat Number(s)</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for ticket in tickets %}
+          <tr>
+            <td>
+              <div class="movie-cell">
+                {% if ticket[1] == "Sinners (2025)" %}
+                  <img src="{{ url_for('static', filename='1.jpg') }}" alt="Sinners" class="movie-poster">
+                {% elif ticket[1] == "Harry Potter and the Prisoner of Azkaban (2004)" %}
+                  <img src="{{ url_for('static', filename='2.png') }}" alt="Harry Potter" class="movie-poster">
+                {% elif ticket[1] == "THE CONJURING: Last Rites" %}
+                  <img src="{{ url_for('static', filename='3.jpg') }}" alt="The Conjuring" class="movie-poster">
+                {% elif ticket[1] == "The Lord of the Rings: The Return of the King (2003)" %}
+                  <img src="{{ url_for('static', filename='4.png') }}" alt="Lord of the Rings" class="movie-poster">
+                {% elif ticket[1] == "Weapons" %}
+                  <img src="{{ url_for('static', filename='5.jpg') }}" alt="Weapons" class="movie-poster">
+                {% elif ticket[1] == "Alice in Wonderland" %}
+                  <img src="{{ url_for('static', filename='6.jpg') }}" alt="Alice in Wonderland" class="movie-poster">
+                {% else %}
+                  <div class="no-poster">🎬</div>
+                {% endif %}
+                <span class="movie-title">{{ ticket[1] }}</span>
+              </div>
+            </td>
+            <td>{{ ticket[2] if ticket[2] else 'N/A' }}</td>
+            <td>{{ ticket[3] }}</td>
+            <td>
+              <span class="quantity-badge">
+                {% if ticket[4] %}
+                  {{ ticket[4].split(',')|length }}
+                {% else %}
+                  1
+                {% endif %}
+              </span>
+            </td>
+            <td>{{ ticket[4] }}</td>
+            <td>
+              <div class="action-buttons">
+                <button class="btn-danger" onclick="openCancelModal({{ ticket[0] }}, '{{ ticket[1] }}', '{{ ticket[2] }}', '{{ ticket[3] }}', '{{ ticket[4] }}')">Cancel</button>
+                <a href="{{ url_for('print_ticket', booking_id=ticket[0]) }}" class="btn-print">Print</a>
+              </div>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      {% else %}
+      <!-- Updated Empty State -->
+      <div class="empty-state">
+        <div class="empty-icon">🎭</div>
+        <h2 class="empty-title">No Tickets Booked Yet</h2>
+        <p class="empty-subtitle">
+          You haven't made any bookings yet. Explore our movie collection and book your first cinematic experience!
+        </p>
+
+        <a href="{{ url_for('movies') }}" class="browse-link">
+          🎬 Explore Movies & Book Tickets
+        </a>
+
+        <div class="empty-features">
+          <div class="feature-item">
+            <span class="feature-icon">🎫</span>
+            <h3 class="feature-title">Easy Booking</h3>
+            <p class="feature-description">Quick and seamless ticket booking process with secure payment</p>
+          </div>
+
+          <div class="feature-item">
+            <span class="feature-icon">💺</span>
+            <h3 class="feature-title">Choose Your Seats</h3>
+            <p class="feature-description">Select your preferred seats with our interactive seating map</p>
+          </div>
+
+          <div class="feature-item">
+            <span class="feature-icon">📱</span>
+            <h3 class="feature-title">Digital Tickets</h3>
+            <p class="feature-description">Get instant digital tickets you can access anytime, anywhere</p>
+          </div>
+        </div>
+      </div>
+      {% endif %}
+    </div>
   </main>
+
+  <!-- Cancel Modal -->
+  <div id="cancelModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Cancel Selected Seats</h3>
+        <span class="close" onclick="closeCancelModal()">&times;</span>
+      </div>
+      <div class="modal-body">
+        <div id="modalMovieInfo"></div>
+        <div class="seat-selection-container">
+          <h4 style="margin-bottom: 15px; color: #333;">Select seats to cancel:</h4>
+          <div class="seats-grid" id="cancelSeatsContainer">
+            <!-- Seats will be dynamically generated here -->
+          </div>
+          <div class="screen-info">🎬 Screen - Select seats to cancel</div>
+        </div>
+        <div class="selected-seats-info" id="selectedSeatsInfo" style="display: none;">
+          Selected seats: <span id="selectedSeatsList"></span>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn-cancel" onclick="closeCancelModal()">Cancel</button>
+        <button class="btn-confirm" onclick="confirmCancellation()" id="confirmCancelBtn" disabled>Confirm Cancellation</button>
+      </div>
+    </div>
+  </div>
 
   <footer>
     <p>DKC Collection 2025 | Movie Ticket Booking ©</p>
   </footer>
+
+  <script>
+    let currentBookingId = null;
+    let currentSeats = [];
+    let selectedSeatsToCancel = [];
+
+    function openCancelModal(bookingId, movieTitle, showDate, showTime, seats) {
+      currentBookingId = bookingId;
+      currentSeats = seats.split(',').map(seat => seat.trim());
+      selectedSeatsToCancel = [];
+
+      // Update modal info
+      document.getElementById('modalMovieInfo').innerHTML = `
+        <div style="text-align: center; margin-bottom: 20px;">
+          <h4 style="color: #e23020; margin-bottom: 5px;">${movieTitle}</h4>
+          <p style="color: #666;">${showDate} | ${showTime}</p>
+          <p style="color: #666;">Currently booked: ${seats}</p>
+        </div>
+      `;
+
+      // Generate seats grid
+      const seatsContainer = document.getElementById('cancelSeatsContainer');
+      seatsContainer.innerHTML = '';
+
+      const rows = ["A", "B", "C", "D", "E"];
+      const seatsPerRow = 8;
+
+      for (let r of rows) {
+        for (let i = 1; i <= seatsPerRow; i++) {
+          const seatLabel = r + i;
+          const seatEl = document.createElement("div");
+          seatEl.classList.add("seat");
+          seatEl.textContent = seatLabel;
+
+          // Check if this seat is in the booked seats
+          if (currentSeats.includes(seatLabel)) {
+            seatEl.style.backgroundColor = '#28a745'; // Available for cancellation
+            seatEl.addEventListener("click", () => {
+              seatEl.classList.toggle("selected");
+              if (seatEl.classList.contains("selected")) {
+                selectedSeatsToCancel.push(seatLabel);
+              } else {
+                selectedSeatsToCancel = selectedSeatsToCancel.filter(seat => seat !== seatLabel);
+              }
+              updateSelectedSeatsInfo();
+            });
+          } else {
+            seatEl.style.backgroundColor = '#6c757d'; // Not booked
+            seatEl.style.cursor = 'not-allowed';
+          }
+
+          seatsContainer.appendChild(seatEl);
+        }
+      }
+
+      // Reset selection info
+      document.getElementById('selectedSeatsInfo').style.display = 'none';
+      document.getElementById('confirmCancelBtn').disabled = true;
+
+      // Show modal
+      document.getElementById('cancelModal').style.display = 'block';
+    }
+
+    function closeCancelModal() {
+      document.getElementById('cancelModal').style.display = 'none';
+      currentBookingId = null;
+      currentSeats = [];
+      selectedSeatsToCancel = [];
+    }
+
+    function updateSelectedSeatsInfo() {
+      const selectedSeatsInfo = document.getElementById('selectedSeatsInfo');
+      const selectedSeatsList = document.getElementById('selectedSeatsList');
+      const confirmBtn = document.getElementById('confirmCancelBtn');
+
+      if (selectedSeatsToCancel.length > 0) {
+        selectedSeatsList.textContent = selectedSeatsToCancel.join(', ');
+        selectedSeatsInfo.style.display = 'block';
+        confirmBtn.disabled = false;
+      } else {
+        selectedSeatsInfo.style.display = 'none';
+        confirmBtn.disabled = true;
+      }
+    }
+
+    function confirmCancellation() {
+      if (selectedSeatsToCancel.length === 0) {
+        alert('Please select at least one seat to cancel.');
+        return;
+      }
+
+      if (!confirm(`Are you sure you want to cancel seats: ${selectedSeatsToCancel.join(', ')}?`)) {
+        return;
+      }
+
+      // Create a form and submit it
+      const form = document.createElement('form');
+      form.method = 'POST';
+      form.action = `/cancel_ticket/${currentBookingId}`;
+
+      const seatsInput = document.createElement('input');
+      seatsInput.type = 'hidden';
+      seatsInput.name = 'seats_to_cancel';
+      seatsInput.value = selectedSeatsToCancel.join(',');
+
+      form.appendChild(seatsInput);
+      document.body.appendChild(form);
+      form.submit();
+    }
+
+    // Close modal when clicking outside
+    window.onclick = function(event) {
+      const modal = document.getElementById('cancelModal');
+      if (event.target === modal) {
+        closeCancelModal();
+      }
+    }
+
+    // Add animations for empty state features
+    document.addEventListener('DOMContentLoaded', function() {
+      const featureItems = document.querySelectorAll('.feature-item');
+      featureItems.forEach((item, index) => {
+        item.style.opacity = '0';
+        item.style.transform = 'translateY(20px)';
+
+        setTimeout(() => {
+          item.style.transition = 'all 0.6s ease';
+          item.style.opacity = '1';
+          item.style.transform = 'translateY(0)';
+        }, 300 + (index * 100));
+      });
+    });
+  </script>
 </body>
 </html>

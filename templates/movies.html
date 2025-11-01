@@ -4,12 +4,14 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Movies - Available This Month</title>
-  <link
-    href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap"
-    rel="stylesheet"
-  />
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
   <style>
-    /* Add this for footer positioning */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
     html, body {
       height: 100%;
       margin: 0;
@@ -18,7 +20,7 @@
 
     body {
       font-family: 'Roboto', sans-serif;
-      background-color: #fff9f8;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
       margin: 0;
       color: #333;
       min-height: 100vh;
@@ -29,8 +31,11 @@
     header {
       background-color: #e23020;
       padding: 15px 0;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-      margin-bottom: 20px;
+      box-shadow: 0 2px 20px rgba(0,0,0,0.2);
+      margin-bottom: 30px;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
     }
 
     .nav-container {
@@ -58,67 +63,93 @@
       gap: 25px;
     }
 
-    nav ul li {
-      display: inline;
-    }
-
     nav ul li a {
       color: white;
       text-decoration: none;
-      font-weight: 700;
-      padding: 5px 8px;
-      border-radius: 4px;
-      transition: background-color 0.3s ease;
+      font-weight: 600;
+      padding: 8px 16px;
+      border-radius: 25px;
+      transition: all 0.3s ease;
+      font-size: 0.95rem;
     }
 
     nav ul li a:hover,
     nav ul li a.active {
-      background-color: #b31a17;
+      background: rgba(255, 255, 255, 0.2);
+      color: white;
     }
 
     .container {
-      max-width: 900px;
+      max-width: 1200px;
       margin: 0 auto;
-      padding: 0 15px 40px;
-      flex: 1; /* This makes content grow and push footer down */
+      padding: 0 20px 40px;
+      flex: 1;
     }
 
-    h1 {
-      color: #e23020;
-      font-weight: 700;
-      margin-bottom: 25px;
+    .page-header {
       text-align: center;
+      margin-bottom: 40px;
     }
 
-    .movie-list {
-      display: flex;
-      flex-direction: column;
-      gap: 25px;
+    .page-title {
+      color: white;
+      font-weight: 700;
+      font-size: 2.5rem;
+      margin-bottom: 10px;
+      text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+    }
+
+    .page-subtitle {
+      color: rgba(255, 255, 255, 0.8);
+      font-size: 1.1rem;
+      font-weight: 400;
+    }
+
+    .movies-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+      gap: 30px;
     }
 
     .movie-card {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      border-radius: 20px;
+      padding: 30px;
       display: flex;
-      gap: 20px;
-      background: #fff7e6;
-      border: 1px solid #e0b59c;
-      border-radius: 8px;
-      padding: 15px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-      cursor: pointer;
-      transition: box-shadow 0.3s ease;
+      gap: 25px;
       align-items: center;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+      transition: all 0.3s ease;
+      border: 1px solid rgba(255, 255, 255, 0.2);
     }
 
     .movie-card:hover {
-      box-shadow: 0 5px 15px rgba(226,48,32,0.5);
+      transform: translateY(-5px);
+      box-shadow: 0 20px 50px rgba(0,0,0,0.2);
     }
 
-    .movie-card img {
+    .movie-poster {
       width: 120px;
       height: 170px;
-      border-radius: 6px;
+      border-radius: 12px;
       object-fit: cover;
       flex-shrink: 0;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+    }
+
+    .no-poster {
+      width: 120px;
+      height: 170px;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: 600;
+      flex-shrink: 0;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.2);
     }
 
     .movie-info {
@@ -126,55 +157,99 @@
     }
 
     .movie-title {
-      font-size: 1.3rem;
+      font-size: 1.4rem;
       font-weight: 700;
       color: #e23020;
-      margin-bottom: 6px;
+      margin-bottom: 10px;
+      line-height: 1.3;
     }
 
-    .movie-date {
+    .movie-meta {
       font-size: 0.95rem;
       font-weight: 600;
-      color: #555;
-      margin-bottom: 10px;
+      color: #666;
+      margin-bottom: 15px;
     }
 
     .movie-description {
       font-size: 0.9rem;
-      color: #444;
-      line-height: 1.4;
-      max-height: 4.5em;
-      overflow: hidden;
-      text-overflow: ellipsis;
+      color: #666;
+      line-height: 1.5;
+      margin-bottom: 20px;
     }
 
     .btn-view {
-      background-color: #e23020;
+      background: linear-gradient(135deg, #e23020, #ff6b6b);
       border: none;
       color: white;
-      padding: 10px 22px;
-      border-radius: 6px;
+      padding: 12px 25px;
+      border-radius: 10px;
       font-weight: 700;
       cursor: pointer;
-      transition: background-color 0.3s ease;
-      flex-shrink: 0;
+      transition: all 0.3s ease;
+      box-shadow: 0 6px 20px rgba(226, 48, 32, 0.3);
     }
 
     .btn-view:hover {
-      background-color: #b31a17;
+      transform: translateY(-2px);
+      box-shadow: 0 10px 30px rgba(226, 48, 32, 0.4);
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 80px 20px;
+      color: white;
+    }
+
+    .empty-icon {
+      font-size: 5rem;
+      margin-bottom: 20px;
+      opacity: 0.8;
+    }
+
+    .empty-title {
+      font-size: 2rem;
+      font-weight: 700;
+      margin-bottom: 15px;
+      text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+    }
+
+    .empty-subtitle {
+      font-size: 1.1rem;
+      opacity: 0.9;
+      margin-bottom: 10px;
     }
 
     footer {
       text-align: center;
-      padding: 15px 0;
+      padding: 20px 0;
       background-color: #e23020;
       color: white;
       font-weight: 600;
-      font-family: 'Roboto', sans-serif;
       width: 100%;
-      font-size: 0.95rem;
-      letter-spacing: 0.5px;
-      margin-top: auto; /* This pushes footer to bottom */
+      margin-top: auto;
+      box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+    }
+
+    @media (max-width: 768px) {
+      .nav-container {
+        flex-direction: column;
+        gap: 15px;
+      }
+
+      nav ul {
+        gap: 15px;
+      }
+
+      .movie-card {
+        flex-direction: column;
+        text-align: center;
+        padding: 25px;
+      }
+
+      .page-title {
+        font-size: 2rem;
+      }
     }
   </style>
 </head>
@@ -196,9 +271,37 @@
   </header>
 
   <div class="container">
-    <h1>Available Movies This Month</h1>
-    <div class="movie-list" id="movieList">
-      <!-- Movie cards added by JS -->
+    <div class="page-header">
+      <h1 class="page-title">Available Movies</h1>
+      <p class="page-subtitle">Browse our collection of current and upcoming films</p>
+    </div>
+
+    <div class="movies-grid" id="movieList">
+      {% if movies %}
+        {% for movie in movies %}
+        <div class="movie-card">
+          {% if movie.poster_url %}
+          <img src="{{ movie.poster_url }}" alt="{{ movie.title }}" class="movie-poster" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+          <div class="no-poster" style="display: none;">No Image</div>
+          {% else %}
+          <div class="no-poster">🎬</div>
+          {% endif %}
+          <div class="movie-info">
+            <div class="movie-title">{{ movie.title }}</div>
+            <div class="movie-meta">Rating: {{ movie.rating }} | Duration: {{ movie.duration }}</div>
+            <div class="movie-description">{{ movie.description }}</div>
+            <button class="btn-view">Book Now</button>
+          </div>
+        </div>
+        {% endfor %}
+      {% else %}
+      <div class="empty-state">
+        <div class="empty-icon">🎭</div>
+        <h3 class="empty-title">No Movies Available</h3>
+        <p class="empty-subtitle">There are no movies available at the moment.</p>
+        <p class="empty-subtitle">New movies will be added soon!</p>
+      </div>
+      {% endif %}
     </div>
   </div>
 
@@ -206,112 +309,36 @@
     <p>DKC Collection 2025 | Movie Ticket Booking ©</p>
   </footer>
 
-<script>
+  <script>
   const buyTicketURL = "{{ url_for('book_ticket') }}";
 
-  const movies = [
-    {
-      title: "Sinners (2025)",
-      description: "Set in 1932 in the Mississippi Delta, twin brothers Elijah 'Smoke' and Elias 'Stack' Moore return home after years working for the Chicago mob. They use stolen money to buy a sawmill and convert it into a juke joint for their local Black community. But their attempt to build something positive draws the attention of a supernatural evil (vampires), forcing them to defend their home, community, and faith against terrifying forces.",
-      releaseDate: "2025-04-18",
-      rating: "R",
-      img: "{{ url_for('static', filename='1.jpg') }}",
-      detailPage: buyTicketURL
-    },
-    {
-      title: "Harry Potter and the Prisoner of Azkaban (2004)",
-      description: "Harry Potter discovers that a dangerous prisoner, Sirius Black, has escaped from Azkaban—and might be after him.",
-      releaseDate: "2004-06-04",
-      rating: "PG",
-      img: "{{ url_for('static', filename='2.png') }}",
-      detailPage: buyTicketURL
-    },
-    {
-      title: "THE CONJURING: Last Rites",
-      description: "Paranormal investigators Ed and Lorraine Warren face one of their most terrifying cases as they uncover a deadly secret.",
-      releaseDate: "2025-09-13",
-      rating: "PG",
-      img: "{{ url_for('static', filename='3.jpg') }}",
-      detailPage: buyTicketURL
-    },
-    {
-      title: "The Lord of the Rings: The Return of the King (2003)",
-      description: "The final battle for Middle-earth begins as Frodo and Sam journey to destroy the One Ring once and for all.",
-      releaseDate: "2003-12-17",
-      rating: "PG-13",
-      img: "{{ url_for('static', filename='4.png') }}",
-      detailPage: buyTicketURL
-    },
-    {
-      title: "Weapons",
-      description: "An interconnected horror anthology exploring the human psyche through strange and unsettling stories.",
-      releaseDate: "2025-08-09",
-      rating: "R-16",
-      img: "{{ url_for('static', filename='5.jpg') }}",
-      detailPage: buyTicketURL
-    },
-    // In movies.html - Update the movies array
+  // Make movie cards clickable
+  document.addEventListener('DOMContentLoaded', function() {
+    const movieCards = document.querySelectorAll('.movie-card');
+    const bookButtons = document.querySelectorAll('.btn-view');
 
-    {
-        title: "Alice in Wonderland",  // Must match moviesData key
-        description: "Alice returns to the whimsical world of Wonderland, where she must face the Red Queen and fulfill her destiny.",
-        releaseDate: "2010-03-05",
-        rating: "PG",
-        img: "{{ url_for('static', filename='6.jpg') }}",
-        detailPage: buyTicketURL
-    },
-    // ... other movies with exact titles matching moviesData keys
-];
+    bookButtons.forEach((button, index) => {
+      button.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const movieCard = button.closest('.movie-card');
+        const movieTitle = movieCard.querySelector('.movie-title').textContent.trim();
 
-  const movieList = document.getElementById('movieList');
-
-  function formatReleaseDate(dateStr) {
-    return new Date(dateStr).toLocaleDateString(undefined, {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric'
-    });
-  }
-
-  function createMovieCard(movie) {
-    const card = document.createElement('div');
-    card.className = 'movie-card';
-
-    card.innerHTML = `
-      <img src="${movie.img}" alt="${movie.title}" />
-      <div class="movie-info">
-        <div class="movie-title">${movie.title}</div>
-        <div class="movie-date">Rating: ${movie.rating} | Release Date: ${formatReleaseDate(movie.releaseDate)}</div>
-        <div class="movie-description">${movie.description}</div>
-      </div>
-      <button class="btn-view">Book now</button>
-    `;
-
-    card.querySelector('.btn-view').addEventListener('click', () => {
-      // Store selected movie in localStorage
-      localStorage.setItem('selectedMovie', movie.title);
-      window.location.href = movie.detailPage;
+        localStorage.setItem('selectedMovie', movieTitle);
+        window.location.href = `${buyTicketURL}?movie=${encodeURIComponent(movieTitle)}`;
+      });
     });
 
-    card.addEventListener('click', (e) => {
-      if (e.target.tagName.toLowerCase() !== 'button') {
-        // Store selected movie in localStorage
-        localStorage.setItem('selectedMovie', movie.title);
-        window.location.href = `${movie.detailPage}?title=${encodeURIComponent(movie.title)}`;
-      }
+    movieCards.forEach((card, index) => {
+      card.style.opacity = '0';
+      card.style.transform = 'translateY(30px)';
+
+      setTimeout(() => {
+        card.style.transition = 'all 0.6s ease';
+        card.style.opacity = '1';
+        card.style.transform = 'translateY(0)';
+      }, index * 100);
     });
-
-    return card;
-  }
-
-  function loadMovies() {
-    movies.forEach(movie => {
-      const movieCard = createMovieCard(movie);
-      movieList.appendChild(movieCard);
-    });
-  }
-
-  loadMovies();
-</script>
+  });
+  </script>
 </body>
 </html>

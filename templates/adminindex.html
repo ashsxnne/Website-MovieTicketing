@@ -6,216 +6,1410 @@
     <title>Admin Dashboard | Movie Ticket Booking</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f6f6f6;
+        * {
             margin: 0;
             padding: 0;
+            box-sizing: border-box;
         }
 
-        header {
-            background-color: #222;
+        html, body {
+            height: 100%;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f8f9fa;
+            color: #333;
+            line-height: 1.6;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* Header Styles */
+        .admin-header {
+            background: linear-gradient(135deg, #2c3e50, #34495e);
             color: white;
-            padding: 15px 30px;
+            padding: 1rem 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            padding: 0 20px;
         }
 
-        nav a {
+        .admin-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .admin-logo h1 {
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .admin-nav {
+            display: flex;
+            gap: 20px;
+        }
+
+        .admin-nav a {
             color: white;
             text-decoration: none;
-            margin: 0 15px;
-            font-weight: bold;
+            padding: 8px 16px;
+            border-radius: 6px;
+            transition: background-color 0.3s ease;
+            font-weight: 600;
         }
 
-        nav a:hover {
-            color: #ffcc00;
+        .admin-nav a:hover {
+            background-color: rgba(255,255,255,0.1);
         }
 
-        main {
-            padding: 30px;
+        .admin-nav a.active {
+            background-color: #e23020;
         }
 
-        h1 {
-            color: #222;
+        /* Main Content */
+        .admin-main {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 30px 20px;
+            flex: 1; /* This makes the main content grow and push footer down */
         }
 
-        .section {
+        /* Section Headers */
+        .section-header {
+            display: flex;
+            justify-content: between;
+            align-items: center;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #e9ecef;
+        }
+
+        .section-header h2 {
+            color: #2c3e50;
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+
+        /* Card Styles */
+        .dashboard-card {
             background: white;
-            padding: 20px;
-            border-radius: 10px;
-            margin-bottom: 40px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
 
-        table {
+        .dashboard-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 15px rgba(0,0,0,0.15);
+        }
+
+        .card-header {
+            background: linear-gradient(135deg, #e23020, #ff6b6b);
+            color: white;
+            padding: 20px;
+        }
+
+        .card-header h3 {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin: 0;
+        }
+
+        .card-body {
+            padding: 25px;
+        }
+
+        /* Table Styles */
+        .data-table {
             width: 100%;
             border-collapse: collapse;
             margin-top: 15px;
         }
 
-        th, td {
-            padding: 10px;
-            border-bottom: 1px solid #ddd;
-            text-align: center;
+        .data-table th {
+            background-color: #f8f9fa;
+            color: #2c3e50;
+            font-weight: 700;
+            padding: 15px 12px;
+            text-align: left;
+            border-bottom: 2px solid #dee2e6;
         }
 
-        th {
-            background-color: #222;
+        .data-table td {
+            padding: 15px 12px;
+            border-bottom: 1px solid #e9ecef;
+            vertical-align: middle;
+        }
+
+        .data-table tr:hover {
+            background-color: #f8f9fa;
+        }
+
+        /* Status Badges */
+        .status-badge {
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .status-ongoing {
+            background-color: #fff3cd;
+            color: #856404;
+        }
+
+        .status-done {
+            background-color: #d1edff;
+            color: #0c5460;
+        }
+
+        /* Rating Badge */
+        .rating-badge {
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 700;
             color: white;
         }
 
-        button {
-            padding: 6px 12px;
-            border: none;
-            border-radius: 5px;
+        .rating-pg { background-color: #28a745; }
+        .rating-pg13 { background-color: #ffc107; color: #000; }
+        .rating-r { background-color: #dc3545; }
+        .rating-g { background-color: #17a2b8; }
+
+        /* Form Styles */
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr 1fr;
+            gap: 15px;
+            align-items: end;
+        }
+
+        .form-grid-full {
+            grid-column: 1 / -1;
+        }
+
+        .form-group {
+            margin-bottom: 0;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #495057;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 10px 12px;
+            border: 2px solid #e9ecef;
+            border-radius: 6px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: #e23020;
+        }
+
+        textarea.form-control {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        select.form-control {
             cursor: pointer;
         }
 
-        .done {
-            background-color: #4CAF50;
+        /* Button Styles */
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #e23020, #ff6b6b);
             color: white;
         }
 
-        .ongoing {
-            background-color: #f39c12;
+        .btn-primary:hover {
+            background: linear-gradient(135deg, #c11b18, #e23020);
+            transform: translateY(-1px);
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, #28a745, #20c997);
             color: white;
         }
 
-        .delete {
-            background-color: #e74c3c;
+        .btn-success:hover {
+            background: linear-gradient(135deg, #218838, #1e7e34);
+        }
+
+        .btn-warning {
+            background: linear-gradient(135deg, #ffc107, #fd7e14);
             color: white;
         }
 
-        footer {
-            background-color: #222;
+        .btn-warning:hover {
+            background: linear-gradient(135deg, #e0a800, #e65c19);
+        }
+
+        .btn-info {
+            background: linear-gradient(135deg, #17a2b8, #20c997);
+            color: white;
+        }
+
+        .btn-info:hover {
+            background: linear-gradient(135deg, #138496, #1e7e34);
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, #dc3545, #e83e8c);
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background: linear-gradient(135deg, #c82333, #d91a6b);
+        }
+
+        .btn-sm {
+            padding: 6px 12px;
+            font-size: 0.85rem;
+        }
+
+        /* Action Controls */
+        .action-controls {
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+        }
+
+        .status-select {
+            padding: 6px 10px;
+            border: 2px solid #e9ecef;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            margin-right: 8px;
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+        }
+
+        .modal-content {
+            background-color: white;
+            margin: 5% auto;
+            padding: 0;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 700px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        .modal-header {
+            background: linear-gradient(135deg, #e23020, #ff6b6b);
+            color: white;
+            padding: 20px;
+            border-radius: 12px 12px 0 0;
+        }
+
+        .modal-header h3 {
+            margin: 0;
+            font-size: 1.3rem;
+        }
+
+        .modal-body {
+            padding: 25px;
+        }
+
+        .modal-footer {
+            padding: 15px 25px;
+            background-color: #f8f9fa;
+            border-radius: 0 0 12px 12px;
+            text-align: right;
+        }
+
+        .close {
+            float: right;
+            font-size: 1.5rem;
+            font-weight: bold;
+            cursor: pointer;
+            color: white;
+        }
+
+        /* Movie Poster Styles */
+        .movie-poster {
+            width: 60px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 6px;
+            border: 2px solid #e9ecef;
+        }
+
+        .poster-preview {
+            width: 100px;
+            height: 140px;
+            object-fit: cover;
+            border-radius: 8px;
+            border: 2px solid #e9ecef;
+            margin-top: 10px;
+            display: none;
+        }
+
+        .poster-placeholder {
+            width: 60px;
+            height: 80px;
+            background: #f8f9fa;
+            border: 2px dashed #dee2e6;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #6c757d;
+            font-size: 0.8rem;
+            text-align: center;
+        }
+
+        /* Schedule Management Styles */
+        .schedule-form {
+            display: grid;
+            grid-template-columns: 1fr 1fr auto auto;
+            gap: 15px;
+            align-items: end;
+            margin-bottom: 20px;
+        }
+
+        .schedules-list {
+            margin-top: 15px;
+        }
+
+        .schedule-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 15px;
+            background: #f8f9fa;
+            border-radius: 6px;
+            margin-bottom: 8px;
+            border-left: 4px solid #e23020;
+        }
+
+        .schedule-info {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .schedule-date {
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .schedule-time {
+            background: #e23020;
+            color: white;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+
+        .schedule-seats {
+            font-size: 0.85rem;
+            color: #666;
+            background: #e9ecef;
+            padding: 4px 8px;
+            border-radius: 4px;
+        }
+
+        .schedule-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .no-schedules {
+            text-align: center;
+            padding: 20px;
+            color: #6c757d;
+            font-style: italic;
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: #6c757d;
+        }
+
+        .empty-state i {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            opacity: 0.5;
+        }
+
+        /* Footer */
+        .admin-footer {
+            background: #2c3e50;
             color: white;
             text-align: center;
-            padding: 15px 0;
-            position: relative;
-            bottom: 0;
+            padding: 20px;
+            margin-top: auto; /* This pushes footer to bottom */
             width: 100%;
         }
 
-        input, select {
-            padding: 8px;
-            margin: 5px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
+        /* Messages */
+        .alert {
+            padding: 12px 15px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            font-weight: 600;
         }
 
-        .add-movie-form {
+        .alert-success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .alert-error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        /* Seat Management Styles */
+        .seats-preview-container {
             display: flex;
             flex-wrap: wrap;
-            gap: 10px;
+            gap: 8px;
+            max-height: 200px;
+            overflow-y: auto;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
         }
 
-        .add-movie-form input {
-            flex: 1;
-        }
-
-        .add-btn {
-            background-color: #27ae60;
+        .preview-seat {
+            width: 35px;
+            height: 35px;
+            background: #28a745;
             color: white;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            font-weight: bold;
+            cursor: default;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .form-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+            .schedule-form {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+            .schedule-form {
+                grid-template-columns: 1fr;
+            }
+            .header-content {
+                flex-direction: column;
+                gap: 15px;
+            }
+            .admin-nav {
+                gap: 10px;
+            }
+            .data-table {
+                font-size: 0.9rem;
+            }
+            .action-controls {
+                flex-direction: column;
+                gap: 5px;
+            }
         }
     </style>
 </head>
 <body>
-    <header>
-        <h2>🎬 Movie Ticket Booking - Admin Panel</h2>
-        <nav>
-            <a href="{{ url_for('movies') }}">Movies</a>
-            <a href="{{ url_for('admin_dashboard') }}">Admin Dashboard</a>
-            <a href="{{ url_for('logout') }}">Logout</a>
-        </nav>
+    <!-- Header -->
+    <header class="admin-header">
+        <div class="header-content">
+            <div class="admin-logo">
+                <h1>🎬 Admin Dashboard</h1>
+            </div>
+            <nav class="admin-nav">
+                <a href="{{ url_for('admin_dashboard') }}" class="active">Admin Dashboard</a>
+                <a href="{{ url_for('logout') }}">Logout</a>
+            </nav>
+        </div>
     </header>
 
-    <main>
-        <!-- Dashboard Section -->
-        <section class="section">
-            <h1>📋 Admin Dashboard - Manage Bookings</h1>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Booking ID</th>
-                        <th>User</th>
-                        <th>Movie</th>
-                        <th>Seats</th>
-                        <th>Date</th>
-                        <th>Status</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for booking in bookings %}
-                    <tr>
-                        <td>{{ booking.id }}</td>
-                        <td>{{ booking.user_name }}</td>
-                        <td>{{ booking.movie_title }}</td>
-                        <td>{{ booking.seats }}</td>
-                        <td>{{ booking.date }}</td>
-                        <td>{{ booking.status }}</td>
-                        <td>
-                            <form method="POST" action="{{ url_for('update_booking', booking_id=booking.id) }}">
-                                <select name="status">
-                                    <option value="Ongoing" {% if booking.status == 'Ongoing' %}selected{% endif %}>Ongoing</option>
-                                    <option value="Done" {% if booking.status == 'Done' %}selected{% endif %}>Done</option>
-                                </select>
-                                <button type="submit" class="ongoing">Update</button>
-                            </form>
-                        </td>
-                    </tr>
-                    {% else %}
-                    <tr><td colspan="7">No bookings found.</td></tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+    <!-- Main Content -->
+    <main class="admin-main">
+        <!-- Flash Messages -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <!-- Bookings Management Section -->
+        <section class="dashboard-card">
+            <div class="card-header">
+                <h3>📋 Booking Management</h3>
+            </div>
+            <div class="card-body">
+                {% if bookings %}
+                <div class="table-responsive">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Booking ID</th>
+                                <th>Customer</th>
+                                <th>Movie</th>
+                                <th>Seats</th>
+                                <th>Date</th>
+                                <th>Status</th>
+                                <th>Fee</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for booking in bookings %}
+                            <tr>
+                                <td><strong>#{{ booking.id }}</strong></td>
+                                <td>{{ booking.user_name }}</td>
+                                <td>{{ booking.movie_title }}</td>
+                                <td>{{ booking.seats }}</td>
+                                <td>{{ booking.date }}</td>
+                                <td>
+                                    <span class="status-badge {% if booking.status == 'Done' %}status-done{% else %}status-ongoing{% endif %}">
+                                        {{ booking.status }}
+                                    </span>
+                                </td>
+                                <td>₱{{ "%.2f"|format(booking.fee) }}</td>
+                                <td>
+                                    <form method="POST" action="{{ url_for('update_booking', booking_id=booking.id) }}" class="action-controls">
+                                        <select name="status" class="status-select" onchange="this.form.submit()">
+                                            <option value="Ongoing" {% if booking.status =='Ongoing' %}selected{% endif %}>Ongoing</option>
+                                            <option value="Done" {% if booking.status =='Done' %}selected{% endif %}>Done</option>
+                                        </select>
+                                    </form>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% else %}
+                <div class="empty-state">
+                    <div>📭</div>
+                    <h3>No Bookings Found</h3>
+                    <p>There are no bookings in the system yet.</p>
+                </div>
+                {% endif %}
+            </div>
         </section>
 
-        <!-- Manage Movies Section -->
-        <section class="section">
-            <h1>🎥 Manage Movies</h1>
-            <form method="POST" action="{{ url_for('add_movie') }}" class="add-movie-form">
-                <input type="text" name="title" placeholder="Movie Title" required>
-                <input type="text" name="genre" placeholder="Genre" required>
-                <input type="text" name="duration" placeholder="Duration (e.g. 2h 10m)" required>
-                <button type="submit" class="add-btn">Add Movie</button>
-            </form>
+        <!-- Movies Management Section -->
+        <section class="dashboard-card">
+            <div class="card-header">
+                <h3>🎥 Movie Management</h3>
+            </div>
+            <div class="card-body">
+                <!-- Add Movie Form -->
+                <form method="POST" action="{{ url_for('add_movie') }}" id="addMovieForm">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="movieTitle">Movie Title *</label>
+                            <input type="text" id="movieTitle" name="title" class="form-control" placeholder="Enter movie title" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="movieGenre">Genre *</label>
+                            <input type="text" id="movieGenre" name="genre" class="form-control" placeholder="e.g., Action, Drama" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="movieDuration">Duration *</label>
+                            <input type="text" id="movieDuration" name="duration" class="form-control" placeholder="e.g., 2h 15m" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="movieRating">Rating *</label>
+                            <select id="movieRating" name="rating" class="form-control" required>
+                                <option value="">Select Rating</option>
+                                <option value="G">G - General Audiences</option>
+                                <option value="PG">PG - Parental Guidance</option>
+                                <option value="PG-13">PG-13 - Parents Strongly Cautioned</option>
+                                <option value="R">R - Restricted</option>
+                                <option value="NC-17">NC-17 - Adults Only</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="moviePoster">Poster URL</label>
+                            <input type="url" id="moviePoster" name="poster_url" class="form-control" placeholder="https://example.com/poster.jpg">
+                            <img id="posterPreview" class="poster-preview" alt="Poster preview">
+                        </div>
+                        <div class="form-group form-grid-full">
+                            <label for="movieDescription">Description *</label>
+                            <textarea id="movieDescription" name="description" class="form-control" placeholder="Enter movie description..." required></textarea>
+                        </div>
+                        <div class="form-group form-grid-full">
+                            <button type="submit" class="btn btn-success" style="width: 100%;">➕ Add Movie</button>
+                        </div>
+                    </div>
+                </form>
 
-            <table>
-                <thead>
-                    <tr>
-                        <th>Movie ID</th>
-                        <th>Title</th>
-                        <th>Genre</th>
-                        <th>Duration</th>
-                        <th>Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for movie in movies %}
-                    <tr>
-                        <td>{{ movie.id }}</td>
-                        <td>{{ movie.title }}</td>
-                        <td>{{ movie.genre }}</td>
-                        <td>{{ movie.duration }}</td>
-                        <td>
-                            <form method="POST" action="{{ url_for('delete_movie', movie_id=movie.id) }}">
-                                <button type="submit" class="delete">Delete</button>
-                            </form>
-                        </td>
-                    </tr>
-                    {% else %}
-                    <tr><td colspan="5">No movies available.</td></tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+                <!-- Movies List -->
+                {% if movies %}
+                <div class="table-responsive" style="margin-top: 25px;">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Poster</th>
+                                <th>ID</th>
+                                <th>Title</th>
+                                <th>Genre</th>
+                                <th>Duration</th>
+                                <th>Rating</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for movie in movies %}
+                            <tr>
+                                <td>
+                                    {% if movie.poster_url %}
+                                        <img src="{{ movie.poster_url }}" alt="{{ movie.title }} poster" class="movie-poster" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+                                        <div class="poster-placeholder" style="display: none;">No Image</div>
+                                    {% else %}
+                                        <div class="poster-placeholder">No Image</div>
+                                    {% endif %}
+                                </td>
+                                <td><strong>#{{ movie.id }}</strong></td>
+                                <td>
+                                    <div style="font-weight: 600;">{{ movie.title }}</div>
+                                    <div style="font-size: 0.8rem; color: #666; margin-top: 4px;">
+                                        {% if movie.description %}
+                                            {{ movie.description[:80] }}{% if movie.description|length > 80 %}...{% endif %}
+                                        {% else %}
+                                            No description available
+                                        {% endif %}
+                                    </div>
+                                </td>
+                                <td>{{ movie.genre }}</td>
+                                <td>{{ movie.duration }}</td>
+                                <td>
+                                    <span class="rating-badge
+                                        {% if movie.rating == 'G' %}rating-g
+                                        {% elif movie.rating == 'PG' %}rating-pg
+                                        {% elif movie.rating == 'PG-13' %}rating-pg13
+                                        {% elif movie.rating == 'R' %}rating-r
+                                        {% else %}rating-pg{% endif %}">
+                                        {{ movie.rating }}
+                                    </span>
+                                </td>
+                                <td>
+                                    <div class="action-controls">
+                                        <button class="btn btn-warning btn-sm" onclick="openEditModal(
+                                            {{ movie.id }},
+                                            '{{ movie.title }}',
+                                            '{{ movie.genre }}',
+                                            '{{ movie.duration }}',
+                                            '{{ movie.rating }}',
+                                            `{{ movie.description }}`,
+                                            '{{ movie.poster_url }}'
+                                        )">
+                                            ✏️ Edit
+                                        </button>
+                                        <button class="btn btn-info btn-sm" onclick="openScheduleModal({{ movie.id }}, '{{ movie.title }}')">
+                                            🕐 Schedule
+                                        </button>
+                                        <button class="btn btn-primary btn-sm" onclick="openSeatModal({{ movie.id }}, '{{ movie.title }}')">
+                                            💺 Seats
+                                        </button>
+                                        <form method="POST" action="{{ url_for('delete_movie', movie_id=movie.id) }}"
+                                              onsubmit="return confirm('Are you sure you want to delete \"{{ movie.title }}\"?')">
+                                            <button type="submit" class="btn btn-danger btn-sm">🗑️ Delete</button>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% else %}
+                <div class="empty-state">
+                    <div>🎬</div>
+                    <h3>No Movies Available</h3>
+                    <p>Add movies to start managing your cinema.</p>
+                </div>
+                {% endif %}
+            </div>
         </section>
     </main>
 
-    <footer>
-        <p>DKC Collection 2025 | Movie Ticket Booking ©</p>
+    <!-- Edit Movie Modal -->
+    <div id="editMovieModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>✏️ Edit Movie</h3>
+                <span class="close" onclick="closeEditModal()">&times;</span>
+            </div>
+            <form method="POST" action="{{ url_for('edit_movie') }}" id="editMovieForm">
+                <div class="modal-body">
+                    <input type="hidden" id="editMovieId" name="movie_id">
+                    <div class="form-group">
+                        <label for="editMovieTitle">Movie Title *</label>
+                        <input type="text" id="editMovieTitle" name="title" class="form-control" required>
+                    </div>
+                    <div class="form-group" style="margin-top: 15px;">
+                        <label for="editMovieGenre">Genre *</label>
+                        <input type="text" id="editMovieGenre" name="genre" class="form-control" required>
+                    </div>
+                    <div class="form-group" style="margin-top: 15px;">
+                        <label for="editMovieDuration">Duration *</label>
+                        <input type="text" id="editMovieDuration" name="duration" class="form-control" required>
+                    </div>
+                    <div class="form-group" style="margin-top: 15px;">
+                        <label for="editMovieRating">Rating *</label>
+                        <select id="editMovieRating" name="rating" class="form-control" required>
+                            <option value="">Select Rating</option>
+                            <option value="G">G - General Audiences</option>
+                            <option value="PG">PG - Parental Guidance</option>
+                            <option value="PG-13">PG-13 - Parents Strongly Cautioned</option>
+                            <option value="R">R - Restricted</option>
+                            <option value="NC-17">NC-17 - Adults Only</option>
+                        </select>
+                    </div>
+                    <div class="form-group" style="margin-top: 15px;">
+                        <label for="editMoviePoster">Poster URL</label>
+                        <input type="url" id="editMoviePoster" name="poster_url" class="form-control" placeholder="https://example.com/poster.jpg">
+                        <img id="editPosterPreview" class="poster-preview" alt="Poster preview">
+                    </div>
+                    <div class="form-group" style="margin-top: 15px;">
+                        <label for="editMovieDescription">Description *</label>
+                        <textarea id="editMovieDescription" name="description" class="form-control" required></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" onclick="closeEditModal()">Cancel</button>
+                    <button type="submit" class="btn btn-primary">💾 Save Changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Schedule Management Modal -->
+    <div id="scheduleModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>🕐 Manage Schedules - <span id="scheduleMovieTitle"></span></h3>
+                <span class="close" onclick="closeScheduleModal()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="scheduleMovieId">
+
+                <!-- Add Schedule Form -->
+                <form id="addScheduleForm" class="schedule-form">
+                    <div class="form-group">
+                        <label for="scheduleDate">Show Date</label>
+                        <input type="date" id="scheduleDate" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="scheduleTime">Show Time</label>
+                        <div style="display: flex; gap: 8px;">
+                            <select id="scheduleTimePreset" class="form-control" style="flex: 1;">
+                                <option value="">Select Time</option>
+                                <option value="09:00 AM">09:00 AM</option>
+                                <option value="11:00 AM">11:00 AM</option>
+                                <option value="01:00 PM">01:00 PM</option>
+                                <option value="03:00 PM">03:00 PM</option>
+                                <option value="05:00 PM">05:00 PM</option>
+                                <option value="07:00 PM">07:00 PM</option>
+                                <option value="09:00 PM">09:00 PM</option>
+                            </select>
+                            <span style="align-self: center; font-weight: bold;">OR</span>
+                        </div>
+                        <input type="text" id="scheduleTimeCustom" class="form-control" style="margin-top: 8px;" placeholder="Enter custom time (e.g., 10:30 AM)">
+                    </div>
+                    <div class="form-group">
+                        <label for="scheduleSeats">Initial Seats</label>
+                        <input type="number" id="scheduleSeats" class="form-control" value="40" min="1" max="100">
+                    </div>
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-success">➕ Add Schedule</button>
+                    </div>
+                </form>
+
+                <!-- Schedules List -->
+                <div class="schedules-list" id="schedulesList">
+                    <div class="no-schedules">Loading schedules...</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Seat Management Modal -->
+    <div id="seatModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>💺 Manage Seats - <span id="seatMovieTitle"></span></h3>
+                <span class="close" onclick="closeSeatModal()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <input type="hidden" id="seatMovieId">
+
+                <!-- Schedule Selection -->
+                <div class="form-group">
+                    <label for="seatScheduleSelect">Select Schedule</label>
+                    <select id="seatScheduleSelect" class="form-control" required>
+                        <option value="">Select a schedule</option>
+                    </select>
+                </div>
+
+                <!-- Current Schedule Info -->
+                <div class="schedule-info-card" style="background: #f8f9fa; padding: 15px; border-radius: 8px; margin-bottom: 20px; display: none;" id="scheduleInfoCard">
+                    <h4 style="margin: 0 0 10px 0; color: #2c3e50;">📅 Current Schedule</h4>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                        <div>
+                            <strong>Show Date:</strong>
+                            <span id="currentShowDate">-</span>
+                        </div>
+                        <div>
+                            <strong>Show Time:</strong>
+                            <span id="currentShowTime">-</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Seat Configuration Form -->
+                <form id="seatConfigForm">
+                    <div class="form-grid" style="grid-template-columns: 1fr 1fr;">
+                        <div class="form-group">
+                            <label for="totalSeats">Total Seats</label>
+                            <input type="number" id="totalSeats" name="total_seats" class="form-control" min="1" max="100" value="40" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="availableSeats">Available Seats</label>
+                            <input type="number" id="availableSeats" name="available_seats" class="form-control" min="0" max="100" value="40" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group" style="margin-top: 15px;">
+                        <label for="seatLayout">Seat Layout (comma-separated)</label>
+                        <textarea id="seatLayout" name="seat_layout" class="form-control" rows="3" placeholder="A1,A2,A3,A4,A5,A6,A7,A8,B1,B2,B3,B4,B5,B6,B7,B8,C1,C2,C3,C4,C5,C6,C7,C8,D1,D2,D3,D4,D5,D6,D7,D8,E1,E2,E3,E4,E5,E6,E7,E8"></textarea>
+                        <small style="color: #666;">Enter seat numbers separated by commas. Example: A1,A2,A3,B1,B2,B3</small>
+                    </div>
+
+                    <div class="form-group" style="margin-top: 20px;">
+                        <button type="submit" class="btn btn-success" style="width: 100%;">💾 Save Seat Configuration</button>
+                    </div>
+                </form>
+
+                <!-- Seat Preview -->
+                <div class="seat-preview" style="margin-top: 25px;">
+                    <h4 style="margin-bottom: 15px; color: #2c3e50;">🎬 Seat Preview</h4>
+                    <div id="seatPreviewContainer" class="seats-preview-container" style="display: flex; flex-wrap: wrap; gap: 8px; max-height: 200px; overflow-y: auto; padding: 15px; background: #f8f9fa; border-radius: 8px;">
+                        <!-- Seats will be dynamically generated here -->
+                    </div>
+                </div>
+
+                <!-- Current Statistics -->
+                <div class="seat-stats" style="margin-top: 20px; padding: 15px; background: linear-gradient(135deg, #e23020, #ff6b6b); color: white; border-radius: 8px; display: none;" id="seatStats">
+                    <h4 style="margin: 0 0 10px 0;">📊 Current Statistics</h4>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                        <div>
+                            <strong>Total Seats:</strong>
+                            <span id="statsTotalSeats">0</span>
+                        </div>
+                        <div>
+                            <strong>Available:</strong>
+                            <span id="statsAvailableSeats">0</span>
+                        </div>
+                        <div>
+                            <strong>Booked:</strong>
+                            <span id="statsBookedSeats">0</span>
+                        </div>
+                        <div>
+                            <strong>Occupancy:</strong>
+                            <span id="statsOccupancy">0%</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="admin-footer">
+        <p>DKC Collection 2025 | Movie Ticket Booking System ©</p>
     </footer>
+
+    <script>
+        // Modal functions
+        function openEditModal(id, title, genre, duration, rating, description, poster_url) {
+            document.getElementById('editMovieId').value = id;
+            document.getElementById('editMovieTitle').value = title;
+            document.getElementById('editMovieGenre').value = genre;
+            document.getElementById('editMovieDuration').value = duration;
+            document.getElementById('editMovieRating').value = rating;
+            document.getElementById('editMovieDescription').value = description;
+            document.getElementById('editMoviePoster').value = poster_url || '';
+
+            // Update preview
+            const preview = document.getElementById('editPosterPreview');
+            if (poster_url) {
+                preview.src = poster_url;
+                preview.style.display = 'block';
+            } else {
+                preview.style.display = 'none';
+            }
+
+            document.getElementById('editMovieModal').style.display = 'block';
+        }
+
+        function closeEditModal() {
+            document.getElementById('editMovieModal').style.display = 'none';
+        }
+
+        // Schedule Modal Functions
+        function openScheduleModal(movieId, movieTitle) {
+            document.getElementById('scheduleMovieId').value = movieId;
+            document.getElementById('scheduleMovieTitle').textContent = movieTitle;
+            document.getElementById('scheduleModal').style.display = 'block';
+            loadSchedules(movieId);
+        }
+
+        function closeScheduleModal() {
+            document.getElementById('scheduleModal').style.display = 'none';
+        }
+
+        // Load schedules for a movie
+        async function loadSchedules(movieId) {
+            try {
+                const response = await fetch(`/get_movie_schedules?movie_id=${movieId}`);
+                const schedules = await response.json();
+
+                const schedulesList = document.getElementById('schedulesList');
+
+                if (schedules.length === 0) {
+                    schedulesList.innerHTML = '<div class="no-schedules">No schedules added yet.</div>';
+                    return;
+                }
+
+                schedulesList.innerHTML = schedules.map(schedule => `
+                    <div class="schedule-item">
+                        <div class="schedule-info">
+                            <span class="schedule-date">${schedule.show_date}</span>
+                            <span class="schedule-time">${schedule.showtime}</span>
+                            <span class="schedule-seats">${schedule.available_seats}/${schedule.total_seats} seats available</span>
+                        </div>
+                        <div class="schedule-actions">
+                            <button class="btn btn-danger btn-sm" onclick="deleteSchedule(${schedule.id})">Delete</button>
+                        </div>
+                    </div>
+                `).join('');
+            } catch (error) {
+                console.error('Error loading schedules:', error);
+                document.getElementById('schedulesList').innerHTML = '<div class="no-schedules">Error loading schedules.</div>';
+            }
+        }
+
+        // Add schedule - FIXED VERSION
+        document.getElementById('addScheduleForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            const movieId = document.getElementById('scheduleMovieId').value;
+            const showDate = document.getElementById('scheduleDate').value;
+            const showTime = document.getElementById('scheduleTimeCustom').value || document.getElementById('scheduleTimePreset').value;
+            const initialSeats = document.getElementById('scheduleSeats').value || 40;
+
+            if (!showDate || !showTime) {
+                alert('Please fill in all schedule details.');
+                return;
+            }
+
+            try {
+                const formData = new URLSearchParams();
+                formData.append('movie_id', movieId);
+                formData.append('show_date', showDate);
+                formData.append('showtime', showTime);
+                formData.append('total_seats', initialSeats);
+
+                const response = await fetch('/add_schedule', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    body: formData
+                });
+
+                if (response.ok) {
+                    alert('✅ Schedule added successfully!');
+                    loadSchedules(movieId);
+                    document.getElementById('addScheduleForm').reset();
+                } else {
+                    const errorText = await response.text();
+                    alert('Error adding schedule: ' + errorText);
+                }
+            } catch (error) {
+                console.error('Error adding schedule:', error);
+                alert('Error adding schedule: ' + error.message);
+            }
+        });
+
+        // Delete schedule - FIXED VERSION
+        async function deleteSchedule(scheduleId) {
+            if (!confirm('Are you sure you want to delete this schedule?')) return;
+
+            try {
+                const formData = new URLSearchParams();
+                formData.append('schedule_id', scheduleId);
+
+                const response = await fetch('/delete_schedule', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    body: formData
+                });
+
+                if (response.ok) {
+                    alert('✅ Schedule deleted successfully!');
+                    const movieId = document.getElementById('scheduleMovieId').value;
+                    loadSchedules(movieId);
+                } else {
+                    const errorText = await response.text();
+                    alert('Error deleting schedule: ' + errorText);
+                }
+            } catch (error) {
+                console.error('Error deleting schedule:', error);
+                alert('Error deleting schedule: ' + error.message);
+            }
+        }
+
+        // Seat Management Functions - FIXED VERSION
+        function openSeatModal(movieId, movieTitle) {
+            document.getElementById('seatMovieId').value = movieId;
+            document.getElementById('seatMovieTitle').textContent = movieTitle;
+            document.getElementById('seatModal').style.display = 'block';
+
+            // First load schedules to select one
+            loadSchedulesForSeat(movieId);
+        }
+
+        function closeSeatModal() {
+            document.getElementById('seatModal').style.display = 'none';
+        }
+
+        // Load schedules for seat management
+        async function loadSchedulesForSeat(movieId) {
+            try {
+                const response = await fetch(`/get_movie_schedules?movie_id=${movieId}`);
+                const schedules = await response.json();
+
+                const scheduleSelect = document.getElementById('seatScheduleSelect');
+                scheduleSelect.innerHTML = '<option value="">Select a schedule</option>';
+
+                if (schedules.length === 0) {
+                    scheduleSelect.innerHTML = '<option value="">No schedules available</option>';
+                    return;
+                }
+
+                schedules.forEach(schedule => {
+                    const option = document.createElement('option');
+                    option.value = schedule.id;
+                    option.textContent = `${schedule.show_date} - ${schedule.showtime} (${schedule.available_seats}/${schedule.total_seats} seats)`;
+                    scheduleSelect.appendChild(option);
+                });
+            } catch (error) {
+                console.error('Error loading schedules for seat management:', error);
+            }
+        }
+
+        // Load seat configuration when schedule is selected
+        document.getElementById('seatScheduleSelect').addEventListener('change', async function() {
+            const scheduleId = this.value;
+            if (scheduleId) {
+                await loadSeatConfiguration(scheduleId);
+                // Show schedule info and stats
+                document.getElementById('scheduleInfoCard').style.display = 'block';
+                document.getElementById('seatStats').style.display = 'block';
+            } else {
+                document.getElementById('scheduleInfoCard').style.display = 'none';
+                document.getElementById('seatStats').style.display = 'none';
+            }
+        });
+
+        // Load seat configuration - FIXED VERSION
+        async function loadSeatConfiguration(scheduleId) {
+            try {
+                const response = await fetch(`/get_seat_configuration?schedule_id=${scheduleId}`);
+                const config = await response.json();
+
+                if (config) {
+                    document.getElementById('totalSeats').value = config.total_seats || 40;
+                    document.getElementById('availableSeats').value = config.available_seats || 40;
+                    document.getElementById('seatLayout').value = config.seat_layout || 'A1,A2,A3,A4,A5,A6,A7,A8,B1,B2,B3,B4,B5,B6,B7,B8,C1,C2,C3,C4,C5,C6,C7,C8,D1,D2,D3,D4,D5,D6,D7,D8,E1,E2,E3,E4,E5,E6,E7,E8';
+
+                    // Update current schedule info
+                    document.getElementById('currentShowDate').textContent = config.show_date || 'Not set';
+                    document.getElementById('currentShowTime').textContent = config.showtime || 'Not set';
+
+                    // Update statistics
+                    updateSeatStatistics(config);
+
+                    // Generate seat preview
+                    generateSeatPreview(config.seat_layout);
+                }
+            } catch (error) {
+                console.error('Error loading seat configuration:', error);
+                alert('Error loading seat configuration.');
+            }
+        }
+
+        // Generate seat preview
+        function generateSeatPreview(seatLayout) {
+            const container = document.getElementById('seatPreviewContainer');
+            container.innerHTML = '';
+
+            if (!seatLayout) return;
+
+            const seats = seatLayout.split(',').map(seat => seat.trim());
+
+            seats.forEach(seat => {
+                const seatElement = document.createElement('div');
+                seatElement.className = 'preview-seat';
+                seatElement.textContent = seat;
+                seatElement.style.cssText = `
+                    width: 35px;
+                    height: 35px;
+                    background: #28a745;
+                    color: white;
+                    border-radius: 4px;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    font-size: 0.8rem;
+                    font-weight: bold;
+                    cursor: default;
+                `;
+                container.appendChild(seatElement);
+            });
+        }
+
+        // Update seat statistics
+        function updateSeatStatistics(config) {
+            const totalSeats = config.total_seats || 0;
+            const availableSeats = config.available_seats || 0;
+            const bookedSeats = totalSeats - availableSeats;
+            const occupancy = totalSeats > 0 ? ((bookedSeats / totalSeats) * 100).toFixed(1) : 0;
+
+            document.getElementById('statsTotalSeats').textContent = totalSeats;
+            document.getElementById('statsAvailableSeats').textContent = availableSeats;
+            document.getElementById('statsBookedSeats').textContent = bookedSeats;
+            document.getElementById('statsOccupancy').textContent = occupancy + '%';
+        }
+
+        // Save seat configuration - FIXED VERSION
+        document.getElementById('seatConfigForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            const scheduleId = document.getElementById('seatScheduleSelect').value;
+            const totalSeats = document.getElementById('totalSeats').value;
+            const availableSeats = document.getElementById('availableSeats').value;
+            const seatLayout = document.getElementById('seatLayout').value;
+
+            if (!scheduleId) {
+                alert('Please select a schedule first.');
+                return;
+            }
+
+            if (parseInt(availableSeats) > parseInt(totalSeats)) {
+                alert('Available seats cannot be greater than total seats.');
+                return;
+            }
+
+            try {
+                const formData = new URLSearchParams();
+                formData.append('schedule_id', scheduleId);
+                formData.append('total_seats', totalSeats);
+                formData.append('available_seats', availableSeats);
+                formData.append('seat_layout', seatLayout);
+
+                const response = await fetch('/save_seat_configuration', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    body: formData
+                });
+
+                if (response.ok) {
+                    alert('✅ Seat configuration saved successfully!');
+                    loadSeatConfiguration(scheduleId); // Reload to show updated data
+                } else {
+                    const errorText = await response.text();
+                    alert('Error saving seat configuration: ' + errorText);
+                }
+            } catch (error) {
+                console.error('Error saving seat configuration:', error);
+                alert('Error saving seat configuration: ' + error.message);
+            }
+        });
+
+        // Update schedule form to handle custom time input
+        document.getElementById('scheduleTimePreset').addEventListener('change', function() {
+            if (this.value) {
+                document.getElementById('scheduleTimeCustom').value = this.value;
+            }
+        });
+
+        document.getElementById('scheduleTimeCustom').addEventListener('input', function() {
+            if (this.value) {
+                document.getElementById('scheduleTimePreset').value = '';
+            }
+        });
+
+        // Set minimum date to today
+        const today = new Date().toISOString().split('T')[0];
+        document.getElementById('scheduleDate').min = today;
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const editModal = document.getElementById('editMovieModal');
+            const scheduleModal = document.getElementById('scheduleModal');
+            const seatModal = document.getElementById('seatModal');
+            if (event.target === editModal) {
+                closeEditModal();
+            }
+            if (event.target === scheduleModal) {
+                closeScheduleModal();
+            }
+            if (event.target === seatModal) {
+                closeSeatModal();
+            }
+        }
+
+        // Poster URL preview
+        document.getElementById('moviePoster')?.addEventListener('input', function(e) {
+            const preview = document.getElementById('posterPreview');
+            if (this.value) {
+                preview.src = this.value;
+                preview.style.display = 'block';
+            } else {
+                preview.style.display = 'none';
+            }
+        });
+
+        document.getElementById('editMoviePoster')?.addEventListener('input', function(e) {
+            const preview = document.getElementById('editPosterPreview');
+            if (this.value) {
+                preview.src = this.value;
+                preview.style.display = 'block';
+            } else {
+                preview.style.display = 'none';
+            }
+        });
+
+        // Handle add movie form submission
+        document.getElementById('addMovieForm')?.addEventListener('submit', function(e) {
+            const title = document.getElementById('movieTitle').value.trim();
+            const genre = document.getElementById('movieGenre').value.trim();
+            const duration = document.getElementById('movieDuration').value.trim();
+            const rating = document.getElementById('movieRating').value;
+            const description = document.getElementById('movieDescription').value.trim();
+            const poster_url = document.getElementById('moviePoster').value.trim();
+
+            if (!title || !genre || !duration || !rating || !description) {
+                e.preventDefault();
+                alert('❌ Please fill in all required movie details.');
+                return false;
+            }
+
+            console.log('✅ Adding movie:', { title, genre, duration, rating, description, poster_url });
+        });
+
+        // Handle edit movie form submission
+        document.getElementById('editMovieForm')?.addEventListener('submit', function(e) {
+            const title = document.getElementById('editMovieTitle').value.trim();
+            const genre = document.getElementById('editMovieGenre').value.trim();
+            const duration = document.getElementById('editMovieDuration').value.trim();
+            const rating = document.getElementById('editMovieRating').value;
+            const description = document.getElementById('editMovieDescription').value.trim();
+            const poster_url = document.getElementById('editMoviePoster').value.trim();
+
+            if (!title || !genre || !duration || !rating || !description) {
+                e.preventDefault();
+                alert('❌ Please fill in all required movie details.');
+                return false;
+            }
+
+            console.log('✅ Updating movie:', { title, genre, duration, rating, description, poster_url });
+        });
+
+        // Auto-submit status changes
+        document.querySelectorAll('.status-select').forEach(select => {
+            select.addEventListener('change', function() {
+                this.form.submit();
+            });
+        });
+
+        // Add some interactive effects
+        document.addEventListener('DOMContentLoaded', function() {
+            const cards = document.querySelectorAll('.dashboard-card');
+            cards.forEach((card, index) => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(20px)';
+
+                setTimeout(() => {
+                    card.style.transition = 'all 0.5s ease';
+                    card.style.opacity = '1';
+                    card.style.transform = 'translateY(0)';
+                }, index * 100);
+            });
+        });
+    </script>
 </body>
 </html>
