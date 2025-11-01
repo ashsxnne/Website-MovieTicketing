@@ -60,33 +60,33 @@ def create_database():
         pass  # Customer already exists
 
     # Insert sample movies
-    sample_movies = [
-        ('Sinners (2025)', 'Horror/Thriller', '2h 15m', 'R',
-         'Twin brothers return home and face supernatural evil in 1932 Mississippi Delta.',
-         '/static/2'),
-        ('Harry Potter and the Prisoner of Azkaban (2004)', 'Fantasy/Adventure', '2h 22m', 'PG',
-         'Harry Potter discovers that a dangerous prisoner has escaped from Azkaban.',
-         '/static/2.p'),
-        ('THE CONJURING: Last Rites', 'Horror', '2h 5m', 'PG',
-         'Paranormal investigators Ed and Lorraine Warren face their most terrifying case.',
-         '/static/3.j'),
-        ('The Lord of the Rings: The Return of the King (2003)', 'Fantasy/Adventure', '3h 21m', 'PG-13',
-         'The final battle for Middle-earth begins as Frodo journeys to destroy the One Ring.',
-         '/static/4.'),
-        ('Weapons', 'Horror/Anthology', '1h 58m', 'R-16',
-         'An interconnected horror anthology exploring the human psyche.',
-         '/static/5.j'),
-        ('Alice in Wonderland', 'Fantasy/Adventure', '1h 48m', 'PG',
-         'Alice returns to the whimsical world of Wonderland to face the Red Queen.',
-         '/static/6.j')
-    ]
+        sample_movies = [
+            ('Sinners (2025)', 'Horror/Thriller', '2h 15m', 'R',
+             'Twin brothers return home and face supernatural evil in 1932 Mississippi Delta.',
+             '/static/2'),
+            ('Harry Potter and the Prisoner of Azkaban (2004)', 'Fantasy/Adventure', '2h 22m', 'PG',
+             'Harry Potter discovers that a dangerous prisoner has escaped from Azkaban.',
+             '/static/2.p'),
+            ('THE CONJURING: Last Rites', 'Horror', '2h 5m', 'PG',
+             'Paranormal investigators Ed and Lorraine Warren face their most terrifying case.',
+             '/static/3.j'),
+            ('The Lord of the Rings: The Return of the King (2003)', 'Fantasy/Adventure', '3h 21m', 'PG-13',
+             'The final battle for Middle-earth begins as Frodo journeys to destroy the One Ring.',
+             '/static/4.'),
+            ('Weapons', 'Horror/Anthology', '1h 58m', 'R-16',
+             'An interconnected horror anthology exploring the human psyche.',
+             '/static/5.j'),
+            ('Alice in Wonderland', 'Fantasy/Adventure', '1h 48m', 'PG',
+             'Alice returns to the whimsical world of Wonderland to face the Red Queen.',
+             '/static/6.j')
+        ]
 
-    for movie in sample_movies:
-        try:
-            c.execute('''INSERT INTO movies (title, genre, duration, rating, description, poster_url) 
-                         VALUES (?, ?, ?, ?, ?, ?)''', movie)
-        except:
-            pass  # Movie already exists
+        for movie in sample_movies:
+            try:
+                c.execute('''INSERT INTO movies (title, genre, duration, rating, description, poster_url) 
+                             VALUES (?, ?, ?, ?, ?, ?)''', movie)
+            except:
+                pass  # Movie already exists
 
     conn.commit()
     conn.close()

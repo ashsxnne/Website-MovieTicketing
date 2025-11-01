@@ -4,27 +4,17 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Thank You - Movie Ticket Booking</title>
-  <link
-    href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap"
-    rel="stylesheet"
-  />
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet" />
   <style>
-    /* Add this for footer positioning */
     html, body {
       height: 100%;
       margin: 0;
       padding: 0;
-    }
-
-    body {
-      font-family: 'Roboto', sans-serif;
-      background-color: #fff9f8;
-      margin: 0;
-      padding: 0;
-      color: #333;
-      min-height: 100vh;
       display: flex;
       flex-direction: column;
+      font-family: 'Roboto', sans-serif;
+      background-color: #fff9f8;
+      color: #333;
     }
 
     header {
@@ -57,10 +47,6 @@
       gap: 25px;
     }
 
-    nav ul li {
-      display: inline;
-    }
-
     nav ul li a {
       color: white;
       text-decoration: none;
@@ -76,9 +62,9 @@
     }
 
     main {
+      flex: 1;
       padding: 60px 20px;
       text-align: center;
-      flex: 1;
       display: flex;
       flex-direction: column;
       justify-content: center;
@@ -86,14 +72,15 @@
     }
 
     main h1 {
-      font-size: 2.5rem;
+      font-size: 2.2rem;
       color: #e23020;
       margin-bottom: 20px;
+      font-weight: 700;
     }
 
     main p {
-      font-size: 1.2rem;
-      color: #555;
+      font-size: 1.1rem;
+      color: #666;
       max-width: 600px;
       margin: 0 auto 30px;
       line-height: 1.5;
@@ -109,7 +96,7 @@
       font-weight: 700;
       border-radius: 6px;
       text-decoration: none;
-      font-size: 1.1rem;
+      font-size: 1rem;
       transition: background-color 0.3s ease;
       border: none;
       cursor: pointer;
@@ -118,19 +105,17 @@
     .btn-home:hover,
     .btn-view:hover {
       background-color: #b31a17;
+      color: white;
+      text-decoration: none;
     }
 
     footer {
       text-align: center;
-      padding: 15px 0;
+      padding: 20px 0;
       background-color: #e23020;
       color: white;
       font-weight: 600;
-      font-family: 'Roboto', sans-serif;
       width: 100%;
-      font-size: 0.95rem;
-      letter-spacing: 0.5px;
-      margin-top: auto; /* This pushes footer to bottom */
     }
   </style>
 </head>
@@ -155,7 +140,7 @@
     <h1>Thank You for Your Booking!</h1>
     <p>Your tickets have been successfully booked. We look forward to seeing you at the cinema. Enjoy the show!</p>
 
-<a href="{{ url_for('viewtickets') }}" class="btn-view">View Tickets Booked</a>
+    <a href="{{ url_for('viewtickets') }}" class="btn-view">View Tickets Booked</a>
     <a href="{{ url_for('customer_dashboard') }}" class="btn-home">Back to Home</a>
   </main>
 

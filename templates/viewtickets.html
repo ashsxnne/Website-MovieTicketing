@@ -20,7 +20,7 @@
 
     body {
       font-family: 'Roboto', sans-serif;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      background-color: #fff9f8;
       color: #333;
       min-height: 100vh;
       display: flex;
@@ -30,7 +30,7 @@
     header {
       background-color: #e23020;
       padding: 15px 0;
-      box-shadow: 0 2px 20px rgba(0,0,0,0.2);
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
       margin-bottom: 30px;
       position: sticky;
       top: 0;
@@ -67,7 +67,7 @@
       text-decoration: none;
       font-weight: 600;
       padding: 8px 16px;
-      border-radius: 25px;
+      border-radius: 4px;
       transition: all 0.3s ease;
       font-size: 0.95rem;
     }
@@ -92,26 +92,24 @@
     }
 
     .page-title {
-      color: white;
+      color: #e23020;
       font-weight: 700;
-      font-size: 2.5rem;
+      font-size: 2.2rem;
       margin-bottom: 10px;
-      text-shadow: 0 2px 10px rgba(0,0,0,0.3);
     }
 
     .page-subtitle {
-      color: rgba(255, 255, 255, 0.8);
+      color: #666;
       font-size: 1.1rem;
       font-weight: 400;
     }
 
     .tickets-container {
-      background: rgba(255, 255, 255, 0.95);
-      backdrop-filter: blur(10px);
-      border-radius: 20px;
-      padding: 40px;
-      box-shadow: 0 10px 40px rgba(0,0,0,0.1);
-      border: 1px solid rgba(255, 255, 255, 0.2);
+      background: white;
+      border-radius: 8px;
+      padding: 30px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      border: 1px solid #e9ecef;
     }
 
     .tickets-table {
@@ -120,7 +118,7 @@
     }
 
     .tickets-table th {
-      background: linear-gradient(135deg, #e23020, #ff6b6b);
+      background: #e23020;
       color: white;
       padding: 15px;
       text-align: left;
@@ -129,11 +127,11 @@
     }
 
     .tickets-table th:first-child {
-      border-radius: 10px 0 0 0;
+      border-radius: 6px 0 0 0;
     }
 
     .tickets-table th:last-child {
-      border-radius: 0 10px 0 0;
+      border-radius: 0 6px 0 0;
     }
 
     .tickets-table td {
@@ -160,22 +158,24 @@
       width: 60px;
       height: 80px;
       object-fit: cover;
-      border-radius: 8px;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+      border-radius: 6px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      border: 2px solid #e23020;
     }
 
     .no-poster {
       width: 60px;
       height: 80px;
-      background: linear-gradient(135deg, #667eea, #764ba2);
-      border-radius: 8px;
+      background: #f8f9fa;
+      border-radius: 6px;
       display: flex;
       align-items: center;
       justify-content: center;
-      color: white;
+      color: #666;
       font-size: 0.7rem;
       font-weight: 600;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      border: 2px dashed #dee2e6;
     }
 
     .movie-title {
@@ -184,7 +184,7 @@
     }
 
     .quantity-badge {
-      background: linear-gradient(135deg, #e23020, #ff6b6b);
+      background: #e23020;
       color: white;
       padding: 6px 12px;
       border-radius: 20px;
@@ -200,50 +200,48 @@
     }
 
     .btn-danger {
-      background: linear-gradient(135deg, #e23020, #ff6b6b);
+      background: #e23020;
       color: white;
       border: none;
       padding: 8px 16px;
-      border-radius: 8px;
+      border-radius: 6px;
       cursor: pointer;
       font-weight: 600;
       transition: all 0.3s ease;
       font-size: 0.85rem;
-      box-shadow: 0 4px 15px rgba(226, 48, 32, 0.3);
     }
 
     .btn-danger:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 6px 20px rgba(226, 48, 32, 0.4);
+      background: #b31a17;
+      transform: translateY(-1px);
     }
 
     .btn-print {
-      background: linear-gradient(135deg, #28a745, #20c997);
+      background: #2e7d32;
       color: white;
       border: none;
       padding: 8px 16px;
-      border-radius: 8px;
+      border-radius: 6px;
       cursor: pointer;
       font-weight: 600;
       text-decoration: none;
       display: inline-block;
       transition: all 0.3s ease;
       font-size: 0.85rem;
-      box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3);
     }
 
     .btn-print:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 6px 20px rgba(40, 167, 69, 0.4);
+      background: #1b5e20;
       color: white;
       text-decoration: none;
+      transform: translateY(-1px);
     }
 
-        /* Updated Empty State Styles */
+    /* Updated Empty State Styles */
     .empty-state {
       text-align: center;
       padding: 80px 40px;
-      color: white;
+      color: #666;
       animation: fadeInUp 0.8s ease-out;
     }
 
@@ -252,8 +250,7 @@
       margin-bottom: 30px;
       opacity: 1;
       animation: float 3s ease-in-out infinite;
-      color: white;
-      text-shadow: 0 4px 15px rgba(0,0,0,0.3);
+      color: #e23020;
     }
 
     @keyframes float {
@@ -266,45 +263,42 @@
     }
 
     .empty-title {
-      font-size: 2.5rem;
+      font-size: 2.2rem;
       font-weight: 700;
       margin-bottom: 20px;
-      text-shadow: 0 2px 10px rgba(0,0,0,0.3);
-      color: red;
+      color: #e23020;
     }
 
     .empty-subtitle {
-      font-size: 1.3rem;
+      font-size: 1.1rem;
       margin-bottom: 30px;
       line-height: 1.6;
       max-width: 500px;
       margin-left: auto;
       margin-right: auto;
-      color: red;
+      color: #666;
       font-weight: 400;
     }
 
     .browse-link {
       display: inline-block;
-      background: linear-gradient(135deg, #e23020, #ff6b6b);
+      background: #e23020;
       color: white;
       font-weight: 700;
       text-decoration: none;
       padding: 15px 35px;
-      border-radius: 12px;
+      border-radius: 6px;
       transition: all 0.3s ease;
       font-size: 1.1rem;
-      box-shadow: 0 6px 20px rgba(226, 48, 32, 0.3);
       margin-top: 20px;
-      border: 2px solid rgba(255, 255, 255, 0.3);
+      border: 2px solid #e23020;
     }
 
     .browse-link:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 10px 30px rgba(226, 48, 32, 0.4);
+      background: #b31a17;
       color: white;
       text-decoration: none;
-      border-color: rgba(255, 255, 255, 0.5);
+      transform: translateY(-2px);
     }
 
     .empty-features {
@@ -318,40 +312,37 @@
     }
 
     .feature-item {
-      background: rgba(255, 255, 255, 0.15);
-      backdrop-filter: blur(10px);
-      border-radius: 15px;
+      background: white;
+      border-radius: 8px;
       padding: 25px;
-      border: 1px solid rgba(255, 255, 255, 0.3);
+      border: 1px solid #e9ecef;
       transition: all 0.3s ease;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
     }
 
     .feature-item:hover {
       transform: translateY(-5px);
-      background: rgba(255, 255, 255, 0.2);
-      border-color: rgba(255, 255, 255, 0.4);
+      border-color: #e23020;
     }
 
     .feature-icon {
       font-size: 2.5rem;
       margin-bottom: 15px;
       display: block;
-      color: white;
-      text-shadow: 0 2px 8px rgba(0,0,0,0.3);
+      color: #e23020;
     }
 
     .feature-title {
       font-weight: 600;
       font-size: 1.1rem;
       margin-bottom: 10px;
-      color: red;
-      text-shadow: 0 1px 3px rgba(0,0,0,0.3);
+      color: #e23020;
     }
 
     .feature-description {
       font-size: 0.9rem;
       line-height: 1.5;
-      color: red;
+      color: #666;
       font-weight: 400;
     }
 
@@ -365,42 +356,40 @@
       width: 100%;
       height: 100%;
       background-color: rgba(0,0,0,0.7);
-      backdrop-filter: blur(5px);
     }
 
     .modal-content {
-      background: rgba(255, 255, 255, 0.95);
-      backdrop-filter: blur(10px);
+      background: white;
       margin: 5% auto;
       padding: 0;
-      border-radius: 20px;
+      border-radius: 8px;
       width: 90%;
       max-width: 600px;
-      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-      border: 1px solid rgba(255, 255, 255, 0.2);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+      border: 1px solid #e9ecef;
     }
 
     .modal-header {
-      background: linear-gradient(135deg, #e23020, #ff6b6b);
+      background: #e23020;
       color: white;
-      padding: 25px;
-      border-radius: 20px 20px 0 0;
+      padding: 20px;
+      border-radius: 8px 8px 0 0;
     }
 
     .modal-header h3 {
       margin: 0;
-      font-size: 1.5rem;
+      font-size: 1.3rem;
       font-weight: 700;
     }
 
     .modal-body {
-      padding: 30px;
+      padding: 25px;
     }
 
     .seat-selection-container {
       background: #f8f9fa;
-      border-radius: 15px;
-      padding: 25px;
+      border-radius: 6px;
+      padding: 20px;
       margin: 20px 0;
       border: 2px dashed #dee2e6;
     }
@@ -416,7 +405,7 @@
       width: 40px;
       height: 40px;
       background: #28a745;
-      border-radius: 8px;
+      border-radius: 6px;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -430,39 +419,37 @@
 
     .seat:hover {
       transform: scale(1.05);
-      box-shadow: 0 4px 12px rgba(40, 167, 69, 0.3);
     }
 
     .seat.selected {
       background: #e23020;
       transform: scale(1.1);
-      box-shadow: 0 4px 12px rgba(226, 48, 32, 0.4);
     }
 
     .screen-info {
       text-align: center;
       padding: 15px;
-      background: linear-gradient(135deg, #667eea, #764ba2);
+      background: #e23020;
       color: white;
-      border-radius: 10px;
+      border-radius: 6px;
       font-weight: 600;
       margin-top: 20px;
     }
 
     .selected-seats-info {
-      background: linear-gradient(135deg, #e23020, #ff6b6b);
+      background: #e23020;
       color: white;
       padding: 15px;
-      border-radius: 10px;
+      border-radius: 6px;
       text-align: center;
       margin: 15px 0;
       font-weight: 600;
     }
 
     .modal-footer {
-      padding: 20px 30px;
+      padding: 20px;
       background: #f8f9fa;
-      border-radius: 0 0 20px 20px;
+      border-radius: 0 0 8px 8px;
       text-align: right;
     }
 
@@ -471,20 +458,30 @@
       color: white;
       border: none;
       padding: 10px 20px;
-      border-radius: 8px;
+      border-radius: 6px;
       cursor: pointer;
       font-weight: 600;
       margin-right: 10px;
+      transition: background-color 0.3s ease;
+    }
+
+    .btn-cancel:hover {
+      background: #545b62;
     }
 
     .btn-confirm {
-      background: linear-gradient(135deg, #e23020, #ff6b6b);
+      background: #e23020;
       color: white;
       border: none;
       padding: 10px 20px;
-      border-radius: 8px;
+      border-radius: 6px;
       cursor: pointer;
       font-weight: 600;
+      transition: background-color 0.3s ease;
+    }
+
+    .btn-confirm:hover {
+      background: #b31a17;
     }
 
     .close {
@@ -515,7 +512,6 @@
       font-weight: 600;
       width: 100%;
       margin-top: auto;
-      box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
     }
 
     /* Responsive Design */
@@ -535,7 +531,7 @@
       }
 
       .page-title {
-        font-size: 2rem;
+        font-size: 1.8rem;
       }
 
       .action-buttons {
@@ -556,11 +552,11 @@
       }
 
       .empty-title {
-        font-size: 2rem;
+        font-size: 1.8rem;
       }
 
       .empty-subtitle {
-        font-size: 1.1rem;
+        font-size: 1rem;
       }
 
       .empty-features {

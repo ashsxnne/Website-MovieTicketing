@@ -6,20 +6,15 @@
     <title>Movie Ticket - {{ booking.movie }}</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
         body {
             font-family: 'Roboto', sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background-color: #fff9f8;
             min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
             padding: 20px;
+            margin: 0;
         }
 
         .ticket-container {
@@ -29,50 +24,36 @@
 
         .ticket {
             background: white;
-            border-radius: 15px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
             overflow: hidden;
-            position: relative;
+            border: 2px solid #e23020;
         }
 
         .ticket-header {
-            background: linear-gradient(135deg, #e23020, #ff6b6b);
+            background: #e23020;
             color: white;
-            padding: 25px;
+            padding: 20px;
             text-align: center;
-            position: relative;
-        }
-
-        .ticket-header::after {
-            content: '';
-            position: absolute;
-            bottom: -10px;
-            left: 0;
-            right: 0;
-            height: 20px;
-            background: white;
-            border-radius: 50% 50% 0 0;
         }
 
         .cinema-name {
-            font-size: 1.8rem;
+            font-size: 1.5rem;
             font-weight: 700;
             margin-bottom: 5px;
-            letter-spacing: 1px;
         }
 
         .ticket-label {
             font-size: 0.9rem;
             opacity: 0.9;
-            font-weight: 400;
         }
 
         .ticket-body {
-            padding: 30px 25px;
+            padding: 25px;
         }
 
         .movie-title {
-            font-size: 1.4rem;
+            font-size: 1.3rem;
             font-weight: 700;
             color: #333;
             margin-bottom: 20px;
@@ -81,8 +62,6 @@
         }
 
         .ticket-details {
-            display: grid;
-            gap: 15px;
             margin-bottom: 25px;
         }
 
@@ -90,7 +69,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 12px 0;
+            padding: 10px 0;
             border-bottom: 1px solid #f0f0f0;
         }
 
@@ -109,9 +88,10 @@
         .seats-display {
             background: #f8f9fa;
             padding: 15px;
-            border-radius: 8px;
+            border-radius: 6px;
             text-align: center;
             margin: 20px 0;
+            border: 2px dashed #dee2e6;
         }
 
         .seats-label {
@@ -122,31 +102,30 @@
         }
 
         .seats-value {
-            font-size: 1.3rem;
+            font-size: 1.2rem;
             font-weight: 700;
             color: #e23020;
-            letter-spacing: 2px;
         }
 
         .barcode {
             text-align: center;
-            margin: 25px 0;
+            margin: 20px 0;
             padding: 15px;
             background: #f8f9fa;
-            border-radius: 8px;
+            border-radius: 6px;
         }
 
         .barcode-number {
             font-family: 'Courier New', monospace;
-            font-size: 1.1rem;
+            font-size: 1rem;
             font-weight: 700;
-            letter-spacing: 3px;
+            letter-spacing: 2px;
             color: #333;
             margin-bottom: 10px;
         }
 
         .barcode-lines {
-            height: 60px;
+            height: 50px;
             background: repeating-linear-gradient(
                 90deg,
                 #000,
@@ -159,7 +138,7 @@
 
         .ticket-footer {
             background: #f8f9fa;
-            padding: 20px;
+            padding: 15px;
             text-align: center;
             border-top: 2px dashed #ddd;
         }
@@ -171,41 +150,41 @@
         }
 
         .print-btn {
-            background: linear-gradient(135deg, #e23020, #ff6b6b);
+            background: #e23020;
             color: white;
             border: none;
-            padding: 15px 30px;
-            font-size: 1.1rem;
+            padding: 12px 25px;
+            font-size: 1rem;
             font-weight: 700;
-            border-radius: 8px;
+            border-radius: 6px;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: background-color 0.3s ease;
             margin-top: 20px;
             width: 100%;
         }
 
         .print-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 20px rgba(226, 48, 32, 0.3);
+            background: #b31a17;
         }
 
         .action-buttons {
             display: flex;
-            gap: 15px;
-            margin-top: 20px;
+            gap: 10px;
+            margin-top: 15px;
         }
 
         .btn-secondary {
             background: #6c757d;
             color: white;
             border: none;
-            padding: 12px 20px;
+            padding: 10px 15px;
             border-radius: 6px;
             text-decoration: none;
             font-weight: 600;
             text-align: center;
             flex: 1;
-            transition: background 0.3s ease;
+            transition: background-color 0.3s ease;
+            font-size: 0.9rem;
         }
 
         .btn-secondary:hover {
@@ -214,7 +193,6 @@
             text-decoration: none;
         }
 
-        /* Print Styles */
         @media print {
             body {
                 background: white !important;
@@ -236,53 +214,16 @@
                 border: 2px solid #333 !important;
             }
         }
-
-        /* Perforated edge effect */
-        .ticket::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            bottom: 0;
-            left: -10px;
-            width: 20px;
-            background:
-                radial-gradient(circle at 0 10px, transparent 10px, white 11px) 0 10px,
-                radial-gradient(circle at 0 30px, transparent 10px, white 11px) 0 30px,
-                radial-gradient(circle at 0 50px, transparent 10px, white 11px) 0 50px,
-                radial-gradient(circle at 0 70px, transparent 10px, white 11px) 0 70px,
-                radial-gradient(circle at 0 90px, transparent 10px, white 11px) 0 90px;
-            background-size: 20px 100px;
-            background-repeat: repeat-y;
-        }
-
-        .ticket::after {
-            content: '';
-            position: absolute;
-            top: 0;
-            bottom: 0;
-            right: -10px;
-            width: 20px;
-            background:
-                radial-gradient(circle at 20px 10px, transparent 10px, white 11px) 0 10px,
-                radial-gradient(circle at 20px 30px, transparent 10px, white 11px) 0 30px,
-                radial-gradient(circle at 20px 50px, transparent 10px, white 11px) 0 50px,
-                radial-gradient(circle at 20px 70px, transparent 10px, white 11px) 0 70px,
-                radial-gradient(circle at 20px 90px, transparent 10px, white 11px) 0 90px;
-            background-size: 20px 100px;
-            background-repeat: repeat-y;
-        }
     </style>
 </head>
 <body>
     <div class="ticket-container">
         <div class="ticket">
-            <!-- Ticket Header -->
             <div class="ticket-header">
                 <div class="cinema-name">Movie ticket Booking | DKC 2025</div>
                 <div class="ticket-label">MOVIE TICKET & RECEIPT</div>
             </div>
 
-            <!-- Ticket Body -->
             <div class="ticket-body">
                 <div class="movie-title">{{ booking.movie }}</div>
 
@@ -309,13 +250,11 @@
                     </div>
                 </div>
 
-                <!-- Seats Display -->
                 <div class="seats-display">
                     <div class="seats-label">YOUR SEATS</div>
                     <div class="seats-value">{{ booking.seats }}</div>
                 </div>
 
-                <!-- Payment Details -->
                 <div class="ticket-details">
                     <div class="detail-row">
                         <span class="detail-label">Ticket Price</span>
@@ -331,7 +270,6 @@
                     </div>
                 </div>
 
-                <!-- Barcode -->
                 <div class="barcode">
                     <div class="barcode-number">{{ booking.reference }}</div>
                     <div class="barcode-lines"></div>
@@ -339,7 +277,6 @@
                 </div>
             </div>
 
-            <!-- Ticket Footer -->
             <div class="ticket-footer">
                 <div class="footer-text">
                     <strong>Important Instructions:</strong><br>
@@ -351,7 +288,6 @@
             </div>
         </div>
 
-        <!-- Action Buttons -->
         <button class="print-btn" onclick="window.print()">
             🖨️ Print Ticket & Receipt
         </button>
@@ -365,27 +301,5 @@
             </a>
         </div>
     </div>
-
-    <script>
-        // Auto-print option (optional)
-        // window.onload = function() {
-        //     setTimeout(function() {
-        //         window.print();
-        //     }, 1000);
-        // };
-
-        // Add some interactive effects
-        document.addEventListener('DOMContentLoaded', function() {
-            const ticket = document.querySelector('.ticket');
-            ticket.style.transform = 'scale(0.9)';
-            ticket.style.opacity = '0';
-
-            setTimeout(() => {
-                ticket.style.transition = 'all 0.5s ease';
-                ticket.style.transform = 'scale(1)';
-                ticket.style.opacity = '1';
-            }, 100);
-        });
-    </script>
 </body>
 </html>

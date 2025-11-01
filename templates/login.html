@@ -4,66 +4,29 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Login - Movie Ticket Booking</title>
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet" />
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
     body {
       font-family: 'Roboto', sans-serif;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      background-color: #fff9f8;
       color: #333;
       min-height: 100vh;
       display: flex;
       align-items: center;
       justify-content: center;
       padding: 20px;
-      animation: gradientShift 10s ease infinite;
-      background-size: 200% 200%;
-    }
-
-    @keyframes gradientShift {
-      0% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
-      100% { background-position: 0% 50%; }
+      margin: 0;
     }
 
     .modal {
-      background: rgba(255, 255, 255, 0.95);
-      backdrop-filter: blur(10px);
+      background: white;
       width: 100%;
       max-width: 420px;
       padding: 40px 35px;
-      border-radius: 20px;
-      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
       position: relative;
-      overflow: hidden;
-      animation: fadeInUp 0.8s ease-out;
-      border: 1px solid rgba(255, 255, 255, 0.2);
-    }
-
-    @keyframes fadeInUp {
-      from {
-        opacity: 0;
-        transform: translateY(30px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    .modal::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 5px;
-      background: linear-gradient(135deg, #e23020, #ff6b6b);
+      border-top: 5px solid #e23020;
     }
 
     .modal .close-btn {
@@ -76,18 +39,6 @@
       cursor: pointer;
       color: #e23020;
       font-weight: 700;
-      transition: all 0.3s ease;
-      width: 36px;
-      height: 36px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .modal .close-btn:hover {
-      background: rgba(226, 48, 32, 0.1);
-      transform: scale(1.1);
     }
 
     .modal h2 {
@@ -96,11 +47,9 @@
       margin-bottom: 25px;
       font-weight: 700;
       font-size: 1.8rem;
-      text-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     }
 
     .input-group {
-      position: relative;
       margin-bottom: 20px;
     }
 
@@ -108,22 +57,18 @@
       display: block;
       font-weight: 600;
       margin-bottom: 8px;
-      font-size: 0.9rem;
-      color: #555;
-      letter-spacing: 0.03em;
+      color: #333;
     }
 
     .modal form input[type="text"],
     .modal form input[type="email"],
     .modal form input[type="password"] {
       width: 100%;
-      padding: 14px 16px;
-      border: 1.5px solid #ddd;
-      border-radius: 10px;
+      padding: 12px;
+      border: 2px solid #ddd;
+      border-radius: 4px;
       font-size: 1rem;
-      transition: all 0.3s ease;
-      background: rgba(255, 255, 255, 0.8);
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+      background: white;
     }
 
     .modal form input[type="text"]:focus,
@@ -131,8 +76,6 @@
     .modal form input[type="password"]:focus {
       border-color: #e23020;
       outline: none;
-      box-shadow: 0 0 0 3px rgba(226, 48, 32, 0.2);
-      transform: translateY(-2px);
     }
 
     .checkbox-wrapper {
@@ -162,23 +105,10 @@
       color: #e23020;
       font-weight: 600;
       text-decoration: none;
-      transition: all 0.3s ease;
-      position: relative;
     }
 
-    .checkbox-wrapper a::after {
-      content: '';
-      position: absolute;
-      bottom: -2px;
-      left: 0;
-      width: 0;
-      height: 2px;
-      background: #e23020;
-      transition: width 0.3s ease;
-    }
-
-    .checkbox-wrapper a:hover::after {
-      width: 100%;
+    .checkbox-wrapper a:hover {
+      text-decoration: underline;
     }
 
     .role-buttons {
@@ -190,41 +120,18 @@
     .role-btn {
       flex: 1;
       font-size: 1rem;
-      padding: 14px 0;
-      background: linear-gradient(135deg, #e23020, #ff6b6b);
+      padding: 12px 0;
+      background: #e23020;
       border: none;
-      border-radius: 10px;
+      border-radius: 4px;
       color: white;
       font-weight: 700;
       cursor: pointer;
-      transition: all 0.3s ease;
-      box-shadow: 0 6px 15px rgba(226, 48, 32, 0.3);
-      position: relative;
-      overflow: hidden;
-    }
-
-    .role-btn::after {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: -100%;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-      transition: 0.5s;
+      transition: background-color 0.3s ease;
     }
 
     .role-btn:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 10px 25px rgba(226, 48, 32, 0.4);
-    }
-
-    .role-btn:hover::after {
-      left: 100%;
-    }
-
-    .role-btn:active {
-      transform: translateY(-1px);
+      background: #b31a17;
     }
 
     .modal .footer-text {
@@ -239,23 +146,10 @@
       font-weight: 700;
       text-decoration: none;
       margin-left: 5px;
-      transition: all 0.3s ease;
-      position: relative;
     }
 
-    .modal .footer-text a::after {
-      content: '';
-      position: absolute;
-      bottom: -2px;
-      left: 0;
-      width: 0;
-      height: 2px;
-      background: #e23020;
-      transition: width 0.3s ease;
-    }
-
-    .modal .footer-text a:hover::after {
-      width: 100%;
+    .modal .footer-text a:hover {
+      text-decoration: underline;
     }
 
     .error-message {
@@ -265,15 +159,8 @@
       font-weight: 600;
       background-color: #ffeaea;
       padding: 12px 15px;
-      border-radius: 8px;
+      border-radius: 4px;
       border: 1px solid #ffcdd2;
-      animation: shake 0.5s ease;
-    }
-
-    @keyframes shake {
-      0%, 100% { transform: translateX(0); }
-      10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
-      20%, 40%, 60%, 80% { transform: translateX(5px); }
     }
 
     .info-text {
@@ -285,16 +172,6 @@
       font-style: italic;
     }
 
-    .form-icon {
-      position: absolute;
-      right: 15px;
-      top: 50%;
-      transform: translateY(-50%);
-      color: #999;
-      font-size: 1.2rem;
-    }
-
-    /* Responsive Design */
     @media (max-width: 480px) {
       .modal {
         padding: 30px 25px;
@@ -311,9 +188,9 @@
   </style>
 </head>
 <body>
-  <div class="modal" role="dialog" aria-labelledby="loginTitle">
-    <button class="close-btn" aria-label="Close login form" onclick="window.location.href='{{ url_for('home') }}'">&times;</button>
-    <h2 id="loginTitle">Welcome Back!</h2>
+  <div class="modal">
+    <button class="close-btn" onclick="window.location.href='{{ url_for('home') }}'">&times;</button>
+    <h2>Welcome Back!</h2>
 
     {% if error %}
     <div class="error-message">{{ error }}</div>
@@ -323,14 +200,12 @@
       <div class="input-group">
         <label for="username_email">Username or Email</label>
         <input type="text" id="username_email" name="username_email" required placeholder="Enter your username or email" />
-        <span class="form-icon">👤</span>
       </div>
       <div class="info-text">You can use either your username or email address</div>
 
       <div class="input-group">
         <label for="password">Password</label>
         <input type="password" id="password" name="password" required placeholder="Enter your password" />
-        <span class="form-icon">🔒</span>
       </div>
 
       <div class="checkbox-wrapper">
@@ -341,7 +216,6 @@
         <a href="#">Forgot password?</a>
       </div>
 
-      <!-- Hidden input for role -->
       <input type="hidden" name="role" id="roleInput" value="customer" />
 
       <div class="role-buttons">
@@ -360,28 +234,6 @@
     function setRole(role) {
       document.getElementById('roleInput').value = role;
     }
-
-    // Auto-detect if input looks like email and set appropriate input type
-    document.getElementById('username_email').addEventListener('input', function(e) {
-      const value = e.target.value;
-      if (value.includes('@')) {
-        this.type = 'email';
-      } else {
-        this.type = 'text';
-      }
-    });
-
-    // Add cinematic focus effect
-    const inputs = document.querySelectorAll('input');
-    inputs.forEach(input => {
-      input.addEventListener('focus', function() {
-        this.parentElement.style.transform = 'scale(1.02)';
-      });
-
-      input.addEventListener('blur', function() {
-        this.parentElement.style.transform = 'scale(1)';
-      });
-    });
   </script>
 </body>
 </html>
