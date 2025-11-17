@@ -41,7 +41,7 @@ def create_database():
                     is_active BOOLEAN DEFAULT 1,
                     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP)''')
 
-    # Create admin user
+    # Create admin user (pre-defined only)
     admin_password = generate_password_hash('admin123')
     try:
         c.execute('''INSERT INTO user_table (u_name, u_email, u_pass, u_role) 

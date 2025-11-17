@@ -155,7 +155,8 @@ def register():
         email = request.form['email']
         password = request.form['password']
         confirm_password = request.form['confirm_password']
-        role = request.form['role']
+        # Force Customer role - remove admin registration
+        role = 'Customer'  # Always set to Customer
 
         if password != confirm_password:
             return render_template('register.html', error="Passwords do not match!")
@@ -200,6 +201,10 @@ def login():
         conn.close()
 
         if user and check_password_hash(user[3], password):
+            # Security: Prevent customers from logging in as admin
+            if user[4].lower() == 'admin' and role.lower() != 'admin':
+                return render_template('login.html', error="Admin access requires proper credentials")
+
             if user[4].lower() != role.lower():
                 return render_template('login.html', error=f"Please login as {user[4]}")
 

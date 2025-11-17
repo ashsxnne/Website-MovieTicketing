@@ -80,6 +80,12 @@
       outline: none;
     }
 
+    select:disabled {
+      background-color: #f8f9fa;
+      color: #666;
+      cursor: not-allowed;
+    }
+
     button[type="submit"] {
       width: 100%;
       padding: 12px 0;
@@ -142,6 +148,17 @@
       transition: all 0.3s ease;
     }
 
+    .role-note {
+      background: #e7f3ff;
+      border: 1px solid #b3d9ff;
+      border-radius: 4px;
+      padding: 10px;
+      margin-top: 10px;
+      font-size: 0.85rem;
+      color: #0066cc;
+      text-align: center;
+    }
+
     @media (max-width: 480px) {
       .register-container {
         padding: 30px 25px;
@@ -188,14 +205,16 @@
 
       <div class="input-group">
         <label for="role">Role:</label>
-        <select id="role" name="role" required>
-          <option value="">Select Role</option>
-          <option value="Customer">Customer</option>
-          <option value="Admin">Admin</option>
+        <select id="role" name="role" required disabled>
+          <option value="Customer" selected>Customer</option>
         </select>
+        <input type="hidden" name="role" value="Customer">
+        <div class="role-note">
+          All new accounts are created as Customers
+        </div>
       </div>
 
-      <button type="submit">Register</button>
+      <button type="submit">Register as Customer</button>
     </form>
 
     <div class="register-footer">
