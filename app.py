@@ -155,12 +155,15 @@ def register():
         email = request.form['email']
         password = request.form['password']
         confirm_password = request.form['confirm_password']
-        role = request.form['role']
 
         if password != confirm_password:
             return render_template('register.html', error="Passwords do not match!")
 
         hashed_password = generate_password_hash(password)
+
+        # ✅ DEFAULT VALUES (ADMIN CONTROLS THESE)
+        role = 'Customer'
+        status = 'Pending'   # waiting for admin approval
 
         try:
             conn = sqlite3.connect('database.db')
@@ -168,14 +171,18 @@ def register():
             c.execute("""
                 INSERT INTO user_table (u_name, u_email, u_pass, u_role, u_status)
                 VALUES (?, ?, ?, ?, ?)
-            """, (username, email, hashed_password, role, 'Active'))
+            """, (username, email, hashed_password, role, status))
             conn.commit()
         except sqlite3.IntegrityError:
             return render_template('register.html', error="Email already registered!")
         finally:
             conn.close()
 
-        return redirect(url_for('login'))
+        # ✅ SUCCESS MESSAGE
+        return render_template(
+            'login.html',
+            success="Account recorded. Waiting for admin approval."
+        )
 
     return render_template('register.html')
 
@@ -185,7 +192,6 @@ def login():
     if request.method == 'POST':
         username_email = request.form['username_email']
         password = request.form['password']
-        role = request.form.get('role', 'customer')
 
         conn = sqlite3.connect('database.db')
         c = conn.cursor()
@@ -200,15 +206,20 @@ def login():
         conn.close()
 
         if user and check_password_hash(user[3], password):
-            if user[4].lower() != role.lower():
-                return render_template('login.html', error=f"Please login as {user[4]}")
+            # ---------------- Block unapproved users ----------------
+            if user[5].lower() != 'active':
+                return render_template(
+                    'login.html',
+                    error="Your account is pending admin approval."
+                )
 
+            # ---------------- Set session ----------------
             session['user_id'] = user[0]
             session['username'] = user[1]
             session['role'] = user[4]
             session['status'] = user[5]
 
-            if session['role'] == 'Admin':
+            if session['role'].lower() == 'admin':
                 return redirect(url_for('admin_dashboard'))
             else:
                 return redirect(url_for('customer_dashboard'))

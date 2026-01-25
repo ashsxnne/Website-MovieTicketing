@@ -192,37 +192,54 @@
     <button class="close-btn" onclick="window.location.href='{{ url_for('home') }}'">&times;</button>
     <h2>Welcome Back!</h2>
 
-    {% if error %}
-    <div class="error-message">{{ error }}</div>
-    {% endif %}
+<!-- Success message from registration -->
+{% if success %}
+<div class="error-message" style="
+  background-color:#e8f5e9;
+  color:#2e7d32;
+  border:1px solid #c8e6c9;
+  text-align:center;
+  font-weight:600;
+  margin-bottom:20px;
+  padding:12px 15px;
+  border-radius:4px;
+">
+  {{ success }}
+</div>
+{% endif %}
 
-    <form method="POST" action="{{ url_for('login') }}">
-      <div class="input-group">
-        <label for="username_email">Username or Email</label>
-        <input type="text" id="username_email" name="username_email" required placeholder="Enter your username or email" />
-      </div>
-      <div class="info-text">You can use either your username or email address</div>
+{% if error %}
+<div class="error-message">{{ error }}</div>
+{% endif %}
 
-      <div class="input-group">
-        <label for="password">Password</label>
-        <input type="password" id="password" name="password" required placeholder="Enter your password" />
-      </div>
+<form method="POST" action="{{ url_for('login') }}">
+  <div class="input-group">
+    <label for="username_email">Username or Email</label>
+    <input type="text" id="username_email" name="username_email" required placeholder="Enter your username or email" />
+  </div>
+  <div class="info-text">You can use either your username or email address</div>
 
-      <div class="checkbox-wrapper">
-        <label>
-          <input type="checkbox" name="remember" />
-          Remember me
-        </label>
-        <a href="#">Forgot password?</a>
-      </div>
+  <div class="input-group">
+    <label for="password">Password</label>
+    <input type="password" id="password" name="password" required placeholder="Enter your password" />
+  </div>
 
-      <input type="hidden" name="role" id="roleInput" value="customer" />
+  <div class="checkbox-wrapper">
+    <label>
+      <input type="checkbox" name="remember" />
+      Remember me
+    </label>
+    <a href="#">Forgot password?</a>
+  </div>
 
-      <div class="role-buttons">
-        <button type="submit" class="role-btn" onclick="setRole('admin')">Login as Admin</button>
-        <button type="submit" class="role-btn" onclick="setRole('customer')">Login as Customer</button>
-      </div>
-    </form>
+  <!-- Single Professional Login Button -->
+  <button type="submit" class="role-btn" style="width:100%;">
+    Login
+  </button>
+</form>
+
+
+
 
     <div class="footer-text">
       Don't have an account?
