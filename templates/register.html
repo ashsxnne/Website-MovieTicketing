@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Register - Movie Ticket Booking</title>
+  <title>Create Account - Movie Ticket Booking</title>
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet" />
   <style>
     body {
@@ -23,10 +23,10 @@
       width: 100%;
       max-width: 420px;
       padding: 40px 35px;
-      border-radius: 8px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.1);
       position: relative;
-      border-top: 5px solid #e23020;
+      border-top: 20px solid #e23020;
     }
 
     .close-btn {
@@ -44,7 +44,7 @@
     h2 {
       text-align: center;
       color: #e23020;
-      margin-bottom: 25px;
+      margin-bottom: 30px;
       font-weight: 700;
       font-size: 1.8rem;
     }
@@ -54,61 +54,86 @@
       font-weight: 600;
       margin-bottom: 8px;
       color: #333;
+      font-size: 0.95rem;
     }
 
     .input-group {
-      margin-bottom: 20px;
+      margin-bottom: 24px;
     }
 
     input[type="text"],
     input[type="email"],
-    input[type="password"],
-    select {
+    input[type="password"] {
       width: 100%;
-      padding: 12px;
-      border: 2px solid #ddd;
-      border-radius: 4px;
+      padding: 14px;
+      border: 2px solid #e1e5e9;
+      border-radius: 6px;
       font-size: 1rem;
       background: white;
+      transition: all 0.3s ease;
     }
 
     input[type="text"]:focus,
     input[type="email"]:focus,
-    input[type="password"]:focus,
-    select:focus {
+    input[type="password"]:focus {
       border-color: #e23020;
       outline: none;
+      box-shadow: 0 0 0 3px rgba(226, 48, 32, 0.1);
     }
 
-    select:disabled {
-      background-color: #f8f9fa;
+    .password-strength {
+      height: 4px;
+      background: #eee;
+      border-radius: 2px;
+      margin-top: 8px;
+      overflow: hidden;
+    }
+
+    .password-strength-bar {
+      height: 100%;
+      width: 0;
+      border-radius: 2px;
+      transition: all 0.3s ease;
+    }
+
+    .password-requirements {
+      font-size: 0.8rem;
       color: #666;
-      cursor: not-allowed;
+      margin-top: 8px;
+      line-height: 1.4;
     }
 
     button[type="submit"] {
       width: 100%;
-      padding: 12px 0;
+      padding: 14px 0;
       background: #e23020;
       border: none;
-      border-radius: 4px;
+      border-radius: 6px;
       color: white;
       font-weight: 700;
       font-size: 1.1rem;
       cursor: pointer;
-      transition: background-color 0.3s ease;
+      transition: all 0.3s ease;
       margin-top: 10px;
     }
 
     button[type="submit"]:hover {
       background: #b31a17;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(226, 48, 32, 0.2);
+    }
+
+    button[type="submit"]:active {
+      transform: translateY(0);
     }
 
     .register-footer {
-      margin-top: 25px;
+      margin-top: 30px;
       text-align: center;
-      font-size: 0.9rem;
-      color: #777;
+      font-size: 0.95rem;
+      color: #666;
+      padding-top: 20px;
+      border-top: 1px solid #eee;
     }
 
     .register-footer a {
@@ -122,41 +147,138 @@
       text-decoration: underline;
     }
 
+    /* Success Message Styles */
+    .success-container {
+      background: #d4edda;
+      border: 1px solid #c3e6cb;
+      border-radius: 8px;
+      padding: 25px;
+      margin-bottom: 25px;
+      text-align: center;
+      animation: slideIn 0.5s ease;
+    }
+
+    .success-icon {
+      font-size: 3rem;
+      color: #28a745;
+      margin-bottom: 15px;
+      display: block;
+    }
+
+    .success-title {
+      color: #155724;
+      font-size: 1.4rem;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+
+    .success-message {
+      color: #155724;
+      font-size: 1rem;
+      line-height: 1.6;
+      margin-bottom: 20px;
+      white-space: pre-line;
+    }
+
+    .success-actions {
+      display: flex;
+      gap: 15px;
+      justify-content: center;
+      margin-top: 20px;
+    }
+
+    .btn-login {
+      background: #28a745;
+      color: white;
+      padding: 10px 25px;
+      border-radius: 6px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.3s ease;
+    }
+
+    .btn-login:hover {
+      background: #218838;
+      transform: translateY(-2px);
+      color: white;
+      text-decoration: none;
+    }
+
+    .btn-home {
+      background: #6c757d;
+      color: white;
+      padding: 10px 25px;
+      border-radius: 6px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.3s ease;
+    }
+
+    .btn-home:hover {
+      background: #545b62;
+      transform: translateY(-2px);
+      color: white;
+      text-decoration: none;
+    }
+
     .error-message {
       color: #e23020;
       text-align: center;
       margin-bottom: 20px;
       font-weight: 600;
       background-color: #ffeaea;
-      padding: 12px 15px;
-      border-radius: 4px;
+      padding: 14px 16px;
+      border-radius: 6px;
       border: 1px solid #ffcdd2;
+      font-size: 0.9rem;
     }
 
-    .password-strength {
-      height: 4px;
-      background: #eee;
-      border-radius: 2px;
-      margin-top: 5px;
-      overflow: hidden;
+    .form-note {
+      color: #666;
+      font-size: 0.85rem;
+      margin-top: 6px;
+      font-style: italic;
     }
 
-    .password-strength-bar {
-      height: 100%;
-      width: 0;
-      border-radius: 2px;
+    .availability-message {
+      font-size: 0.8rem;
+      margin-top: 6px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .available {
+      color: #28a745;
+    }
+
+    .unavailable {
+      color: #e23020;
+    }
+
+    .checking {
+      color: #666;
+    }
+
+    /* Animation for success message */
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateY(-20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Hide form when success is shown */
+    .form-container {
       transition: all 0.3s ease;
     }
 
-    .role-note {
-      background: #e7f3ff;
-      border: 1px solid #b3d9ff;
-      border-radius: 4px;
-      padding: 10px;
-      margin-top: 10px;
-      font-size: 0.85rem;
-      color: #0066cc;
-      text-align: center;
+    .form-hidden {
+      display: none;
     }
 
     @media (max-width: 480px) {
@@ -167,96 +289,324 @@
       h2 {
         font-size: 1.6rem;
       }
+
+      .success-actions {
+        flex-direction: column;
+      }
+
+      .btn-login, .btn-home {
+        width: 100%;
+        text-align: center;
+      }
+    }
+
+    /* Loading state */
+    button[type="submit"]:disabled {
+      background: #ccc;
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
     }
   </style>
 </head>
 <body>
   <div class="register-container">
     <button class="close-btn" onclick="window.location.href='{{ url_for('home') }}'">&times;</button>
-    <h2>Create Your Account</h2>
+    <h2>Create Account</h2>
 
     {% if error %}
     <div class="error-message">{{ error }}</div>
     {% endif %}
 
-    <form method="POST" action="{{ url_for('register') }}">
-      <div class="input-group">
-        <label for="username">Username:</label>
-        <input type="text" id="username" name="username" required placeholder="Enter your username">
-      </div>
+    {% if success %}
+    <!-- Success Message Container -->
+    <div class="success-container">
+      <div class="success-icon">✅</div>
+      <h3 class="success-title">Account Created Successfully!</h3>
+      <div class="success-message">{{ success }}</div>
 
-      <div class="input-group">
-        <label for="email">Email:</label>
-        <input type="email" id="email" name="email" required placeholder="Enter your email">
+      <div class="success-actions">
+        <a href="{{ url_for('login') }}" class="btn-login">📱 Login Now</a>
+        <a href="{{ url_for('home') }}" class="btn-home">🏠 Back to Home</a>
       </div>
+    </div>
+    {% endif %}
 
-      <div class="input-group">
-        <label for="password">Password:</label>
-        <input type="password" id="password" name="password" required placeholder="Enter your password">
-        <div class="password-strength">
-          <div class="password-strength-bar" id="passwordStrength"></div>
+    <!-- Registration Form (hidden when success is shown) -->
+    <div class="form-container {% if success %}form-hidden{% endif %}" id="registrationForm">
+      <form method="POST" action="{{ url_for('register') }}" id="registerForm">
+        <div class="input-group">
+          <label for="username">Username</label>
+          <input type="text" id="username" name="username" required placeholder="Choose a username" value="{% if not success %}{{ request.form.username if request.form }}{% endif %}">
+          <div id="usernameMessage" class="availability-message">
+            <!-- Availability message will appear here -->
+          </div>
+          <div class="form-note">This will be your display name</div>
         </div>
-      </div>
 
-      <div class="input-group">
-        <label for="confirm_password">Confirm Password:</label>
-        <input type="password" id="confirm_password" name="confirm_password" required placeholder="Confirm your password">
-      </div>
+        <div class="input-group">
+          <label for="email">Email Address</label>
+          <input type="email" id="email" name="email" required placeholder="Enter your email" value="{% if not success %}{{ request.form.email if request.form }}{% endif %}">
+          <div id="emailMessage" class="availability-message">
+            <!-- Email availability message will appear here -->
+          </div>
+          <div class="form-note">We'll send your booking confirmations here</div>
+        </div>
 
-      <div class="input-group">
-        <label for="role">Role:</label>
-        <select id="role" name="role" required disabled>
-          <option value="Customer" selected>Customer</option>
-        </select>
+        <div class="input-group">
+          <label for="password">Password</label>
+          <input type="password" id="password" name="password" required placeholder="Create a secure password">
+          <div class="password-strength">
+            <div class="password-strength-bar" id="passwordStrength"></div>
+          </div>
+          <div class="password-requirements">
+            Must be at least 8 characters with letters and numbers
+          </div>
+        </div>
+
+        <div class="input-group">
+          <label for="confirm_password">Confirm Password</label>
+          <input type="password" id="confirm_password" name="confirm_password" required placeholder="Re-enter your password">
+        </div>
+
         <input type="hidden" name="role" value="Customer">
-        <div class="role-note">
-          All new accounts are created as Customers
-        </div>
+
+        <button type="submit" id="submitBtn">Create Account</button>
+      </form>
+
+      <div class="register-footer">
+        Already have an account?
+        <a href="{{ url_for('login') }}">Sign In</a>
       </div>
-
-      <button type="submit">Register as Customer</button>
-    </form>
-
-    <div class="register-footer">
-      Already have an account?
-      <a href="{{ url_for('login') }}">Login</a>
     </div>
   </div>
 
   <script>
     const passwordInput = document.getElementById('password');
+    const confirmPasswordInput = document.getElementById('confirm_password');
     const strengthBar = document.getElementById('passwordStrength');
+    const registerForm = document.getElementById('registerForm');
+    const submitBtn = document.getElementById('submitBtn');
+    const usernameInput = document.getElementById('username');
+    const emailInput = document.getElementById('email');
+    const usernameMessage = document.getElementById('usernameMessage');
+    const emailMessage = document.getElementById('emailMessage');
 
-    passwordInput.addEventListener('input', function() {
-      const password = this.value;
-      let strength = 0;
+    let usernameCheckTimeout;
+    let emailCheckTimeout;
+    let isUsernameAvailable = false;
+    let isEmailAvailable = false;
 
-      if (password.length >= 8) strength += 25;
-      if (/[A-Z]/.test(password)) strength += 25;
-      if (/[0-9]/.test(password)) strength += 25;
-      if (/[^A-Za-z0-9]/.test(password)) strength += 25;
+    // Only run validation if form is visible (not in success state)
+    if (document.querySelector('.form-container:not(.form-hidden)')) {
+      // Password strength indicator
+      passwordInput.addEventListener('input', function() {
+        const password = this.value;
+        let strength = 0;
 
-      strengthBar.style.width = strength + '%';
+        // Length check
+        if (password.length >= 8) strength += 25;
+        if (password.length >= 12) strength += 10;
 
-      if (strength < 50) {
-        strengthBar.style.background = '#e23020';
-      } else if (strength < 75) {
-        strengthBar.style.background = '#ffa726';
-      } else {
-        strengthBar.style.background = '#4caf50';
+        // Complexity checks
+        if (/[A-Z]/.test(password)) strength += 25;
+        if (/[0-9]/.test(password)) strength += 25;
+        if (/[^A-Za-z0-9]/.test(password)) strength += 25;
+
+        // Cap at 100%
+        strength = Math.min(strength, 100);
+        strengthBar.style.width = strength + '%';
+
+        // Color coding
+        if (strength < 50) {
+          strengthBar.style.backgroundColor = '#e23020';
+        } else if (strength < 75) {
+          strengthBar.style.backgroundColor = '#ffa726';
+        } else {
+          strengthBar.style.backgroundColor = '#4caf50';
+        }
+      });
+
+      // Real-time password match checking
+      function checkPasswordMatch() {
+        const password = passwordInput.value;
+        const confirmPassword = confirmPasswordInput.value;
+
+        if (confirmPassword === '') {
+          confirmPasswordInput.style.borderColor = '#e1e5e9';
+          confirmPasswordInput.style.boxShadow = 'none';
+          return;
+        }
+
+        if (password === confirmPassword) {
+          confirmPasswordInput.style.borderColor = '#4caf50';
+          confirmPasswordInput.style.boxShadow = '0 0 0 3px rgba(76, 175, 80, 0.1)';
+        } else {
+          confirmPasswordInput.style.borderColor = '#e23020';
+          confirmPasswordInput.style.boxShadow = '0 0 0 3px rgba(226, 48, 32, 0.1)';
+        }
       }
-    });
 
-    document.querySelector('form').addEventListener('submit', function(e) {
-      const password = document.getElementById('password').value;
-      const confirmPassword = document.getElementById('confirm_password').value;
+      passwordInput.addEventListener('input', checkPasswordMatch);
+      confirmPasswordInput.addEventListener('input', checkPasswordMatch);
 
-      if (password !== confirmPassword) {
-        e.preventDefault();
-        alert('Passwords do not match!');
-        return false;
+      // Real-time username availability check
+      usernameInput.addEventListener('input', function() {
+        const username = this.value.trim();
+
+        // Clear previous timeout
+        clearTimeout(usernameCheckTimeout);
+
+        // Reset border styling
+        usernameInput.style.borderColor = '#e1e5e9';
+        usernameInput.style.boxShadow = 'none';
+        usernameMessage.innerHTML = '';
+
+        if (username.length < 3) {
+          return; // Don't check if username is too short
+        }
+
+        // Show checking message
+        usernameMessage.innerHTML = '<span class="checking">Checking availability...</span>';
+
+        // Set new timeout to avoid too many requests
+        usernameCheckTimeout = setTimeout(() => {
+          checkUsernameAvailability(username);
+        }, 500);
+      });
+
+      async function checkUsernameAvailability(username) {
+        try {
+          const response = await fetch(`/check_username?username=${encodeURIComponent(username)}`);
+          const data = await response.json();
+
+          if (data.available === false) {
+            usernameInput.style.borderColor = '#e23020';
+            usernameInput.style.boxShadow = '0 0 0 3px rgba(226, 48, 32, 0.1)';
+            usernameMessage.innerHTML = '<span class="unavailable">✗ Username already taken</span>';
+            isUsernameAvailable = false;
+          } else {
+            usernameInput.style.borderColor = '#4caf50';
+            usernameInput.style.boxShadow = '0 0 0 3px rgba(76, 175, 80, 0.1)';
+            usernameMessage.innerHTML = '<span class="available">✓ Username available</span>';
+            isUsernameAvailable = true;
+          }
+        } catch (error) {
+          console.error('Error checking username:', error);
+          usernameMessage.innerHTML = '<span class="checking">Unable to check availability</span>';
+        }
       }
-    });
+
+      // Real-time email availability check
+      emailInput.addEventListener('input', function() {
+        const email = this.value.trim();
+
+        // Clear previous timeout
+        clearTimeout(emailCheckTimeout);
+
+        // Reset border styling
+        emailInput.style.borderColor = '#e1e5e9';
+        emailInput.style.boxShadow = 'none';
+        emailMessage.innerHTML = '';
+
+        if (!email.includes('@') || email.length < 5) {
+          return; // Don't check if email is invalid
+        }
+
+        // Show checking message
+        emailMessage.innerHTML = '<span class="checking">Checking availability...</span>';
+
+        // Set new timeout to avoid too many requests
+        emailCheckTimeout = setTimeout(() => {
+          checkEmailAvailability(email);
+        }, 500);
+      });
+
+      async function checkEmailAvailability(email) {
+        try {
+          const response = await fetch(`/check_email?email=${encodeURIComponent(email)}`);
+          const data = await response.json();
+
+          if (data.available === false) {
+            emailInput.style.borderColor = '#e23020';
+            emailInput.style.boxShadow = '0 0 0 3px rgba(226, 48, 32, 0.1)';
+            emailMessage.innerHTML = '<span class="unavailable">✗ Email already registered</span>';
+            isEmailAvailable = false;
+          } else {
+            emailInput.style.borderColor = '#4caf50';
+            emailInput.style.boxShadow = '0 0 0 3px rgba(76, 175, 80, 0.1)';
+            emailMessage.innerHTML = '<span class="available">✓ Email available</span>';
+            isEmailAvailable = true;
+          }
+        } catch (error) {
+          console.error('Error checking email:', error);
+          emailMessage.innerHTML = '<span class="checking">Unable to check availability</span>';
+        }
+      }
+
+      // Form validation
+      registerForm.addEventListener('submit', function(e) {
+        const password = passwordInput.value;
+        const confirmPassword = confirmPasswordInput.value;
+        const username = document.getElementById('username').value.trim();
+        const email = document.getElementById('email').value.trim();
+
+        // Basic validation
+        if (!username || !email || !password || !confirmPassword) {
+          e.preventDefault();
+          alert('Please fill in all fields.');
+          return false;
+        }
+
+        if (password !== confirmPassword) {
+          e.preventDefault();
+          alert('Passwords do not match!');
+          confirmPasswordInput.focus();
+          return false;
+        }
+
+        if (password.length < 8) {
+          e.preventDefault();
+          alert('Password must be at least 8 characters long.');
+          passwordInput.focus();
+          return false;
+        }
+
+        // Check if username is available (if we've checked it)
+        if (username.length >= 3 && !isUsernameAvailable) {
+          e.preventDefault();
+          alert('This username is already taken. Please choose another one.');
+          usernameInput.focus();
+          return false;
+        }
+
+        // Check if email is available (if we've checked it)
+        if (email.includes('@') && !isEmailAvailable) {
+          e.preventDefault();
+          alert('This email is already registered. Please use a different email or try logging in.');
+          emailInput.focus();
+          return false;
+        }
+
+        // Disable button and show loading state
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Creating Account...';
+
+        // Re-enable after 3 seconds if submission fails
+        setTimeout(() => {
+          submitBtn.disabled = false;
+          submitBtn.textContent = 'Create Account';
+        }, 3000);
+      });
+
+      // Press Enter to submit
+      registerForm.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter' && !submitBtn.disabled) {
+          e.preventDefault();
+          registerForm.submit();
+        }
+      });
+    }
   </script>
 </body>
 </html>

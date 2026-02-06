@@ -3,6 +3,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 import sqlite3
 import random
 import string
+
 import os
 
 app = Flask(__name__)
@@ -145,53 +146,127 @@ def home():
             'poster_url': movie[3]
         })
 
-    return render_template('logout.html', movies=movie_list)
+    if 'user_id' in session:
+        if session.get('role') == 'Customer':
+            return render_template('index.html', movies=movie_list)
+        else:
+            return redirect(url_for('admin_dashboard'))
+    else:
+        return render_template('logout.html', movies=movie_list)
+
 
 # ---------------- REGISTER ----------------
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     if request.method == 'POST':
-        username = request.form['username']
-        email = request.form['email']
+        username = request.form['username'].strip()
+        email = request.form['email'].strip().lower()
         password = request.form['password']
         confirm_password = request.form['confirm_password']
-        # Force Customer role - remove admin registration
-        role = 'Customer'  # Always set to Customer
+
+        role = 'Customer'
+
+        if not username or not email or not password:
+            return render_template('register.html', error="All fields are required!")
 
         if password != confirm_password:
             return render_template('register.html', error="Passwords do not match!")
 
+        if len(password) < 8:
+            return render_template('register.html', error="Password must be at least 8 characters long!")
+
+        conn = sqlite3.connect('database.db')
+        c = conn.cursor()
+
+        c.execute("SELECT u_id FROM user_table WHERE LOWER(u_name) = ?", (username.lower(),))
+        existing_username = c.fetchone()
+
+        c.execute("SELECT u_id FROM user_table WHERE LOWER(u_email) = ?", (email,))
+        existing_email = c.fetchone()
+
+        if existing_username:
+            conn.close()
+            return render_template('register.html',
+                                   error="Username already exists! Please choose a different username.")
+
+        if existing_email:
+            conn.close()
+            return render_template('register.html',
+                                   error="Email already registered! Please use a different email or try logging in.")
+
         hashed_password = generate_password_hash(password)
 
         try:
-            conn = sqlite3.connect('database.db')
-            c = conn.cursor()
             c.execute("""
                 INSERT INTO user_table (u_name, u_email, u_pass, u_role, u_status)
                 VALUES (?, ?, ?, ?, ?)
             """, (username, email, hashed_password, role, 'Active'))
             conn.commit()
-        except sqlite3.IntegrityError:
-            return render_template('register.html', error="Email already registered!")
-        finally:
+
+            user_id = c.lastrowid
             conn.close()
 
-        return redirect(url_for('login'))
+            success_message = f"""
+            🎉 Registration Successful!
+
+            Welcome {username}! Your account has been created successfully.
+
+            You can now login with your credentials.
+            """
+
+            return render_template('register.html', success=success_message)
+
+        except sqlite3.IntegrityError as e:
+            conn.close()
+            return render_template('register.html',
+                                   error="Registration failed. Please try again with different credentials.")
+        except Exception as e:
+            conn.close()
+            print(f"Error during registration: {e}")
+            return render_template('register.html', error="An error occurred during registration. Please try again.")
 
     return render_template('register.html')
+
+@app.route('/check_username')
+def check_username():
+    username = request.args.get('username', '').strip().lower()
+    if not username:
+        return jsonify({'available': True})
+
+    conn = sqlite3.connect('database.db')
+    c = conn.cursor()
+    c.execute("SELECT u_id FROM user_table WHERE LOWER(u_name) = ?", (username,))
+    existing = c.fetchone()
+    conn.close()
+
+    return jsonify({'available': not existing})
+
+
+@app.route('/check_email')
+def check_email():
+    email = request.args.get('email', '').strip().lower()
+    if not email:
+        return jsonify({'available': True})
+
+    conn = sqlite3.connect('database.db')
+    c = conn.cursor()
+    c.execute("SELECT u_id FROM user_table WHERE LOWER(u_email) = ?", (email,))
+    existing = c.fetchone()
+    conn.close()
+
+    return jsonify({'available': not existing})
+
 
 # ---------------- LOGIN ----------------
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
-        username_email = request.form['username_email']
+        username_email = request.form['username_email'].strip()
         password = request.form['password']
-        role = request.form.get('role', 'customer')
 
         conn = sqlite3.connect('database.db')
         c = conn.cursor()
 
-        # Check if input is email or username
         if '@' in username_email:
             c.execute("SELECT * FROM user_table WHERE u_email = ?", (username_email,))
         else:
@@ -201,19 +276,16 @@ def login():
         conn.close()
 
         if user and check_password_hash(user[3], password):
-            # Security: Prevent customers from logging in as admin
-            if user[4].lower() == 'admin' and role.lower() != 'admin':
-                return render_template('login.html', error="Admin access requires proper credentials")
+            user_role = user[4] if user[4] else 'Customer'
 
-            if user[4].lower() != role.lower():
-                return render_template('login.html', error=f"Please login as {user[4]}")
+            user_status = user[5] if len(user) > 5 else 'Active'
 
             session['user_id'] = user[0]
             session['username'] = user[1]
-            session['role'] = user[4]
-            session['status'] = user[5]
+            session['role'] = user_role
+            session['status'] = user_status
 
-            if session['role'] == 'Admin':
+            if user_role.lower() == 'admin':
                 return redirect(url_for('admin_dashboard'))
             else:
                 return redirect(url_for('customer_dashboard'))
@@ -455,7 +527,6 @@ def delete_schedule():
         return "Unauthorized", 401
 
 # ---------------- GET SCHEDULES FOR BOOKING ----------------
-# ---------------- GET SCHEDULES FOR BOOKING ----------------
 @app.route('/get_schedules_for_booking')
 def get_schedules_for_booking():
     movie_title = request.args.get('movie_title')
@@ -621,16 +692,13 @@ def save_seat_configuration():
         c = conn.cursor()
 
         try:
-            # Update schedule seat counts
             c.execute('''UPDATE movie_schedules 
                          SET total_seats = ?, available_seats = ? 
                          WHERE id = ?''',
                       (total_seats, available_seats, schedule_id))
 
-            # Clear existing seats for this schedule
             c.execute("DELETE FROM seat_availability WHERE schedule_id = ?", (schedule_id,))
 
-            # Add new seats based on layout
             if seat_layout:
                 seats = [seat.strip() for seat in seat_layout.split(',')]
                 for seat in seats:
@@ -649,6 +717,104 @@ def save_seat_configuration():
             conn.close()
     else:
         return "Unauthorized", 401
+
+# ---------------- GET FEATURED MOVIES ----------------
+@app.route('/get_featured_movies')
+def get_featured_movies():
+    conn = sqlite3.connect('database.db')
+    c = conn.cursor()
+    c.execute("SELECT id, title, genre, duration, rating, description, poster_url FROM movies WHERE is_active = 1")
+    movies = c.fetchall()
+    conn.close()
+
+    movie_list = []
+    for movie in movies:
+        movie_list.append({
+            'id': movie[0],
+            'title': movie[1],
+            'genre': movie[2],
+            'duration': movie[3],
+            'rating': movie[4],
+            'description': movie[5],
+            'poster_url': movie[6]
+        })
+
+i9ooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo    total_movies = len(movie_list)
+    if total_movies >= 20:
+        featured_count = 10
+    elif total_movies > 15:
+        featured_count = 7
+    elif total_movies > 10:
+        featured_count = 5
+    elif total_movies > 5:
+        featured_count = 3
+    else:
+        featured_count = total_movies
+
+    featured_movies = movie_list[:featured_count] if featured_count > 0 else []
+
+    return jsonify({
+        'featured_movies': featured_movies,
+        'total_movies': total_movies,
+        'featured_count': featured_count
+    })
+
+# ---------------- SEARCH MOVIES ----------------
+@app.route('/search_movies')
+def search_movies():
+    query = request.args.get('query', '')
+    genre = request.args.get('genre', '')
+    rating = request.args.get('rating', '')
+
+    conn = sqlite3.connect('database.db')
+    c = conn.cursor()
+
+    sql = "SELECT id, title, genre, duration, rating, description, poster_url FROM movies WHERE is_active = 1"
+    params = []
+
+    if query:
+        sql += " AND (title LIKE ? OR description LIKE ?)"
+        params.extend([f'%{query}%', f'%{query}%'])
+
+    if genre:
+        sql += " AND genre LIKE ?"
+        params.append(f'%{genre}%')
+
+    if rating:
+        sql += " AND rating = ?"
+        params.append(rating)
+
+    sql += " ORDER BY title"
+
+    c.execute(sql, params)
+    movies = c.fetchall()
+    conn.close()
+
+    movie_list = []
+    for movie in movies:
+        movie_list.append({
+            'id': movie[0],
+            'title': movie[1],
+            'genre': movie[2],
+            'duration': movie[3],
+            'rating': movie[4],
+            'description': movie[5],
+            'poster_url': movie[6]
+        })
+
+    return jsonify(movie_list)
+
+# ---------------- GET ALL GENRES ----------------
+@app.route('/get_all_genres')
+def get_all_genres():
+    conn = sqlite3.connect('database.db')
+    c = conn.cursor()
+    c.execute("SELECT DISTINCT genre FROM movies WHERE is_active = 1 AND genre IS NOT NULL AND genre != ''")
+    genres = c.fetchall()
+    conn.close()
+
+    genre_list = [genre[0] for genre in genres]
+    return jsonify(genre_list)
 
 # ---------------- CUSTOMER DASHBOARD ----------------
 @app.route('/customer')
@@ -733,14 +899,12 @@ def book_ticket():
             fee = request.form.get('fee', 0)
             show_date = request.form.get('show_date', 'N/A')
 
-            # Generate booking reference
             booking_ref = ''.join(random.choices(string.ascii_uppercase + string.digits, k=8))
 
             conn = sqlite3.connect('database.db')
             c = conn.cursor()
 
             try:
-                # Get schedule ID
                 c.execute("SELECT id FROM movie_schedules WHERE movie_title = ? AND show_date = ? AND showtime = ?",
                           (movie, show_date, showtime))
                 schedule_data = c.fetchone()
@@ -748,15 +912,12 @@ def book_ticket():
                     return "Schedule not found", 404
                 schedule_id = schedule_data[0]
 
-                # Insert booking
                 c.execute(
                     "INSERT INTO tbl_booking (u_id, movie_name, show_date, showtime, seat_no, booking_fee, payment_status, booking_reference) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
                     (session['user_id'], movie, show_date, showtime, seats, fee, 'Paid', booking_ref))
 
-                # Get the booking ID
                 booking_id = c.lastrowid
 
-                # Update seat availability in movie_schedules
                 seat_list = [seat.strip() for seat in seats.split(',')]
                 num_seats_booked = len(seat_list)
 
@@ -765,7 +926,6 @@ def book_ticket():
                             WHERE id = ?''',
                           (num_seats_booked, schedule_id))
 
-                # Mark seats as unavailable in seat_availability table
                 for seat in seat_list:
                     c.execute('''UPDATE seat_availability 
                                 SET is_available = 0, booking_id = ?
@@ -781,11 +941,56 @@ def book_ticket():
                 conn.close()
                 return f"Error booking ticket: {str(e)}", 500
 
-        # GET request - show the booking form
-        return render_template('buyticket.html')
+        movie_title = request.args.get('movie', '')
+
+        conn = sqlite3.connect('database.db')
+        c = conn.cursor()
+
+        movie_details = None
+        if movie_title:
+            c.execute("SELECT title, genre, duration, rating, description, poster_url FROM movies WHERE title = ?",
+                      (movie_title,))
+            movie_details = c.fetchone()
+
+        schedules = []
+        if movie_title:
+            c.execute("""
+                SELECT id, show_date, showtime, available_seats 
+                FROM movie_schedules 
+                WHERE movie_title = ? AND is_active = 1 
+                AND show_date >= date('now')
+                ORDER BY show_date, showtime
+            """, (movie_title,))
+            schedules = c.fetchall()
+
+        conn.close()
+
+        movie_data = None
+        if movie_details:
+            movie_data = {
+                'title': movie_details[0],
+                'genre': movie_details[1],
+                'duration': movie_details[2],
+                'rating': movie_details[3],
+                'description': movie_details[4],
+                'poster_url': movie_details[5]
+            }
+
+        schedule_list = []
+        for schedule in schedules:
+            schedule_list.append({
+                'id': schedule[0],
+                'show_date': schedule[1],
+                'showtime': schedule[2],
+                'available_seats': schedule[3]
+            })
+
+        return render_template('buyticket.html',
+                               movie=movie_data,
+                               schedules=schedule_list,
+                               selected_movie_title=movie_title)
     else:
         return redirect(url_for('login'))
-
 
 # ---------------- CANCEL TICKET WITH SEAT SELECTION ----------------
 @app.route('/cancel_ticket/<int:ticket_id>', methods=['POST'])

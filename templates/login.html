@@ -26,7 +26,7 @@
       border-radius: 8px;
       box-shadow: 0 2px 8px rgba(0,0,0,0.1);
       position: relative;
-      border-top: 5px solid #e23020;
+      border-top: 20px solid #e23020;
     }
 
     .modal .close-btn {
@@ -111,29 +111,6 @@
       text-decoration: underline;
     }
 
-    .role-buttons {
-      display: flex;
-      gap: 12px;
-      margin-top: 15px;
-    }
-
-    .role-btn {
-      flex: 1;
-      font-size: 1rem;
-      padding: 12px 0;
-      background: #e23020;
-      border: none;
-      border-radius: 4px;
-      color: white;
-      font-weight: 700;
-      cursor: pointer;
-      transition: background-color 0.3s ease;
-    }
-
-    .role-btn:hover {
-      background: #b31a17;
-    }
-
     .modal .footer-text {
       margin-top: 25px;
       text-align: center;
@@ -172,6 +149,23 @@
       font-style: italic;
     }
 
+    .submit-btn {
+      width: 100%;
+      padding: 12px 0;
+      background: #e23020;
+      border: none;
+      border-radius: 4px;
+      color: white;
+      font-weight: 700;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .submit-btn:hover {
+      background: #b31a17;
+    }
+
     @media (max-width: 480px) {
       .modal {
         padding: 30px 25px;
@@ -179,10 +173,6 @@
 
       .modal h2 {
         font-size: 1.6rem;
-      }
-
-      .role-buttons {
-        flex-direction: column;
       }
     }
   </style>
@@ -196,7 +186,7 @@
     <div class="error-message">{{ error }}</div>
     {% endif %}
 
-    <form method="POST" action="{{ url_for('login') }}">
+    <form method="POST" action="{{ url_for('login') }}" id="loginForm">
       <div class="input-group">
         <label for="username_email">Username or Email</label>
         <input type="text" id="username_email" name="username_email" required placeholder="Enter your username or email" />
@@ -216,11 +206,7 @@
         <a href="#">Forgot password?</a>
       </div>
 
-      <input type="hidden" name="role" id="roleInput" value="customer" />
-
-<div style="text-align: center;">
-    <button type="submit" class="role-btn" style="width: 100%;">Login</button>
-</div>
+      <button type="submit" class="submit-btn">Login</button>
     </form>
 
     <div class="footer-text">
@@ -230,9 +216,17 @@
   </div>
 
   <script>
-    function setRole(role) {
-      document.getElementById('roleInput').value = role;
-    }
+    // Form validation
+    document.getElementById('loginForm').addEventListener('submit', function(e) {
+      const username = document.getElementById('username_email').value.trim();
+      const password = document.getElementById('password').value.trim();
+
+      if (!username || !password) {
+        e.preventDefault();
+        alert('Please fill in all required fields.');
+        return false;
+      }
+    });
   </script>
 </body>
 </html>
