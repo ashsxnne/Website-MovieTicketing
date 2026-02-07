@@ -739,7 +739,7 @@ def get_featured_movies():
             'poster_url': movie[6]
         })
 
-i9ooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo    total_movies = len(movie_list)
+    total_movies = len(movie_list)
     if total_movies >= 20:
         featured_count = 10
     elif total_movies > 15:
@@ -1095,6 +1095,43 @@ def cancel_ticket(ticket_id):
             return f"Error cancelling ticket: {str(e)}", 500
     else:
         return redirect(url_for('login'))
+
+# ---------------- GET USER TICKET COUNT ----------------
+@app.route('/viewtickets_data')
+def viewtickets_data():
+    if 'role' in session and session['role'] == 'Customer':
+        conn = sqlite3.connect('database.db')
+        c = conn.cursor()
+        c.execute("SELECT COUNT(*) FROM tbl_booking WHERE u_id = ?", (session['user_id'],))
+        ticket_count = c.fetchone()[0]
+        conn.close()
+        return jsonify({'ticket_count': ticket_count})
+    else:
+        return jsonify({'ticket_count': 0})
+
+
+# ---------------- GET MOVIES COUNT ----------------
+@app.route('/get_movies_count')
+def get_movies_count():
+    conn = sqlite3.connect('database.db')
+    c = conn.cursor()
+
+    c.execute("SELECT COUNT(*) FROM movies WHERE is_active = 1")
+    total_movies = c.fetchone()[0]
+
+    if total_movies >= 20:
+        featured_count = 10
+    elif total_movies > 15:
+        featured_count = 7
+    elif total_movies > 10:
+        featured_count = 5
+    elif total_movies > 5:
+        featured_count = 3
+    else:
+        featured_count = total_movies
+
+    conn.close()
+    return jsonify({'total_movies': total_movies, 'featured_count': featured_count})
 
 # ---------------- CANCELLATION SUCCESS ----------------
 @app.route('/cancel_success')

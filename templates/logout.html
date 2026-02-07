@@ -106,170 +106,14 @@
       max-width: 1200px;
       margin: 0 auto;
       width: 100%;
+      min-height: calc(100vh - 200px);
     }
 
-    /* Hero Section */
-    .hero-section {
-      text-align: center;
-      padding: 60px 20px;
-      margin-bottom: 50px;
-      background: linear-gradient(135deg, rgba(226, 48, 32, 0.95), rgba(255, 107, 107, 0.95)), url('https://images.unsplash.com/photo-1489599809516-9827b6d1cf13?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80');
-      background-size: cover;
-      background-position: center;
-      color: white;
-      border-radius: 20px;
-      box-shadow: 0 10px 40px rgba(226, 48, 32, 0.3);
-      position: relative;
-      overflow: hidden;
-    }
-
-    .hero-title {
-      color: white;
-      font-size: 3.2rem;
-      font-weight: 800;
-      margin-bottom: 20px;
-      text-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-    }
-
-    .hero-subtitle {
-      color: rgba(255, 255, 255, 0.95);
-      font-size: 1.4rem;
-      max-width: 700px;
-      margin: 0 auto 40px;
-      line-height: 1.6;
-      font-weight: 400;
-    }
-
-    .hero-buttons {
-      display: flex;
-      gap: 25px;
-      justify-content: center;
-      margin-top: 30px;
-      flex-wrap: wrap;
-    }
-
-    .hero-btn {
-      padding: 16px 40px;
-      border-radius: 12px;
-      font-weight: 700;
-      font-size: 1.2rem;
-      text-decoration: none;
-      transition: all 0.3s ease;
-      display: inline-flex;
-      align-items: center;
-      gap: 12px;
-      min-width: 200px;
-      justify-content: center;
-    }
-
-    .btn-primary {
-      background: white;
-      color: #e23020;
-      box-shadow: 0 6px 20px rgba(255, 255, 255, 0.3);
-    }
-
-    .btn-primary:hover {
-      background: #f8f9fa;
-      transform: translateY(-4px) scale(1.05);
-      box-shadow: 0 12px 30px rgba(255, 255, 255, 0.4);
-      color: #e23020;
-    }
-
-    .btn-secondary {
-      background: rgba(255, 255, 255, 0.15);
-      color: white;
-      border: 3px solid white;
-      backdrop-filter: blur(10px);
-    }
-
-    .btn-secondary:hover {
-      background: rgba(255, 255, 255, 0.25);
-      transform: translateY(-4px) scale(1.05);
-      border-color: white;
-      color: white;
-    }
-
-    /* Search Section */
-    .search-section {
-      background: white;
-      border-radius: 20px;
-      padding: 40px;
-      margin-bottom: 50px;
-      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
-      border: 1px solid #e9ecef;
-    }
-
-    .search-title {
-      color: #2c3e50;
-      font-size: 1.8rem;
-      font-weight: 800;
-      margin-bottom: 30px;
-      text-align: center;
-    }
-
-    .search-form {
-      display: grid;
-      grid-template-columns: 2fr 1fr 1fr auto;
-      gap: 20px;
-      align-items: end;
-    }
-
-    .form-group {
-      margin-bottom: 0;
-    }
-
-    .form-group label {
-      display: block;
-      font-weight: 600;
-      margin-bottom: 10px;
-      color: #495057;
-      font-size: 1rem;
-    }
-
-    .search-input {
-      width: 100%;
-      padding: 16px 24px;
-      border: 2px solid #e1e5e9;
-      border-radius: 12px;
-      font-size: 1.1rem;
-      transition: all 0.3s ease;
-      background: #f8f9fa;
-    }
-
-    .search-input:focus {
-      outline: none;
-      border-color: #e23020;
-      background: white;
-      box-shadow: 0 0 0 4px rgba(226, 48, 32, 0.15);
-    }
-
-    .search-btn {
-      padding: 16px 36px;
-      background: linear-gradient(135deg, #e23020, #ff6b6b);
-      color: white;
-      border: none;
-      border-radius: 12px;
-      font-weight: 700;
-      font-size: 1.1rem;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 10px;
-      min-width: 140px;
-    }
-
-    .search-btn:hover {
-      background: linear-gradient(135deg, #c11b18, #e23020);
-      transform: translateY(-3px);
-      box-shadow: 0 6px 20px rgba(226, 48, 32, 0.3);
-    }
-
-    /* Featured Movies Section */
+    /* Featured Movies Section - MOVED TO TOP */
     .featured-section {
-      padding: 40px 0;
+      padding: 0 0 50px 0;
       margin-bottom: 50px;
+      border-bottom: 2px solid #e9ecef;
     }
 
     .section-header {
@@ -282,7 +126,7 @@
     }
 
     .section-title {
-      color: #2c3e50;
+      color: #e23020;
       font-size: 2.2rem;
       font-weight: 800;
       margin: 0;
@@ -336,9 +180,21 @@
     }
 
     .carousel-item {
-      flex: 0 0 calc(33.333% - 27px);
+      flex: 0 0 calc(16.666% - 34px); /* 6 items per row */
       min-width: 0;
       transition: transform 0.4s ease;
+    }
+
+    @media (max-width: 1400px) {
+      .carousel-item {
+        flex: 0 0 calc(20% - 32px); /* 5 items per row */
+      }
+    }
+
+    @media (max-width: 1200px) {
+      .carousel-item {
+        flex: 0 0 calc(25% - 30px); /* 4 items per row */
+      }
     }
 
     .movie-card {
@@ -361,14 +217,14 @@
 
     .movie-poster {
       width: 100%;
-      height: 320px;
+      height: 280px;
       object-fit: cover;
       border-bottom: 4px solid #e23020;
     }
 
     .no-poster {
       width: 100%;
-      height: 320px;
+      height: 280px;
       background: linear-gradient(135deg, #f8f9fa, #e9ecef);
       display: flex;
       align-items: center;
@@ -379,19 +235,19 @@
     }
 
     .movie-info {
-      padding: 25px;
+      padding: 20px;
       flex: 1;
       display: flex;
       flex-direction: column;
     }
 
     .movie-title {
-      font-size: 1.4rem;
+      font-size: 1.2rem;
       font-weight: 800;
       color: #2c3e50;
-      margin-bottom: 15px;
+      margin-bottom: 10px;
       line-height: 1.3;
-      height: 3.6em;
+      height: 3.2em;
       overflow: hidden;
       display: -webkit-box;
       -webkit-line-clamp: 2;
@@ -402,36 +258,36 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 20px;
+      margin-bottom: 15px;
       flex-wrap: wrap;
       gap: 10px;
     }
 
     .movie-genre {
       color: #e23020;
-      font-size: 0.9rem;
+      font-size: 0.85rem;
       font-weight: 700;
       background: #ffeaea;
-      padding: 6px 14px;
-      border-radius: 25px;
+      padding: 5px 12px;
+      border-radius: 20px;
     }
 
     .movie-rating {
       background: linear-gradient(135deg, #e23020, #ff6b6b);
       color: white;
-      padding: 8px 16px;
-      border-radius: 25px;
-      font-size: 0.9rem;
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 0.85rem;
       font-weight: 800;
-      min-width: 50px;
+      min-width: 45px;
       text-align: center;
     }
 
     .movie-description {
       color: #6c757d;
-      font-size: 1rem;
-      line-height: 1.6;
-      margin-bottom: 25px;
+      font-size: 0.9rem;
+      line-height: 1.5;
+      margin-bottom: 20px;
       flex: 1;
       overflow: hidden;
       display: -webkit-box;
@@ -441,7 +297,7 @@
 
     .movie-btn {
       width: 100%;
-      padding: 14px;
+      padding: 12px;
       background: linear-gradient(135deg, #e23020, #ff6b6b);
       color: white;
       border: none;
@@ -449,11 +305,11 @@
       font-weight: 700;
       cursor: pointer;
       transition: all 0.3s ease;
-      font-size: 1rem;
+      font-size: 0.95rem;
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 10px;
+      gap: 8px;
       margin-top: auto;
     }
 
@@ -586,24 +442,130 @@
       left: 27px;
     }
 
-    /* Search Results */
-    .search-results {
-      margin-top: 50px;
-      padding-top: 50px;
-      border-top: 3px solid #e9ecef;
+    /* Search Section - MOVED BELOW FEATURED MOVIES */
+    .search-section {
+      background: white;
+      border-radius: 20px;
+      padding: 40px;
+      margin-bottom: 30px;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+      border: 1px solid #e9ecef;
+    }
+
+    .search-title {
+      color: #2c3e50;
+      font-size: 1.8rem;
+      font-weight: 800;
+      margin-bottom: 30px;
+      text-align: center;
+    }
+
+    .search-form {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr auto;
+      gap: 20px;
+      align-items: end;
+    }
+
+    .form-group {
+      margin-bottom: 0;
+    }
+
+    .form-group label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 10px;
+      color: #495057;
+      font-size: 1rem;
+    }
+
+    .search-input {
+      width: 100%;
+      padding: 16px 24px;
+      border: 2px solid #e1e5e9;
+      border-radius: 12px;
+      font-size: 1.1rem;
+      transition: all 0.3s ease;
+      background: #f8f9fa;
+    }
+
+    .search-input:focus {
+      outline: none;
+      border-color: #e23020;
+      background: white;
+      box-shadow: 0 0 0 4px rgba(226, 48, 32, 0.15);
+    }
+
+    .search-btn {
+      padding: 16px 36px;
+      background: linear-gradient(135deg, #e23020, #ff6b6b);
+      color: white;
+      border: none;
+      border-radius: 12px;
+      font-weight: 700;
+      font-size: 1.1rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      min-width: 140px;
+    }
+
+    .search-btn:hover {
+      background: linear-gradient(135deg, #c11b18, #e23020);
+      transform: translateY(-3px);
+      box-shadow: 0 6px 20px rgba(226, 48, 32, 0.3);
+    }
+
+    /* Search Results Section - IMMEDIATELY BELOW SEARCH */
+    .search-results-section {
+      margin-top: 0;
+      margin-bottom: 50px;
       display: none;
+    }
+
+    .results-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 30px;
+      flex-wrap: wrap;
+      gap: 20px;
     }
 
     .results-title {
       color: #2c3e50;
       font-size: 2rem;
       font-weight: 800;
-      margin-bottom: 30px;
+      margin: 0;
+    }
+
+    .clear-search-btn {
+      padding: 12px 24px;
+      background: linear-gradient(135deg, #6c757d, #868e96);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .clear-search-btn:hover {
+      background: linear-gradient(135deg, #545b62, #727b84);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(108, 117, 125, 0.2);
     }
 
     .results-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
       gap: 35px;
     }
 
@@ -657,44 +619,106 @@
       font-size: 1.1rem;
     }
 
-    /* Footer */
-    footer {
-      text-align: center;
-      padding: 30px 0;
+    /* Updated Footer Styles */
+    .footer {
       background-color: #e23020;
-      color: white;
-      font-weight: 600;
+      padding: 30px 0 15px;
+      border-top: 3px solid #b31a17;
       width: 100%;
-      margin-top: 80px;
+      color: white;
     }
 
-    footer p {
+    .footer-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    .footer-content {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 30px;
+      margin-bottom: 25px;
+    }
+
+    .footer-section h3 {
+      color: white;
+      font-size: 1.1rem;
+      margin-bottom: 15px;
+      font-weight: 700;
+      border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+      padding-bottom: 8px;
+    }
+
+    .footer-links {
+      list-style: none;
+      padding: 0;
+    }
+
+    .footer-links li {
+      margin-bottom: 10px;
+    }
+
+    .footer-links a {
+      color: rgba(255, 255, 255, 0.9);
+      text-decoration: none;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.9rem;
+      padding: 5px 0;
+    }
+
+    .footer-links a:hover {
+      color: white;
+      transform: translateX(5px);
+      text-decoration: underline;
+    }
+
+    .footer-section p {
+      color: rgba(255, 255, 255, 0.9);
+      line-height: 1.6;
+      font-size: 0.9rem;
+      margin-top: 10px;
+    }
+
+    .footer-bottom {
+      text-align: center;
+      padding-top: 15px;
+      border-top: 1px solid rgba(255, 255, 255, 0.2);
+      color: rgba(255, 255, 255, 0.9);
+      font-size: 0.85rem;
+    }
+
+    .footer-bottom a {
+      color: white;
+      text-decoration: none;
+      font-weight: 600;
+      margin: 0 5px;
+    }
+
+    .footer-bottom a:hover {
+      color: #ffcccc;
+      text-decoration: underline;
+    }
+
+    .footer-bottom p {
       margin: 0;
-      font-size: 1rem;
     }
 
     /* Responsive Design */
-    @media (max-width: 1200px) {
-      .carousel-item {
-        flex: 0 0 calc(50% - 20px);
-      }
-    }
-
     @media (max-width: 992px) {
       .search-form {
         grid-template-columns: 1fr 1fr;
       }
 
       .carousel-item {
-        flex: 0 0 calc(50% - 20px);
+        flex: 0 0 calc(33.333% - 27px);
       }
 
-      .hero-title {
-        font-size: 2.5rem;
-      }
-
-      .hero-subtitle {
-        font-size: 1.2rem;
+      .section-title {
+        font-size: 2rem;
       }
     }
 
@@ -710,33 +734,16 @@
         gap: 15px;
       }
 
-      .hero-title {
-        font-size: 2.2rem;
-      }
-
-      .hero-subtitle {
-        font-size: 1.1rem;
-      }
-
-      .hero-buttons {
-        flex-direction: column;
-        align-items: center;
-      }
-
-      .hero-btn {
-        width: 100%;
-        max-width: 350px;
-      }
-
       .search-form {
         grid-template-columns: 1fr;
       }
 
       .carousel-item {
-        flex: 0 0 100%;
+        flex: 0 0 calc(50% - 20px);
       }
 
-      .section-header {
+      .section-header,
+      .results-header {
         flex-direction: column;
         text-align: center;
       }
@@ -747,19 +754,15 @@
 
       .movie-poster,
       .no-poster {
-        height: 280px;
+        height: 250px;
+      }
+
+      .search-section {
+        padding: 30px;
       }
     }
 
     @media (max-width: 576px) {
-      .hero-title {
-        font-size: 1.8rem;
-      }
-
-      .hero-subtitle {
-        font-size: 1rem;
-      }
-
       .section-title {
         font-size: 1.8rem;
       }
@@ -771,13 +774,28 @@
 
       .movie-poster,
       .no-poster {
-        height: 250px;
+        height: 220px;
       }
 
       .carousel-btn {
         width: 50px;
         height: 50px;
         font-size: 1.2rem;
+      }
+
+      .footer-content {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .carousel-item {
+        flex: 0 0 100%;
+      }
+
+      .footer-content {
+        grid-template-columns: 1fr;
       }
     }
   </style>
@@ -800,57 +818,7 @@
   </header>
 
   <main>
-    <!-- Hero Section -->
-    <div class="hero-section">
-      <h1 class="hero-title">Welcome to Movie Ticket Booking</h1>
-      <p class="hero-subtitle">Experience the magic of cinema with our easy booking system. Watch the latest blockbusters in premium comfort.</p>
-      
-      <div class="hero-buttons">
-        <a href="{{ url_for('login') }}" class="hero-btn btn-primary">
-          🎬 Sign In to Book Tickets
-        </a>
-        <a href="{{ url_for('register') }}" class="hero-btn btn-secondary">
-          📝 Create Free Account
-        </a>
-      </div>
-    </div>
-
-    <!-- Search Section -->
-    <div class="search-section">
-      <h2 class="search-title">Find Your Perfect Movie</h2>
-      <form id="searchForm" class="search-form">
-        <div class="form-group">
-          <label for="searchQuery">Search Movies</label>
-          <input type="text" id="searchQuery" class="search-input" placeholder="Enter movie title, actor, or keyword...">
-        </div>
-        
-        <div class="form-group">
-          <label for="genreFilter">Genre</label>
-          <select id="genreFilter" class="search-input">
-            <option value="">All Genres</option>
-            <!-- Genres will be populated dynamically -->
-          </select>
-        </div>
-        
-        <div class="form-group">
-          <label for="ratingFilter">Rating</label>
-          <select id="ratingFilter" class="search-input">
-            <option value="">All Ratings</option>
-            <option value="G">G - General Audiences</option>
-            <option value="PG">PG - Parental Guidance</option>
-            <option value="PG-13">PG-13 - Parents Strongly Cautioned</option>
-            <option value="R">R - Restricted</option>
-            <option value="NC-17">NC-17 - Adults Only</option>
-          </select>
-        </div>
-        
-        <button type="submit" class="search-btn">
-          🔍 Search Movies
-        </button>
-      </form>
-    </div>
-
-    <!-- Featured Movies Section -->
+    <!-- 1. TOP: Featured Movies Section -->
     <div class="featured-section">
       <div class="section-header">
         <div>
@@ -877,11 +845,11 @@
           <button class="carousel-btn" id="prevBtn" disabled>
             <i class="fas fa-chevron-left"></i>
           </button>
-          
+
           <div class="carousel-dots" id="carouselDots">
             <!-- Dots will be generated dynamically -->
           </div>
-          
+
           <button class="carousel-btn" id="nextBtn">
             <i class="fas fa-chevron-right"></i>
           </button>
@@ -896,9 +864,49 @@
       </div>
     </div>
 
-    <!-- Search Results Section -->
-    <div class="search-results" id="searchResults">
-      <h2 class="results-title">Search Results</h2>
+    <!-- 2. MIDDLE: Search Section -->
+    <div class="search-section">
+      <h2 class="search-title">Find Your Perfect Movie</h2>
+      <form id="searchForm" class="search-form">
+        <div class="form-group">
+          <label for="searchQuery">Search Movies</label>
+          <input type="text" id="searchQuery" class="search-input" placeholder="Enter movie title, actor, or keyword...">
+        </div>
+
+        <div class="form-group">
+          <label for="genreFilter">Genre</label>
+          <select id="genreFilter" class="search-input">
+            <option value="">All Genres</option>
+            <!-- Genres will be populated dynamically -->
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="ratingFilter">Rating</label>
+          <select id="ratingFilter" class="search-input">
+            <option value="">All Ratings</option>
+            <option value="G">G - General Audiences</option>
+            <option value="PG">PG - Parental Guidance</option>
+            <option value="PG-13">PG-13 - Parents Strongly Cautioned</option>
+            <option value="R">R - Restricted</option>
+            <option value="NC-17">NC-17 - Adults Only</option>
+          </select>
+        </div>
+
+        <button type="submit" class="search-btn">
+          🔍 Search Movies
+        </button>
+      </form>
+    </div>
+
+    <!-- 3. BELOW SEARCH: Search Results Section -->
+    <div class="search-results-section" id="searchResultsSection">
+      <div class="results-header">
+        <h2 class="results-title">Search Results</h2>
+        <button class="clear-search-btn" id="clearSearchBtn">
+          <i class="fas fa-times"></i> Clear Search
+        </button>
+      </div>
       <div class="results-grid" id="resultsGrid">
         <!-- Search results will be displayed here -->
       </div>
@@ -921,15 +929,63 @@
     </div>
   </main>
 
-  <footer>
-    <p>DKC Collection 2025 | Movie Ticket Booking System ©</p>
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-content">
+        <div class="footer-section">
+          <h3>Movie Ticketing</h3>
+          <p>
+            Your one-stop destination for booking movie tickets online.
+            Experience the magic of cinema with our easy booking system.
+          </p>
+        </div>
+
+        <div class="footer-section">
+          <h3>Quick Links</h3>
+          <ul class="footer-links">
+            <li><a href="{{ url_for('home') }}"><i class="fas fa-home"></i> Home</a></li>
+            <li><a href="{{ url_for('login') }}"><i class="fas fa-film"></i> Movies</a></li>
+            <li><a href="{{ url_for('login') }}"><i class="fas fa-ticket-alt"></i> My Bookings</a></li>
+            <li><a href="#"><i class="fas fa-info-circle"></i> About Us</a></li>
+            <li><a href="#"><i class="fas fa-phone"></i> Contact Us</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-section">
+          <h3>Contact Info</h3>
+          <ul class="footer-links">
+            <li><a href="#"><i class="fas fa-map-marker-alt"></i> Ward II, Minglanilla, Cebu</a></li>
+            <li><a href="tel:+1234567890"><i class="fas fa-phone"></i> 09267630945</a></li>
+            <li><a href="mailto:info@movieticketing.com"><i class="fas fa-envelope"></i> BSIT@movieticketing.com</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-section">
+          <h3>Follow Us</h3>
+          <ul class="footer-links">
+            <li><a href="#"><i class="fab fa-facebook"></i> Facebook</a></li>
+            <li><a href="#"><i class="fab fa-twitter"></i> Twitter</a></li>
+            <li><a href="#"><i class="fab fa-instagram"></i> Instagram</a></li>
+            <li><a href="https://www.youtube.com/@J2KD2024/shorts"><i class="fab fa-youtube"></i> YouTube</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p>&copy; <span id="currentYear"></span> Movie Ticketing System. All rights reserved. |
+          <a href="#">Privacy Policy</a> |
+          <a href="#">Terms of Service</a>
+        </p>
+      </div>
+    </div>
   </footer>
 
   <script>
     // Global variables
     let currentSlide = 0;
     let totalSlides = 0;
-    let slidesPerView = 3;
+    let slidesPerView = 6; // Start with 6 columns
     let featuredMovies = [];
     let allGenres = [];
     let autoSlideInterval = null;
@@ -941,10 +997,13 @@
       loadFeaturedMovies();
       setupEventListeners();
       startAutoSlide();
-      
+
       // Adjust slides per view based on screen size
       updateSlidesPerView();
       window.addEventListener('resize', updateSlidesPerView);
+
+      // Set current year in footer
+      document.getElementById('currentYear').textContent = new Date().getFullYear();
     });
 
     // Update slides per view based on screen width
@@ -952,10 +1011,16 @@
       const width = window.innerWidth;
       if (width < 576) {
         slidesPerView = 1;
-      } else if (width < 992) {
+      } else if (width < 768) {
         slidesPerView = 2;
-      } else {
+      } else if (width < 992) {
         slidesPerView = 3;
+      } else if (width < 1200) {
+        slidesPerView = 4;
+      } else if (width < 1400) {
+        slidesPerView = 5;
+      } else {
+        slidesPerView = 6;
       }
       updateCarousel();
     }
@@ -965,7 +1030,7 @@
       try {
         const response = await fetch('/get_all_genres');
         allGenres = await response.json();
-        
+
         const genreSelect = document.getElementById('genreFilter');
         allGenres.forEach(genre => {
           if (genre) {
@@ -980,24 +1045,27 @@
       }
     }
 
-    // Load featured movies
+    // Load featured movies with your logic
     async function loadFeaturedMovies() {
       try {
         const response = await fetch('/get_featured_movies');
         const data = await response.json();
-        
+
+        // Use the featured movies from the API response
         featuredMovies = data.featured_movies;
+
+        // Calculate total slides based on featured count
         totalSlides = Math.ceil(featuredMovies.length / slidesPerView);
-        
-        // Update View All button
+
+        // Update View All button with total movies count
         document.getElementById('viewAllBtn').innerHTML = `Sign In to View All ${data.total_movies} Movies →`;
-        
+
         // Render carousel
         renderCarousel();
-        
+
         // Setup carousel controls
         setupCarouselControls();
-        
+
       } catch (error) {
         console.error('Error loading featured movies:', error);
         const carouselTrack = document.getElementById('carouselTrack');
@@ -1009,17 +1077,17 @@
     function renderCarousel() {
       const carouselTrack = document.getElementById('carouselTrack');
       const dotsContainer = document.getElementById('carouselDots');
-      
+
       carouselTrack.innerHTML = '';
       dotsContainer.innerHTML = '';
-      
+
       // Create movie cards
       featuredMovies.forEach((movie, index) => {
         const movieCard = createMovieCard(movie);
         movieCard.classList.add('carousel-item');
         carouselTrack.appendChild(movieCard);
       });
-      
+
       // Create dots
       for (let i = 0; i < totalSlides; i++) {
         const dot = document.createElement('div');
@@ -1027,23 +1095,23 @@
         dot.addEventListener('click', () => goToSlide(i));
         dotsContainer.appendChild(dot);
       }
-      
+
       updateCarousel();
       updateCarouselControls();
     }
 
     // Create movie card HTML
     function createMovieCard(movie) {
-      const description = movie.description ? 
-        (movie.description.length > 120 ? movie.description.substring(0, 120) + '...' : movie.description) : 
+      const description = movie.description ?
+        (movie.description.length > 120 ? movie.description.substring(0, 120) + '...' : movie.description) :
         'Experience this amazing movie on the big screen!';
-      
+
       const card = document.createElement('div');
       card.className = 'movie-card';
       card.innerHTML = `
         <div class="movie-poster-container">
-          ${movie.poster_url ? 
-            `<img src="${movie.poster_url}" alt="${movie.title}" class="movie-poster" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">` : 
+          ${movie.poster_url ?
+            `<img src="${movie.poster_url}" alt="${movie.title}" class="movie-poster" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">` :
             ''
           }
           <div class="no-poster" style="${movie.poster_url ? 'display: none;' : ''}">
@@ -1069,23 +1137,23 @@
     function setupCarouselControls() {
       const prevBtn = document.getElementById('prevBtn');
       const nextBtn = document.getElementById('nextBtn');
-      
+
       prevBtn.addEventListener('click', () => {
         goToSlide(currentSlide - 1);
         resetAutoSlide();
       });
-      
+
       nextBtn.addEventListener('click', () => {
         goToSlide(currentSlide + 1);
         resetAutoSlide();
       });
-      
+
       // Auto slide toggle
       const autoSlideToggle = document.getElementById('autoSlideToggle');
       autoSlideToggle.addEventListener('click', function() {
         isAutoSlideEnabled = !isAutoSlideEnabled;
         this.classList.toggle('active', isAutoSlideEnabled);
-        
+
         if (isAutoSlideEnabled) {
           startAutoSlide();
         } else {
@@ -1101,7 +1169,7 @@
       } else if (slideIndex >= totalSlides) {
         slideIndex = 0; // Loop to first slide
       }
-      
+
       currentSlide = slideIndex;
       updateCarousel();
       updateCarouselControls();
@@ -1119,7 +1187,7 @@
       const slideWidth = 100 / slidesPerView;
       const translateX = -currentSlide * slideWidth * slidesPerView;
       carouselTrack.style.transform = `translateX(${translateX}%)`;
-      
+
       // Update dots
       const dots = document.querySelectorAll('.carousel-dot');
       dots.forEach((dot, index) => {
@@ -1131,10 +1199,10 @@
     function updateCarouselControls() {
       const prevBtn = document.getElementById('prevBtn');
       const nextBtn = document.getElementById('nextBtn');
-      
-      // Note: We're not disabling buttons since we have infinite loop
-      // prevBtn.disabled = currentSlide === 0;
-      // nextBtn.disabled = currentSlide === totalSlides - 1;
+
+      // Enable/disable buttons based on current slide
+      prevBtn.disabled = totalSlides <= 1;
+      nextBtn.disabled = totalSlides <= 1;
     }
 
     // Start auto slide
@@ -1168,11 +1236,17 @@
         e.preventDefault();
         searchMovies();
       });
-      
+
       // Auto-search when filters change
       document.getElementById('genreFilter').addEventListener('change', searchMovies);
       document.getElementById('ratingFilter').addEventListener('change', searchMovies);
-      
+
+      // Clear search button
+      document.getElementById('clearSearchBtn').addEventListener('click', function(e) {
+        e.preventDefault();
+        clearSearch();
+      });
+
       // Pause auto-slide on hover
       const carouselContainer = document.querySelector('.carousel-container');
       carouselContainer.addEventListener('mouseenter', () => {
@@ -1180,7 +1254,7 @@
           stopAutoSlide();
         }
       });
-      
+
       carouselContainer.addEventListener('mouseleave', () => {
         if (isAutoSlideEnabled) {
           startAutoSlide();
@@ -1193,24 +1267,27 @@
       const query = document.getElementById('searchQuery').value;
       const genre = document.getElementById('genreFilter').value;
       const rating = document.getElementById('ratingFilter').value;
-      
-      const resultsSection = document.getElementById('searchResults');
+
+      const resultsSection = document.getElementById('searchResultsSection');
       const resultsGrid = document.getElementById('resultsGrid');
-      
+
       // Show loading
       resultsSection.style.display = 'block';
       resultsGrid.innerHTML = document.getElementById('loadingTemplate').innerHTML;
-      
+
+      // Scroll to search results
+      resultsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
       try {
         // Build query string
         const params = new URLSearchParams();
         if (query) params.append('query', query);
         if (genre) params.append('genre', genre);
         if (rating) params.append('rating', rating);
-        
+
         const response = await fetch(`/search_movies?${params.toString()}`);
         const movies = await response.json();
-        
+
         // Display results
         if (movies.length === 0) {
           resultsGrid.innerHTML = document.getElementById('noResultsTemplate').innerHTML;
@@ -1221,24 +1298,38 @@
             resultsGrid.appendChild(movieCard);
           });
         }
-        
+
         // Add animation to results
         const movieCards = resultsGrid.querySelectorAll('.movie-card');
         movieCards.forEach((card, index) => {
           card.style.opacity = '0';
           card.style.transform = 'translateY(30px)';
-          
+
           setTimeout(() => {
             card.style.transition = 'all 0.6s ease';
             card.style.opacity = '1';
             card.style.transform = 'translateY(0)';
           }, index * 100);
         });
-        
+
       } catch (error) {
         console.error('Error searching movies:', error);
         resultsGrid.innerHTML = '<div class="no-results"><div class="no-results-icon">⚠️</div><h3 class="no-results-title">Search Error</h3><p class="no-results-text">Please try again later.</p></div>';
       }
+    }
+
+    // Clear search results
+    function clearSearch() {
+      // Reset search form
+      document.getElementById('searchQuery').value = '';
+      document.getElementById('genreFilter').value = '';
+      document.getElementById('ratingFilter').value = '';
+
+      // Hide search results
+      document.getElementById('searchResultsSection').style.display = 'none';
+
+      // Scroll back to top of featured movies
+      document.querySelector('.featured-section').scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
 
     // Book movie function (redirects to login)

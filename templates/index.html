@@ -1,1046 +1,1169 @@
-{% extends "base.html" %}
-
-{% block title %}Movie Ticket Booking - Home{% endblock %}
-
-{% block extra_css %}
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-<style>
-  /* Customer Dashboard Styles */
-
-  /* Hero Section */
-  .hero-section {
-    text-align: center;
-    padding: 50px 20px;
-    margin-bottom: 40px;
-    background: linear-gradient(135deg, rgba(226, 48, 32, 0.95), rgba(255, 107, 107, 0.95)), url('https://images.unsplash.com/photo-1489599809516-9827b6d1cf13?ixlib=rb-4.0.3&auto=format&fit=crop&w=1600&q=80');
-    background-size: cover;
-    background-position: center;
-    color: white;
-    border-radius: 16px;
-    box-shadow: 0 8px 30px rgba(226, 48, 32, 0.3);
-    position: relative;
-    overflow: hidden;
-  }
-
-  .hero-title {
-    color: white;
-    font-size: 2.8rem;
-    font-weight: 800;
-    margin-bottom: 16px;
-    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
-  }
-
-  .hero-subtitle {
-    color: rgba(255, 255, 255, 0.95);
-    font-size: 1.3rem;
-    max-width: 700px;
-    margin: 0 auto 30px;
-    line-height: 1.6;
-    font-weight: 400;
-  }
-
-  .hero-buttons {
-    display: flex;
-    gap: 20px;
-    justify-content: center;
-    margin-top: 30px;
-    flex-wrap: wrap;
-  }
-
-  .hero-btn {
-    padding: 14px 32px;
-    border-radius: 10px;
-    font-weight: 600;
-    font-size: 1.1rem;
-    text-decoration: none;
-    transition: all 0.3s ease;
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-    min-width: 160px;
-    justify-content: center;
-  }
-
-  .btn-primary {
-    background: white;
-    color: #e23020;
-    box-shadow: 0 4px 15px rgba(255, 255, 255, 0.3);
-  }
-
-  .btn-primary:hover {
-    background: #f8f9fa;
-    transform: translateY(-3px) scale(1.05);
-    box-shadow: 0 8px 25px rgba(255, 255, 255, 0.4);
-    color: #e23020;
-  }
-
-  .btn-secondary {
-    background: rgba(255, 255, 255, 0.15);
-    color: white;
-    border: 2px solid white;
-    backdrop-filter: blur(10px);
-  }
-
-  .btn-secondary:hover {
-    background: rgba(255, 255, 255, 0.25);
-    transform: translateY(-3px) scale(1.05);
-    border-color: white;
-    color: white;
-  }
-
-  /* Search Section */
-  .search-section {
-    background: white;
-    border-radius: 16px;
-    padding: 30px;
-    margin-bottom: 40px;
-    box-shadow: 0 6px 25px rgba(0, 0, 0, 0.08);
-    border: 1px solid #e9ecef;
-  }
-
-  .search-title {
-    color: #2c3e50;
-    font-size: 1.5rem;
-    font-weight: 700;
-    margin-bottom: 25px;
-    text-align: center;
-  }
-
-  .search-form {
-    display: grid;
-    grid-template-columns: 2fr 1fr 1fr auto;
-    gap: 15px;
-    align-items: end;
-  }
-
-  .form-group {
-    margin-bottom: 0;
-  }
-
-  .form-group label {
-    display: block;
-    font-weight: 600;
-    margin-bottom: 8px;
-    color: #495057;
-    font-size: 0.95rem;
-  }
-
-  .search-input {
-    width: 100%;
-    padding: 14px 20px;
-    border: 2px solid #e1e5e9;
-    border-radius: 10px;
-    font-size: 1rem;
-    transition: all 0.3s ease;
-    background: #f8f9fa;
-  }
-
-  .search-input:focus {
-    outline: none;
-    border-color: #e23020;
-    background: white;
-    box-shadow: 0 0 0 3px rgba(226, 48, 32, 0.1);
-  }
-
-  .search-btn {
-    padding: 14px 30px;
-    background: linear-gradient(135deg, #e23020, #ff6b6b);
-    color: white;
-    border: none;
-    border-radius: 10px;
-    font-weight: 600;
-    font-size: 1rem;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    min-width: 120px;
-  }
-
-  .search-btn:hover {
-    background: linear-gradient(135deg, #c11b18, #e23020);
-    transform: translateY(-2px);
-    box-shadow: 0 4px 15px rgba(226, 48, 32, 0.3);
-  }
-
-  /* Featured Movies Section */
-  .featured-section {
-    padding: 30px 0;
-    margin-bottom: 40px;
-  }
-
-  .section-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 30px;
-    flex-wrap: wrap;
-    gap: 20px;
-  }
-
-  .section-title {
-    color: #2c3e50;
-    font-size: 1.8rem;
-    font-weight: 700;
-    margin: 0;
-  }
-
-  .section-subtitle {
-    color: #6c757d;
-    font-size: 1.1rem;
-    margin: 5px 0 0 0;
-  }
-
-  .view-all-btn {
-    padding: 12px 28px;
-    background: linear-gradient(135deg, #e23020, #ff6b6b);
-    color: white;
-    border: none;
-    border-radius: 10px;
-    font-weight: 600;
-    font-size: 1rem;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    text-decoration: none;
-  }
-
-  .view-all-btn:hover {
-    background: linear-gradient(135deg, #c11b18, #e23020);
-    transform: translateY(-2px);
-    box-shadow: 0 4px 15px rgba(226, 48, 32, 0.3);
-    color: white;
-    text-decoration: none;
-  }
-
-  /* Movie Carousel */
-  .carousel-container {
-    position: relative;
-    overflow: hidden;
-    border-radius: 16px;
-    background: #f8f9fa;
-    padding: 30px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-  }
-
-  .carousel-track {
-    display: flex;
-    transition: transform 0.5s ease-in-out;
-    gap: 30px;
-    padding: 10px 0;
-  }
-
-  .carousel-item {
-    flex: 0 0 calc(33.333% - 20px);
-    min-width: 0;
-    transition: transform 0.3s ease;
-  }
-
-  .movie-card {
-    background: white;
-    border-radius: 12px;
-    overflow: hidden;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-    transition: all 0.3s ease;
-    border: 1px solid #e9ecef;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-  }
-
-  .movie-card:hover {
-    transform: translateY(-10px);
-    box-shadow: 0 15px 35px rgba(226, 48, 32, 0.2);
-    border-color: #e23020;
-  }
-
-  .movie-poster {
-    width: 100%;
-    height: 280px;
-    object-fit: cover;
-    border-bottom: 3px solid #e23020;
-  }
-
-  .no-poster {
-    width: 100%;
-    height: 280px;
-    background: linear-gradient(135deg, #f8f9fa, #e9ecef);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #6c757d;
-    font-size: 1.5rem;
-    border-bottom: 3px solid #e23020;
-  }
-
-  .movie-info {
-    padding: 20px;
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-  }
-
-  .movie-title {
-    font-size: 1.2rem;
-    font-weight: 700;
-    color: #2c3e50;
-    margin-bottom: 10px;
-    line-height: 1.4;
-    height: 3.2em;
-    overflow: hidden;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-  }
-
-  .movie-meta {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 15px;
-    flex-wrap: wrap;
-    gap: 8px;
-  }
-
-  .movie-genre {
-    color: #e23020;
-    font-size: 0.85rem;
-    font-weight: 600;
-    background: #ffeaea;
-    padding: 4px 10px;
-    border-radius: 20px;
-  }
-
-  .movie-rating {
-    background: linear-gradient(135deg, #e23020, #ff6b6b);
-    color: white;
-    padding: 6px 12px;
-    border-radius: 20px;
-    font-size: 0.85rem;
-    font-weight: 700;
-    min-width: 45px;
-    text-align: center;
-  }
-
-  .movie-description {
-    color: #6c757d;
-    font-size: 0.9rem;
-    line-height: 1.5;
-    margin-bottom: 20px;
-    flex: 1;
-    overflow: hidden;
-    display: -webkit-box;
-    -webkit-line-clamp: 3;
-    -webkit-box-orient: vertical;
-  }
-
-  .movie-btn {
-    width: 100%;
-    padding: 12px;
-    background: linear-gradient(135deg, #e23020, #ff6b6b);
-    color: white;
-    border: none;
-    border-radius: 8px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    font-size: 0.95rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    margin-top: auto;
-  }
-
-  .movie-btn:hover {
-    background: linear-gradient(135deg, #c11b18, #e23020);
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(226, 48, 32, 0.2);
-  }
-
-  /* Carousel Controls */
-  .carousel-controls {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 20px;
-    margin-top: 30px;
-  }
-
-  .carousel-btn {
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    background: white;
-    border: 2px solid #e23020;
-    color: #e23020;
-    font-size: 1.2rem;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .carousel-btn:hover {
-    background: #e23020;
-    color: white;
-    transform: scale(1.1);
-  }
-
-  .carousel-btn:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-    transform: none;
-  }
-
-  .carousel-btn:disabled:hover {
-    background: white;
-    color: #e23020;
-  }
-
-  .carousel-dots {
-    display: flex;
-    gap: 10px;
-  }
-
-  .carousel-dot {
-    width: 12px;
-    height: 12px;
-    border-radius: 50%;
-    background: #ddd;
-    cursor: pointer;
-    transition: all 0.3s ease;
-  }
-
-  .carousel-dot.active {
-    background: #e23020;
-    transform: scale(1.2);
-  }
-
-  /* Quick Stats */
-  .quick-stats {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 25px;
-    margin: 40px 0;
-  }
-
-  .stat-card {
-    background: white;
-    border-radius: 16px;
-    padding: 30px;
-    box-shadow: 0 6px 25px rgba(0, 0, 0, 0.08);
-    border-left: 5px solid #e23020;
-    transition: all 0.3s ease;
-    text-align: center;
-  }
-
-  .stat-card:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 15px 35px rgba(226, 48, 32, 0.15);
-  }
-
-  .stat-icon {
-    font-size: 3rem;
-    margin-bottom: 20px;
-    display: block;
-    color: #e23020;
-  }
-
-  .stat-value {
-    font-size: 2.5rem;
-    font-weight: 800;
-    color: #2c3e50;
-    margin-bottom: 5px;
-    line-height: 1;
-  }
-
-  .stat-label {
-    color: #6c757d;
-    font-size: 1rem;
-    font-weight: 600;
-  }
-
-  /* Search Results */
-  .search-results {
-    margin-top: 40px;
-    padding-top: 40px;
-    border-top: 2px solid #e9ecef;
-    display: none;
-  }
-
-  .results-title {
-    color: #2c3e50;
-    font-size: 1.6rem;
-    font-weight: 700;
-    margin-bottom: 25px;
-  }
-
-  .results-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 30px;
-  }
-
-  .no-results {
-    text-align: center;
-    padding: 60px 20px;
-    grid-column: 1 / -1;
-  }
-
-  .no-results-icon {
-    font-size: 4rem;
-    color: #e23020;
-    margin-bottom: 20px;
-    opacity: 0.7;
-  }
-
-  .no-results-title {
-    color: #2c3e50;
-    font-size: 1.6rem;
-    font-weight: 700;
-    margin-bottom: 10px;
-  }
-
-  .no-results-text {
-    color: #6c757d;
-    max-width: 500px;
-    margin: 0 auto;
-    line-height: 1.6;
-  }
-
-  /* Loading State */
-  .loading {
-    text-align: center;
-    padding: 60px 20px;
-    grid-column: 1 / -1;
-  }
-
-  .loading-spinner {
-    width: 50px;
-    height: 50px;
-    border: 4px solid #f3f3f3;
-    border-top: 4px solid #e23020;
-    border-radius: 50%;
-    animation: spin 1s linear infinite;
-    margin: 0 auto 20px;
-  }
-
-  @keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-  }
-
-  /* Responsive Design */
-  @media (max-width: 1200px) {
-    .carousel-item {
-      flex: 0 0 calc(50% - 15px);
-    }
-  }
-
-  @media (max-width: 992px) {
-    .search-form {
-      grid-template-columns: 1fr 1fr;
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Movie Ticket Booking - Customer Dashboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    /* Base Styles */
+    html, body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      font-family: 'Roboto', sans-serif;
+      background-color: #fff9f8;
+      color: #333;
     }
 
-    .carousel-item {
-      flex: 0 0 calc(50% - 15px);
-    }
-  }
-
-  @media (max-width: 768px) {
-    .hero-title {
-      font-size: 2.2rem;
-    }
-
-    .hero-subtitle {
-      font-size: 1.1rem;
+    /* Header */
+    header {
+      background-color: #e23020;
+      padding: 15px 0;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
     }
 
-    .hero-buttons {
-      flex-direction: column;
+    .container {
+      width: 90%;
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
       align-items: center;
     }
 
-    .hero-btn {
+    .logo {
+      color: white;
+      font-weight: 700;
+      font-size: 1.5rem;
+      letter-spacing: 1px;
+    }
+
+    nav ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      gap: 20px;
+      align-items: center;
+    }
+
+    nav ul li a {
+      color: white;
+      text-decoration: none;
+      font-weight: 600;
+      padding: 8px 16px;
+      border-radius: 4px;
+      transition: all 0.3s ease;
+      display: inline-block;
+    }
+
+    nav ul li a:hover,
+    nav ul li a.active {
+      background-color: rgba(255, 255, 255, 0.15);
+    }
+
+    .btn-logout {
+      background-color: white;
+      color: #e23020;
+      padding: 10px 24px;
+      font-weight: 600;
+      border-radius: 6px;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      border: 2px solid transparent;
+      font-size: 0.95rem;
+      text-decoration: none;
+    }
+
+    .btn-logout:hover {
+      background-color: #f8f9fa;
+      color: #c11b18;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      text-decoration: none;
+    }
+
+    /* Main Content */
+    main {
+      padding: 40px 20px;
+      max-width: 1200px;
+      margin: 0 auto;
       width: 100%;
-      max-width: 300px;
+      min-height: calc(100vh - 200px);
     }
 
-    .search-form {
-      grid-template-columns: 1fr;
+    /* Welcome Section */
+    .welcome-section {
+      text-align: center;
+      padding: 40px 20px;
+      margin-bottom: 40px;
+      background: linear-gradient(135deg, rgba(226, 48, 32, 0.95), rgba(255, 107, 107, 0.95));
+      color: white;
+      border-radius: 20px;
+      box-shadow: 0 10px 40px rgba(226, 48, 32, 0.3);
     }
 
-    .carousel-item {
-      flex: 0 0 100%;
+    .welcome-title {
+      font-size: 2.5rem;
+      font-weight: 800;
+      margin-bottom: 10px;
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
     }
 
-    .section-header {
-      flex-direction: column;
+    .welcome-subtitle {
+      font-size: 1.2rem;
+      opacity: 0.9;
+      margin-bottom: 20px;
+    }
+
+    .tickets-count {
+      display: inline-block;
+      background: white;
+      color: #e23020;
+      padding: 10px 25px;
+      border-radius: 25px;
+      font-weight: 700;
+      font-size: 1.2rem;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+      margin-top: 10px;
+    }
+
+    /* Dashboard Stats */
+    .stats-section {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 25px;
+      margin-bottom: 50px;
+    }
+
+    .stat-card {
+      background: white;
+      border-radius: 15px;
+      padding: 25px;
+      text-align: center;
+      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+      border: 2px solid transparent;
+      transition: all 0.3s ease;
+    }
+
+    .stat-card:hover {
+      border-color: #e23020;
+      transform: translateY(-5px);
+      box-shadow: 0 10px 30px rgba(226, 48, 32, 0.15);
+    }
+
+    .stat-icon {
+      font-size: 2.5rem;
+      margin-bottom: 15px;
+      color: #e23020;
+    }
+
+    .stat-number {
+      font-size: 2.2rem;
+      font-weight: 800;
+      color: #2c3e50;
+      margin-bottom: 5px;
+    }
+
+    .stat-label {
+      color: #6c757d;
+      font-size: 1rem;
+      font-weight: 600;
+    }
+
+    /* Search Section - SAME AS HOME PAGE */
+    .search-section {
+      background: white;
+      border-radius: 20px;
+      padding: 40px;
+      margin-bottom: 30px;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+      border: 1px solid #e9ecef;
+    }
+
+    .search-title {
+      color: #2c3e50;
+      font-size: 1.8rem;
+      font-weight: 800;
+      margin-bottom: 30px;
       text-align: center;
     }
 
-    .quick-stats {
-      grid-template-columns: 1fr;
+    .search-form {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr auto;
+      gap: 20px;
+      align-items: end;
     }
 
-    .results-grid {
-      grid-template-columns: 1fr;
-    }
-  }
-
-  @media (max-width: 576px) {
-    .hero-title {
-      font-size: 1.8rem;
+    .form-group {
+      margin-bottom: 0;
     }
 
-    .hero-subtitle {
+    .form-group label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 10px;
+      color: #495057;
       font-size: 1rem;
     }
 
+    .search-input {
+      width: 100%;
+      padding: 16px 24px;
+      border: 2px solid #e1e5e9;
+      border-radius: 12px;
+      font-size: 1.1rem;
+      transition: all 0.3s ease;
+      background: #f8f9fa;
+      color: #333; /* Ensure text is visible */
+    }
+
+    .search-input:focus {
+      outline: none;
+      border-color: #e23020;
+      background: white;
+      box-shadow: 0 0 0 4px rgba(226, 48, 32, 0.15);
+      color: #333;
+    }
+
+    .search-btn {
+      padding: 16px 36px;
+      background: linear-gradient(135deg, #e23020, #ff6b6b);
+      color: white;
+      border: none;
+      border-radius: 12px;
+      font-weight: 700;
+      font-size: 1.1rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      min-width: 140px;
+    }
+
+    .search-btn:hover {
+      background: linear-gradient(135deg, #c11b18, #e23020);
+      transform: translateY(-3px);
+      box-shadow: 0 6px 20px rgba(226, 48, 32, 0.3);
+    }
+
+    /* Featured Movies Section */
+    .featured-section {
+      padding: 0 0 50px 0;
+      margin-bottom: 50px;
+      border-bottom: 2px solid #e9ecef;
+    }
+
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 40px;
+      flex-wrap: wrap;
+      gap: 25px;
+    }
+
     .section-title {
-      font-size: 1.5rem;
+      color: #e23020;
+      font-size: 2.2rem;
+      font-weight: 800;
+      margin: 0;
     }
 
-    .search-section,
-    .carousel-container {
-      padding: 20px;
+    .section-subtitle {
+      color: #6c757d;
+      font-size: 1.2rem;
+      margin: 10px 0 0 0;
     }
 
-    .movie-poster,
+    .view-all-btn {
+      padding: 14px 32px;
+      background: linear-gradient(135deg, #e23020, #ff6b6b);
+      color: white;
+      border: none;
+      border-radius: 12px;
+      font-weight: 700;
+      font-size: 1.1rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+    }
+
+    .view-all-btn:hover {
+      background: linear-gradient(135deg, #c11b18, #e23020);
+      transform: translateY(-3px);
+      box-shadow: 0 6px 20px rgba(226, 48, 32, 0.3);
+      color: white;
+      text-decoration: none;
+    }
+
+    /* Movies Grid (instead of carousel) */
+    .movies-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 30px;
+    }
+
+    .movie-card {
+      background: white;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+      transition: all 0.4s ease;
+      border: 2px solid transparent;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .movie-card:hover {
+      transform: translateY(-10px) scale(1.02);
+      box-shadow: 0 20px 50px rgba(226, 48, 32, 0.25);
+      border-color: #e23020;
+    }
+
+    .movie-poster {
+      width: 100%;
+      height: 300px;
+      object-fit: cover;
+      border-bottom: 4px solid #e23020;
+    }
+
     .no-poster {
-      height: 240px;
-    }
-  }
-</style>
-{% endblock %}
-
-{% block content %}
-<!-- Hero Section -->
-<div class="hero-section">
-  <h1 class="hero-title">Welcome Back, {{ session.username }}!</h1>
-  <p class="hero-subtitle">Discover the latest blockbusters and book your tickets for an unforgettable cinematic experience.</p>
-
-  <div class="hero-buttons">
-    <a href="{{ url_for('movies') }}" class="hero-btn btn-primary">
-      🎬 Browse All Movies
-    </a>
-    <a href="{{ url_for('viewtickets') }}" class="hero-btn btn-secondary">
-      🎫 View My Tickets
-    </a>
-  </div>
-</div>
-
-<!-- Search Section -->
-<div class="search-section">
-  <h2 class="search-title">Find Your Perfect Movie</h2>
-  <form id="searchForm" class="search-form">
-    <div class="form-group">
-      <label for="searchQuery">Search Movies</label>
-      <input type="text" id="searchQuery" class="search-input" placeholder="Enter movie title, actor, or keyword...">
-    </div>
-
-    <div class="form-group">
-      <label for="genreFilter">Genre</label>
-      <select id="genreFilter" class="search-input">
-        <option value="">All Genres</option>
-        <!-- Genres will be populated dynamically -->
-      </select>
-    </div>
-
-    <div class="form-group">
-      <label for="ratingFilter">Rating</label>
-      <select id="ratingFilter" class="search-input">
-        <option value="">All Ratings</option>
-        <option value="G">G - General Audiences</option>
-        <option value="PG">PG - Parental Guidance</option>
-        <option value="PG-13">PG-13 - Parents Strongly Cautioned</option>
-        <option value="R">R - Restricted</option>
-        <option value="NC-17">NC-17 - Adults Only</option>
-      </select>
-    </div>
-
-    <button type="submit" class="search-btn">
-      🔍 Search
-    </button>
-  </form>
-</div>
-
-<!-- Quick Stats -->
-<div class="quick-stats">
-  <div class="stat-card">
-    <span class="stat-icon">🎟️</span>
-    <div class="stat-value" id="ticketCount">0</div>
-    <div class="stat-label">Tickets Booked</div>
-  </div>
-
-  <div class="stat-card">
-    <span class="stat-icon">🎬</span>
-    <div class="stat-value" id="movieCount">0</div>
-    <div class="stat-label">Movies Available</div>
-  </div>
-
-  <div class="stat-card">
-    <span class="stat-icon">⭐</span>
-    <div class="stat-value" id="featuredCount">0</div>
-    <div class="stat-label">Now Showing</div>
-  </div>
-
-  <div class="stat-card">
-    <span class="stat-icon">⏰</span>
-    <div class="stat-value" id="currentTime">--:--</div>
-    <div class="stat-label">Current Time</div>
-  </div>
-</div>
-
-<!-- Featured Movies Section -->
-<div class="featured-section">
-  <div class="section-header">
-    <div>
-      <h2 class="section-title">Featured Movies</h2>
-      <p class="section-subtitle">Handpicked selection of the best movies showing now</p>
-    </div>
-    <a href="{{ url_for('movies') }}" class="view-all-btn" id="viewAllBtn">
-      View All Movies →
-    </a>
-  </div>
-
-  <!-- Movie Carousel -->
-  <div class="carousel-container">
-    <div class="carousel-track" id="carouselTrack">
-      <!-- Movie cards will be loaded here dynamically -->
-    </div>
-
-    <!-- Carousel Controls -->
-    <div class="carousel-controls">
-      <button class="carousel-btn" id="prevBtn" disabled>
-        <i class="fas fa-chevron-left"></i>
-      </button>
-
-      <div class="carousel-dots" id="carouselDots">
-        <!-- Dots will be generated dynamically -->
-      </div>
-
-      <button class="carousel-btn" id="nextBtn">
-        <i class="fas fa-chevron-right"></i>
-      </button>
-    </div>
-  </div>
-</div>
-
-<!-- Search Results Section -->
-<div class="search-results" id="searchResults">
-  <h2 class="results-title">Search Results</h2>
-  <div class="results-grid" id="resultsGrid">
-    <!-- Search results will be displayed here -->
-  </div>
-</div>
-
-<!-- Loading Template (hidden) -->
-<div id="loadingTemplate" style="display: none;">
-  <div class="loading">
-    <div class="loading-spinner"></div>
-    <p>Loading movies...</p>
-  </div>
-</div>
-
-<!-- No Results Template (hidden) -->
-<div id="noResultsTemplate" style="display: none;">
-  <div class="no-results">
-    <div class="no-results-icon">🎭</div>
-    <h3 class="no-results-title">No Movies Found</h3>
-    <p class="no-results-text">Try adjusting your search criteria or browse all movies.</p>
-  </div>
-</div>
-{% endblock %}
-
-{% block extra_js %}
-<script>
-  // Global variables
-  let currentSlide = 0;
-  let totalSlides = 0;
-  let slidesPerView = 3;
-  let featuredMovies = [];
-  let allGenres = [];
-
-  // Initialize on page load
-  document.addEventListener('DOMContentLoaded', function() {
-    updateTime();
-    loadGenres();
-    loadFeaturedMovies();
-    setupEventListeners();
-
-    // Update time every minute
-    setInterval(updateTime, 60000);
-
-    // Adjust slides per view based on screen size
-    updateSlidesPerView();
-    window.addEventListener('resize', updateSlidesPerView);
-  });
-
-  // Update current time
-  function updateTime() {
-    const now = new Date();
-    const timeString = now.toLocaleTimeString('en-US', {
-      hour: '2-digit',
-      minute: '2-digit',
-      hour12: true
-    });
-    document.getElementById('currentTime').textContent = timeString;
-  }
-
-  // Update slides per view based on screen width
-  function updateSlidesPerView() {
-    const width = window.innerWidth;
-    if (width < 576) {
-      slidesPerView = 1;
-    } else if (width < 992) {
-      slidesPerView = 2;
-    } else {
-      slidesPerView = 3;
-    }
-    updateCarousel();
-  }
-
-  // Load all genres
-  async function loadGenres() {
-    try {
-      const response = await fetch('/get_all_genres');
-      allGenres = await response.json();
-
-      const genreSelect = document.getElementById('genreFilter');
-      allGenres.forEach(genre => {
-        if (genre) {
-          const option = document.createElement('option');
-          option.value = genre;
-          option.textContent = genre;
-          genreSelect.appendChild(option);
-        }
-      });
-    } catch (error) {
-      console.error('Error loading genres:', error);
-    }
-  }
-
-  // Load featured movies
-  async function loadFeaturedMovies() {
-    const carouselTrack = document.getElementById('carouselTrack');
-    carouselTrack.innerHTML = '<div class="loading"><div class="loading-spinner"></div><p>Loading featured movies...</p></div>';
-
-    try {
-      const response = await fetch('/get_featured_movies');
-      const data = await response.json();
-
-      featuredMovies = data.featured_movies;
-      totalSlides = Math.ceil(featuredMovies.length / slidesPerView);
-
-      // Update stats
-      document.getElementById('movieCount').textContent = data.total_movies;
-      document.getElementById('featuredCount').textContent = data.featured_count;
-
-      // Update View All button text
-      document.getElementById('viewAllBtn').innerHTML = `View All ${data.total_movies} Movies →`;
-
-      // Render carousel
-      renderCarousel();
-
-      // Setup carousel controls
-      setupCarouselControls();
-
-    } catch (error) {
-      console.error('Error loading featured movies:', error);
-      carouselTrack.innerHTML = '<div class="no-results"><div class="no-results-icon">⚠️</div><h3 class="no-results-title">Unable to load movies</h3><p class="no-results-text">Please try refreshing the page.</p></div>';
-    }
-  }
-
-  // Render carousel with movies
-  function renderCarousel() {
-    const carouselTrack = document.getElementById('carouselTrack');
-    const dotsContainer = document.getElementById('carouselDots');
-
-    carouselTrack.innerHTML = '';
-    dotsContainer.innerHTML = '';
-
-    // Create movie cards
-    featuredMovies.forEach((movie, index) => {
-      const movieCard = createMovieCard(movie);
-      movieCard.classList.add('carousel-item');
-      carouselTrack.appendChild(movieCard);
-    });
-
-    // Create dots
-    for (let i = 0; i < totalSlides; i++) {
-      const dot = document.createElement('div');
-      dot.className = 'carousel-dot' + (i === 0 ? ' active' : '');
-      dot.addEventListener('click', () => goToSlide(i));
-      dotsContainer.appendChild(dot);
+      width: 100%;
+      height: 300px;
+      background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #6c757d;
+      font-size: 2rem;
+      border-bottom: 4px solid #e23020;
     }
 
-    updateCarousel();
-  }
+    .movie-info {
+      padding: 20px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
 
-  // Create movie card HTML
-  function createMovieCard(movie) {
-    const description = movie.description ?
-      (movie.description.length > 100 ? movie.description.substring(0, 100) + '...' : movie.description) :
-      'No description available.';
+    .movie-title {
+      font-size: 1.2rem;
+      font-weight: 800;
+      color: #2c3e50;
+      margin-bottom: 10px;
+      line-height: 1.3;
+      height: 3.2em;
+      overflow: hidden;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+    }
 
-    return document.createElement('div');
-    const card = document.createElement('div');
-    card.className = 'movie-card';
-    card.innerHTML = `
-      <div class="movie-poster-container">
-        ${movie.poster_url ?
-          `<img src="${movie.poster_url}" alt="${movie.title}" class="movie-poster" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">` :
-          ''
-        }
-        <div class="no-poster" style="${movie.poster_url ? 'display: none;' : ''}">
-          🎬
-        </div>
-      </div>
-      <div class="movie-info">
-        <h3 class="movie-title">${movie.title}</h3>
-        <div class="movie-meta">
-          <span class="movie-genre">${movie.genre || 'Unknown'}</span>
-          <span class="movie-rating">${movie.rating || 'PG'}</span>
-        </div>
-        <p class="movie-description">${description}</p>
-        <button class="movie-btn" onclick="bookMovie('${movie.title}')">
-          <i class="fas fa-ticket-alt"></i> Book Tickets
-        </button>
-      </div>
-    `;
-    return card;
-  }
+    .movie-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 15px;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
 
-  // Setup carousel controls
-  function setupCarouselControls() {
-    const prevBtn = document.getElementById('prevBtn');
-    const nextBtn = document.getElementById('nextBtn');
+    .movie-genre {
+      color: #e23020;
+      font-size: 0.85rem;
+      font-weight: 700;
+      background: #ffeaea;
+      padding: 5px 12px;
+      border-radius: 20px;
+    }
 
-    prevBtn.addEventListener('click', () => goToSlide(currentSlide - 1));
-    nextBtn.addEventListener('click', () => goToSlide(currentSlide + 1));
+    .movie-rating {
+      background: linear-gradient(135deg, #e23020, #ff6b6b);
+      color: white;
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      font-weight: 800;
+      min-width: 45px;
+      text-align: center;
+    }
 
-    updateCarouselControls();
-  }
+    .movie-description {
+      color: #6c757d;
+      font-size: 0.9rem;
+      line-height: 1.5;
+      margin-bottom: 20px;
+      flex: 1;
+      overflow: hidden;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+    }
 
-  // Go to specific slide
-  function goToSlide(slideIndex) {
-    if (slideIndex < 0 || slideIndex >= totalSlides) return;
+    .movie-btn {
+      width: 100%;
+      padding: 12px;
+      background: linear-gradient(135deg, #e23020, #ff6b6b);
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-size: 0.95rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin-top: auto;
+    }
 
-    currentSlide = slideIndex;
-    updateCarousel();
-    updateCarouselControls();
-  }
+    .movie-btn:hover {
+      background: linear-gradient(135deg, #c11b18, #e23020);
+      transform: translateY(-3px);
+      box-shadow: 0 6px 20px rgba(226, 48, 32, 0.25);
+    }
 
-  // Update carousel position
-  function updateCarousel() {
-    const carouselTrack = document.getElementById('carouselTrack');
-    const slideWidth = 100 / slidesPerView;
-    const translateX = -currentSlide * slideWidth * slidesPerView;
-    carouselTrack.style.transform = `translateX(${translateX}%)`;
+    /* Search Results Section */
+    .search-results-section {
+      margin-top: 0;
+      margin-bottom: 50px;
+      display: none;
+    }
 
-    // Update dots
-    const dots = document.querySelectorAll('.carousel-dot');
-    dots.forEach((dot, index) => {
-      dot.classList.toggle('active', index === currentSlide);
-    });
-  }
+    .results-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 30px;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
 
-  // Update carousel controls state
-  function updateCarouselControls() {
-    const prevBtn = document.getElementById('prevBtn');
-    const nextBtn = document.getElementById('nextBtn');
+    .results-title {
+      color: #2c3e50;
+      font-size: 2rem;
+      font-weight: 800;
+      margin: 0;
+    }
 
-    prevBtn.disabled = currentSlide === 0;
-    nextBtn.disabled = currentSlide === totalSlides - 1;
-  }
+    .clear-search-btn {
+      padding: 12px 24px;
+      background: linear-gradient(135deg, #6c757d, #868e96);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
 
-  // Setup event listeners
-  function setupEventListeners() {
-    // Search form
-    document.getElementById('searchForm').addEventListener('submit', function(e) {
-      e.preventDefault();
-      searchMovies();
-    });
+    .clear-search-btn:hover {
+      background: linear-gradient(135deg, #545b62, #727b84);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(108, 117, 125, 0.2);
+    }
 
-    // Auto-search when filters change
-    document.getElementById('genreFilter').addEventListener('change', searchMovies);
-    document.getElementById('ratingFilter').addEventListener('change', searchMovies);
-  }
+    /* Footer */
+    .footer {
+      background-color: #e23020;
+      padding: 30px 0 15px;
+      border-top: 3px solid #b31a17;
+      width: 100%;
+      color: white;
+    }
 
-  // Search movies
-  async function searchMovies() {
-    const query = document.getElementById('searchQuery').value;
-    const genre = document.getElementById('genreFilter').value;
-    const rating = document.getElementById('ratingFilter').value;
+    .footer-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
 
-    const resultsSection = document.getElementById('searchResults');
-    const resultsGrid = document.getElementById('resultsGrid');
+    .footer-content {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 30px;
+      margin-bottom: 25px;
+    }
 
-    // Show loading
-    resultsSection.style.display = 'block';
-    resultsGrid.innerHTML = document.getElementById('loadingTemplate').innerHTML;
+    .footer-section h3 {
+      color: white;
+      font-size: 1.1rem;
+      margin-bottom: 15px;
+      font-weight: 700;
+      border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+      padding-bottom: 8px;
+    }
 
-    try {
-      // Build query string
-      const params = new URLSearchParams();
-      if (query) params.append('query', query);
-      if (genre) params.append('genre', genre);
-      if (rating) params.append('rating', rating);
+    .footer-links {
+      list-style: none;
+      padding: 0;
+    }
 
-      const response = await fetch(`/search_movies?${params.toString()}`);
-      const movies = await response.json();
+    .footer-links li {
+      margin-bottom: 10px;
+    }
 
-      // Display results
-      if (movies.length === 0) {
-        resultsGrid.innerHTML = document.getElementById('noResultsTemplate').innerHTML;
-      } else {
-        resultsGrid.innerHTML = '';
-        movies.forEach(movie => {
-          const movieCard = createMovieCard(movie);
-          resultsGrid.appendChild(movieCard);
-        });
+    .footer-links a {
+      color: rgba(255, 255, 255, 0.9);
+      text-decoration: none;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.9rem;
+      padding: 5px 0;
+    }
+
+    .footer-links a:hover {
+      color: white;
+      transform: translateX(5px);
+      text-decoration: underline;
+    }
+
+    .footer-section p {
+      color: rgba(255, 255, 255, 0.9);
+      line-height: 1.6;
+      font-size: 0.9rem;
+      margin-top: 10px;
+    }
+
+    .footer-bottom {
+      text-align: center;
+      padding-top: 15px;
+      border-top: 1px solid rgba(255, 255, 255, 0.2);
+      color: rgba(255, 255, 255, 0.9);
+      font-size: 0.85rem;
+    }
+
+    .footer-bottom a {
+      color: white;
+      text-decoration: none;
+      font-weight: 600;
+      margin: 0 5px;
+    }
+
+    .footer-bottom a:hover {
+      color: #ffcccc;
+      text-decoration: underline;
+    }
+
+    .footer-bottom p {
+      margin: 0;
+    }
+
+    /* Loading & Error States */
+    .loading {
+      text-align: center;
+      padding: 80px 20px;
+      grid-column: 1 / -1;
+    }
+
+    .loading-spinner {
+      width: 60px;
+      height: 60px;
+      border: 5px solid #f3f3f3;
+      border-top: 5px solid #e23020;
+      border-radius: 50%;
+      animation: spin 1.2s linear infinite;
+      margin: 0 auto 25px;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .no-results {
+      text-align: center;
+      padding: 80px 20px;
+      grid-column: 1 / -1;
+    }
+
+    .no-results-icon {
+      font-size: 5rem;
+      color: #e23020;
+      margin-bottom: 25px;
+      opacity: 0.7;
+    }
+
+    .no-results-title {
+      color: #2c3e50;
+      font-size: 2rem;
+      font-weight: 800;
+      margin-bottom: 15px;
+    }
+
+    .no-results-text {
+      color: #6c757d;
+      max-width: 500px;
+      margin: 0 auto;
+      line-height: 1.6;
+      font-size: 1.1rem;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 992px) {
+      .search-form {
+        grid-template-columns: 1fr 1fr;
       }
 
-      // Add animation to results
-      const movieCards = resultsGrid.querySelectorAll('.movie-card');
-      movieCards.forEach((card, index) => {
-        card.style.opacity = '0';
-        card.style.transform = 'translateY(20px)';
+      .movies-grid {
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      }
 
-        setTimeout(() => {
-          card.style.transition = 'all 0.5s ease';
-          card.style.opacity = '1';
-          card.style.transform = 'translateY(0)';
-        }, index * 100);
-      });
+      .welcome-title {
+        font-size: 2rem;
+      }
 
-    } catch (error) {
-      console.error('Error searching movies:', error);
-      resultsGrid.innerHTML = '<div class="no-results"><div class="no-results-icon">⚠️</div><h3 class="no-results-title">Search Error</h3><p class="no-results-text">Please try again later.</p></div>';
+      .stats-section {
+        grid-template-columns: repeat(2, 1fr);
+      }
     }
-  }
 
-  // Book movie function
-  function bookMovie(movieTitle) {
-    window.location.href = "{{ url_for('book_ticket') }}?movie=" + encodeURIComponent(movieTitle);
-  }
+    @media (max-width: 768px) {
+      .container {
+        flex-direction: column;
+        gap: 20px;
+      }
 
-  // Load ticket count (you can implement this based on your data)
-  async function loadTicketCount() {
-    // Implement based on your API
-    // For now, set to 0 or get from localStorage
-    const ticketCount = localStorage.getItem('ticketCount') || 0;
-    document.getElementById('ticketCount').textContent = ticketCount;
-  }
+      nav ul {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 15px;
+      }
 
-  // Initialize ticket count
-  loadTicketCount();
-</script>
-{% endblock %}
+      .search-form {
+        grid-template-columns: 1fr;
+      }
+
+      .section-header,
+      .results-header {
+        flex-direction: column;
+        text-align: center;
+      }
+
+      .movies-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .movie-poster,
+      .no-poster {
+        height: 250px;
+      }
+
+      .search-section {
+        padding: 30px;
+      }
+
+      .stats-section {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 576px) {
+      .welcome-title {
+        font-size: 1.8rem;
+      }
+
+      .search-section,
+      .welcome-section {
+        padding: 25px;
+      }
+
+      .movie-poster,
+      .no-poster {
+        height: 220px;
+      }
+
+      .movies-grid {
+        grid-template-columns: 1fr;
+        max-width: 350px;
+        margin: 0 auto;
+      }
+
+      .footer-content {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .footer-content {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container">
+      <div class="logo">
+        Movie<span style="font-weight:400;">Ticket Booking</span>
+      </div>
+      <nav>
+        <ul>
+          <li><a href="{{ url_for('customer_dashboard') }}" class="active">Home</a></li>
+          <li><a href="{{ url_for('movies') }}">Movies</a></li>
+          <li><a href="{{ url_for('viewtickets') }}">My Tickets</a></li>
+          <li><a href="{{ url_for('logout') }}" class="btn-logout">Logout</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <!-- Welcome Section -->
+    <div class="welcome-section">
+      <h1 class="welcome-title">Welcome back, {{ session.username if session.username else 'Customer' }}!</h1>
+      <p class="welcome-subtitle">Ready for your next cinematic adventure?</p>
+      <div class="tickets-count" id="ticketsCount">
+        <i class="fas fa-ticket-alt"></i> 
+        <span id="ticketCountNumber">0</span> Tickets Booked
+      </div>
+    </div>
+
+    <!-- Dashboard Stats -->
+    <div class="stats-section">
+      <div class="stat-card">
+        <div class="stat-icon">🎬</div>
+        <div class="stat-number" id="moviesCount">0</div>
+        <div class="stat-label">Movies Available</div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-icon">🎫</div>
+        <div class="stat-number" id="bookingsCount">0</div>
+        <div class="stat-label">Your Bookings</div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-icon">⭐</div>
+        <div class="stat-number" id="featuredCount">0</div>
+        <div class="stat-label">Featured Movies</div>
+      </div>
+    </div>
+
+    <!-- Search Section - SAME AS HOME PAGE -->
+    <div class="search-section">
+      <h2 class="search-title">Find Your Perfect Movie</h2>
+      <form id="searchForm" class="search-form">
+        <div class="form-group">
+          <label for="searchQuery">Search Movies</label>
+          <input type="text" id="searchQuery" class="search-input" placeholder="Enter movie title, actor, or keyword...">
+        </div>
+        
+        <div class="form-group">
+          <label for="genreFilter">Genre</label>
+          <select id="genreFilter" class="search-input">
+            <option value="">All Genres</option>
+            <!-- Genres will be populated dynamically -->
+          </select>
+        </div>
+        
+        <div class="form-group">
+          <label for="ratingFilter">Rating</label>
+          <select id="ratingFilter" class="search-input">
+            <option value="">All Ratings</option>
+            <option value="G">G - General Audiences</option>
+            <option value="PG">PG - Parental Guidance</option>
+            <option value="PG-13">PG-13 - Parents Strongly Cautioned</option>
+            <option value="R">R - Restricted</option>
+            <option value="NC-17">NC-17 - Adults Only</option>
+          </select>
+        </div>
+        
+        <button type="submit" class="search-btn">
+          🔍 Search Movies
+        </button>
+      </form>
+    </div>
+
+    <!-- Search Results Section -->
+    <div class="search-results-section" id="searchResultsSection">
+      <div class="results-header">
+        <h2 class="results-title">Search Results</h2>
+        <button class="clear-search-btn" id="clearSearchBtn">
+          <i class="fas fa-times"></i> Clear Search
+        </button>
+      </div>
+      <div class="results-grid" id="resultsGrid">
+        <!-- Search results will be displayed here -->
+      </div>
+    </div>
+
+    <!-- Featured Movies Section - NO CAROUSEL/SLIDER -->
+    <div class="featured-section">
+      <div class="section-header">
+        <div>
+          <h2 class="section-title">Featured Movies</h2>
+          <p class="section-subtitle">Handpicked selection of the best movies showing now</p>
+        </div>
+        <a href="{{ url_for('movies') }}" class="view-all-btn" id="viewAllBtn">
+          View All Movies →
+        </a>
+      </div>
+
+      <!-- Movies Grid (instead of carousel) -->
+      <div class="movies-grid" id="featuredMoviesGrid">
+        <!-- Featured movies will be loaded here dynamically -->
+        <div class="loading">
+          <div class="loading-spinner"></div>
+          <p>Loading featured movies...</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Templates (hidden) -->
+    <div id="loadingTemplate" style="display: none;">
+      <div class="loading">
+        <div class="loading-spinner"></div>
+        <p>Loading movies...</p>
+      </div>
+    </div>
+
+    <div id="noResultsTemplate" style="display: none;">
+      <div class="no-results">
+        <div class="no-results-icon">🎭</div>
+        <h3 class="no-results-title">No Movies Found</h3>
+        <p class="no-results-text">Try adjusting your search criteria or browse all movies.</p>
+      </div>
+    </div>
+
+    <div id="movieCardTemplate" style="display: none;">
+      <div class="movie-card">
+        <div class="movie-poster-container">
+          <img src="" alt="" class="movie-poster" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">
+          <div class="no-poster">
+            🎬
+          </div>
+        </div>
+        <div class="movie-info">
+          <h3 class="movie-title"></h3>
+          <div class="movie-meta">
+            <span class="movie-genre"></span>
+            <span class="movie-rating"></span>
+          </div>
+          <p class="movie-description"></p>
+          <button class="movie-btn">
+            <i class="fas fa-ticket-alt"></i> Book Tickets
+          </button>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-container">
+      <div class="footer-content">
+        <div class="footer-section">
+          <h3>Movie Ticketing</h3>
+          <p>
+            Your one-stop destination for booking movie tickets online.
+            Experience the magic of cinema with our easy booking system.
+          </p>
+        </div>
+
+        <div class="footer-section">
+          <h3>Quick Links</h3>
+          <ul class="footer-links">
+            <li><a href="{{ url_for('customer_dashboard') }}"><i class="fas fa-home"></i> Home</a></li>
+            <li><a href="{{ url_for('movies') }}"><i class="fas fa-film"></i> Movies</a></li>
+            <li><a href="{{ url_for('viewtickets') }}"><i class="fas fa-ticket-alt"></i> My Tickets</a></li>
+            <li><a href="#"><i class="fas fa-info-circle"></i> About Us</a></li>
+            <li><a href="#"><i class="fas fa-phone"></i> Contact Us</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-section">
+          <h3>Contact Info</h3>
+          <ul class="footer-links">
+            <li><a href="#"><i class="fas fa-map-marker-alt"></i> Ward II, Minglanilla, Cebu</a></li>
+            <li><a href="tel:+1234567890"><i class="fas fa-phone"></i> 09267630945</a></li>
+            <li><a href="mailto:info@movieticketing.com"><i class="fas fa-envelope"></i> BSIT@movieticketing.com</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-section">
+          <h3>Follow Us</h3>
+          <ul class="footer-links">
+            <li><a href="#"><i class="fab fa-facebook"></i> Facebook</a></li>
+            <li><a href="#"><i class="fab fa-twitter"></i> Twitter</a></li>
+            <li><a href="#"><i class="fab fa-instagram"></i> Instagram</a></li>
+            <li><a href="https://www.youtube.com/@J2KD2024/shorts"><i class="fab fa-youtube"></i> YouTube</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p>&copy; <span id="currentYear"></span> Movie Ticketing System. All rights reserved. |
+          <a href="#">Privacy Policy</a> |
+          <a href="#">Terms of Service</a>
+        </p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Initialize on page load
+    document.addEventListener('DOMContentLoaded', function() {
+      loadDashboardData();
+      loadGenres();
+      loadFeaturedMovies();
+      setupEventListeners();
+      
+      // Set current year in footer
+      document.getElementById('currentYear').textContent = new Date().getFullYear();
+    });
+
+    // Load dashboard data (tickets count, stats)
+    async function loadDashboardData() {
+      try {
+        // Load user's ticket count
+        const ticketsResponse = await fetch('/viewtickets_data');
+        const ticketsData = await ticketsResponse.json();
+        
+        // Update ticket count
+        const ticketCount = ticketsData.ticket_count || 0;
+        document.getElementById('ticketCountNumber').textContent = ticketCount;
+        document.getElementById('bookingsCount').textContent = ticketCount;
+        
+        // Load movies count
+        const moviesResponse = await fetch('/get_movies_count');
+        const moviesData = await moviesResponse.json();
+        document.getElementById('moviesCount').textContent = moviesData.total_movies || 0;
+        document.getElementById('featuredCount').textContent = moviesData.featured_count || 0;
+        
+      } catch (error) {
+        console.error('Error loading dashboard data:', error);
+        // Fallback to counting from featured movies
+        loadStatsFallback();
+      }
+    }
+
+    // Fallback for stats if API endpoints don't exist
+    async function loadStatsFallback() {
+      try {
+        const response = await fetch('/get_featured_movies');
+        const data = await response.json();
+        
+        document.getElementById('featuredCount').textContent = data.featured_count || 0;
+        document.getElementById('moviesCount').textContent = data.total_movies || 0;
+        
+      } catch (error) {
+        console.error('Error in fallback:', error);
+      }
+    }
+
+    // Load all genres
+    async function loadGenres() {
+      try {
+        const response = await fetch('/get_all_genres');
+        const genres = await response.json();
+        
+        const genreSelect = document.getElementById('genreFilter');
+        genres.forEach(genre => {
+          if (genre) {
+            const option = document.createElement('option');
+            option.value = genre;
+            option.textContent = genre;
+            genreSelect.appendChild(option);
+          }
+        });
+      } catch (error) {
+        console.error('Error loading genres:', error);
+      }
+    }
+
+    // Load featured movies (grid layout, no carousel)
+    async function loadFeaturedMovies() {
+      try {
+        const response = await fetch('/get_featured_movies');
+        const data = await response.json();
+        
+        const featuredMoviesGrid = document.getElementById('featuredMoviesGrid');
+        
+        if (data.featured_movies && data.featured_movies.length > 0) {
+          featuredMoviesGrid.innerHTML = '';
+          
+          // Limit to featured_count from your logic
+          const moviesToShow = data.featured_movies.slice(0, data.featured_count || 6);
+          
+          moviesToShow.forEach(movie => {
+            const movieCard = createMovieCard(movie);
+            featuredMoviesGrid.appendChild(movieCard);
+          });
+          
+          // Add animation to movie cards
+          const movieCards = featuredMoviesGrid.querySelectorAll('.movie-card');
+          movieCards.forEach((card, index) => {
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(30px)';
+            
+            setTimeout(() => {
+              card.style.transition = 'all 0.6s ease';
+              card.style.opacity = '1';
+              card.style.transform = 'translateY(0)';
+            }, index * 100);
+          });
+          
+        } else {
+          featuredMoviesGrid.innerHTML = document.getElementById('noResultsTemplate').innerHTML;
+        }
+        
+        // Update View All button
+        document.getElementById('viewAllBtn').innerHTML = `View All ${data.total_movies || 0} Movies →`;
+        
+      } catch (error) {
+        console.error('Error loading featured movies:', error);
+        const featuredMoviesGrid = document.getElementById('featuredMoviesGrid');
+        featuredMoviesGrid.innerHTML = '<div class="no-results"><div class="no-results-icon">⚠️</div><h3 class="no-results-title">Unable to load movies</h3><p class="no-results-text">Please try refreshing the page.</p></div>';
+      }
+    }
+
+    // Create movie card HTML
+    function createMovieCard(movie) {
+      const description = movie.description ? 
+        (movie.description.length > 120 ? movie.description.substring(0, 120) + '...' : movie.description) : 
+        'Experience this amazing movie on the big screen!';
+      
+      const card = document.createElement('div');
+      card.className = 'movie-card';
+      card.innerHTML = `
+        <div class="movie-poster-container">
+          ${movie.poster_url ? 
+            `<img src="${movie.poster_url}" alt="${movie.title}" class="movie-poster" onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';">` : 
+            ''
+          }
+          <div class="no-poster" style="${movie.poster_url ? 'display: none;' : ''}">
+            🎬
+          </div>
+        </div>
+        <div class="movie-info">
+          <h3 class="movie-title">${movie.title}</h3>
+          <div class="movie-meta">
+            <span class="movie-genre">${movie.genre || 'Unknown Genre'}</span>
+            <span class="movie-rating">${movie.rating || 'PG'}</span>
+          </div>
+          <p class="movie-description">${description}</p>
+          <button class="movie-btn" onclick="bookMovie('${movie.title}')">
+            <i class="fas fa-ticket-alt"></i> Book Tickets
+          </button>
+        </div>
+      `;
+      return card;
+    }
+
+    // Setup event listeners
+    function setupEventListeners() {
+      // Search form
+      document.getElementById('searchForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        searchMovies();
+      });
+      
+      // Auto-search when filters change
+      document.getElementById('genreFilter').addEventListener('change', searchMovies);
+      document.getElementById('ratingFilter').addEventListener('change', searchMovies);
+      
+      // Clear search button
+      document.getElementById('clearSearchBtn').addEventListener('click', function(e) {
+        e.preventDefault();
+        clearSearch();
+      });
+    }
+
+    // Search movies
+    async function searchMovies() {
+      const query = document.getElementById('searchQuery').value;
+      const genre = document.getElementById('genreFilter').value;
+      const rating = document.getElementById('ratingFilter').value;
+      
+      const resultsSection = document.getElementById('searchResultsSection');
+      const resultsGrid = document.getElementById('resultsGrid');
+      
+      // Show loading
+      resultsSection.style.display = 'block';
+      resultsGrid.innerHTML = document.getElementById('loadingTemplate').innerHTML;
+      
+      // Scroll to search results
+      resultsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      
+      try {
+        // Build query string
+        const params = new URLSearchParams();
+        if (query) params.append('query', query);
+        if (genre) params.append('genre', genre);
+        if (rating) params.append('rating', rating);
+        
+        const response = await fetch(`/search_movies?${params.toString()}`);
+        const movies = await response.json();
+        
+        // Display results
+        if (movies.length === 0) {
+          resultsGrid.innerHTML = document.getElementById('noResultsTemplate').innerHTML;
+        } else {
+          resultsGrid.innerHTML = '';
+          movies.forEach(movie => {
+            const movieCard = createMovieCard(movie);
+            resultsGrid.appendChild(movieCard);
+          });
+        }
+        
+        // Add animation to results
+        const movieCards = resultsGrid.querySelectorAll('.movie-card');
+        movieCards.forEach((card, index) => {
+          card.style.opacity = '0';
+          card.style.transform = 'translateY(30px)';
+          
+          setTimeout(() => {
+            card.style.transition = 'all 0.6s ease';
+            card.style.opacity = '1';
+            card.style.transform = 'translateY(0)';
+          }, index * 100);
+        });
+        
+      } catch (error) {
+        console.error('Error searching movies:', error);
+        resultsGrid.innerHTML = '<div class="no-results"><div class="no-results-icon">⚠️</div><h3 class="no-results-title">Search Error</h3><p class="no-results-text">Please try again later.</p></div>';
+      }
+    }
+
+    // Clear search results
+    function clearSearch() {
+      // Reset search form
+      document.getElementById('searchQuery').value = '';
+      document.getElementById('genreFilter').value = '';
+      document.getElementById('ratingFilter').value = '';
+      
+      // Hide search results
+      document.getElementById('searchResultsSection').style.display = 'none';
+      
+      // Scroll back to featured movies
+      document.querySelector('.featured-section').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    // Book movie function
+    function bookMovie(movieTitle) {
+      window.location.href = `/book_ticket?movie=${encodeURIComponent(movieTitle)}`;
+    }
+  </script>
+</body>
+</html>
